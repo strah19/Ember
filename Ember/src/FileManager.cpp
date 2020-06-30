@@ -16,12 +16,13 @@ namespace Ember
             }
         }
     }
+
     File::File(const std::string& filePath, bool append)
     {
         Append = append;
 
         FilePath = filePath;
-        std::fstream temp;
+        std::ofstream temp;
         temp.open(filePath.c_str());
         temp.close();
 
@@ -29,10 +30,12 @@ namespace Ember
 
         check_for_closure(&FileData);
     }
+
     File::~File()
     {
         FileData.close();
     }
+
     std::string File::get_line(int line)
     {
         std::string Stringline;
@@ -52,6 +55,7 @@ namespace Ember
 
         return l;
     }
+
     std::string File::get_word_from_location(int location)
     {
         FileData.clear();
@@ -68,6 +72,7 @@ namespace Ember
         FileData.clear();
         return value;
     }
+
     std::string File::get_all_file()
     {
         std::string line;
@@ -87,6 +92,7 @@ namespace Ember
 
         return allData;
     }
+
     std::streamoff File::get_size_in_bytes()
     {
         std::streampos begin, end;
@@ -96,6 +102,7 @@ namespace Ember
         end = FileData.tellg();
         return end - begin;
     }
+
     int File::get_line_count()
     {
         unsigned int counter = 0;
@@ -111,6 +118,7 @@ namespace Ember
         return counter;;
 
     }
+
     void File::delete_line(int line)
     {
         if (FileData.is_open()) {
@@ -135,6 +143,7 @@ namespace Ember
             rename("temp.txt", FilePath.c_str());
         }
     }
+
     void File::delete_file()
     {
         if (FileData.is_open()) {
@@ -142,6 +151,7 @@ namespace Ember
             remove(FilePath.c_str());
         }
     }
+
     void File::empty_file()
     {
         if (FileData.is_open()) {
@@ -149,10 +159,12 @@ namespace Ember
             FileData.open(FilePath.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc);
         }
     }
+
     void File::close_file()
     {
         FileData.close();
     }
+
     void File::open()
     {
         if (!Append) {
@@ -160,6 +172,24 @@ namespace Ember
         }
         else if (Append) {
             FileData.open(FilePath.c_str(), std::fstream::in | std::fstream::out | std::fstream::ate);
+        }
+
+        if (FileData.is_open())
+            std::cout << "Opened " << FilePath << " Successfully" << std::endl;
+        else
+            std::cout << "Could Not Open " << FilePath << " Successfully" << std::endl;
+    }
+
+    IniFile::IniFile(const std::string& filePath)
+        :File(filePath + std::string(".ini"), true)
+    {      
+    }
+
+    void IniFile::write_to_section(LPCSTR Section, LPCSTR Key, LPCSTR Data)
+    {
+        if (FileData.is_open()) {
+            std::cout << "Writing New Data: " << Section << ": " << Key << ": " << Data << std::endl;
+            WritePrivateProfileStringA(Section, Key, Data, FilePath.c_str());
         }
     }
 }

@@ -32,6 +32,11 @@ int main(int argc, char* argv[])
 	Ember::initialize_img();
 	Ember::initialize_mixer();
 
+	Ember::IniFile ini("ini_config");
+	std::cout << ini.get_path() << std::endl;
+	ini.write_to_section("Object", "Position", "100");
+	ini.close_file();
+
 	while (Screen.IsRunning){
 		while(SDL_PollEvent(&Properties.Event))
 			Screen.IsRunning = Ember::iterate_events(Properties);
