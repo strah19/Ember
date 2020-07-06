@@ -226,6 +226,6 @@ namespace Ember
 	}
 	void save_rects()
 	{
-		File SaveRects("Rects.txt", true);
+		
 	}
 }
