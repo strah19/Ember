@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ember.h" />
-    <ClInclude Include="src\LinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember.cpp" />

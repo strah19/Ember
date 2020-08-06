@@ -2,17 +2,18 @@
 #define EMBER
 
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <string>
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include <sstream>
-#include <array>
 #include <algorithm>
-#include <unordered_map>
+#include <sstream>
+#include <fstream>
+#include <memory>
+#include <array>
+#include <bitset>
 
 #define LeftMouseButton 1
 #define MiddleMouseButton 2
@@ -29,56 +30,42 @@
         } while (false)
 #endif 
 
-namespace Ember
-{
-	void CheckVersion();
-	SDL_DisplayMode GetDisplay();
+namespace ember {
+	extern void CheckVersion();
+	extern SDL_DisplayMode GetDisplay();
 
-	struct KeyBoardEvents
-	{
+	struct KeyBoardEvents {
 		bool pressed;
 		bool released;
 		int repeat;
 		std::string name;
-		KeyBoardEvents()
-			:pressed(false), released(false), repeat(0)
-		{
-		}
+		KeyBoardEvents();
 	};
-	struct MouseEvents
-	{
+
+	struct MouseEvents {
 		int x, y;
 		bool down;
 		bool up;
 		int id;
 		int clicks;
-		MouseEvents()
-			:x(0), y(0), down(false), up(false), id(-1), clicks(0)
-		{
-		}
-	};
-	struct MouseMotionEvents
-	{
-		int xDirection;
-		int yDirection;
-		MouseMotionEvents()
-			:xDirection(0), yDirection(0)
-		{
-		}
-	};
-	struct MouseWheelEvents
-	{
-		int xDirection;
-		int yDirection;
-		MouseWheelEvents()
-			:xDirection(0), yDirection(0)
-		{
-		}
+		
+		MouseEvents();
 	};
 
-	struct EventHandler
-	{
-		KeyBoardEvents keyBoard;
+	struct MouseMotionEvents {
+		int x_direction;
+		int y_direction;
+		MouseMotionEvents();
+	};
+
+	struct MouseWheelEvents {
+		int x_direction;
+		int y_direction;
+		MouseWheelEvents();
+	};
+
+	struct EventHandler {
+    	KeyBoardEvents keyBoard;
 		MouseEvents mouse;
 		MouseMotionEvents motion;
 		MouseWheelEvents wheel;
@@ -86,45 +73,39 @@ namespace Ember
 		bool closeWithEscape;
 		bool resize;
 
-		EventHandler()
-			:closeWithEscape(false), resize(false)
-		{
-		}
+		EventHandler();
 	};
 
-	enum class EventFlags
-	{
-		escape, resize
+	enum class EventFlags {
+		kEscape, kResize
 	};
 
-	class Cursor
-	{
+	class Cursor {
 	public:
 		Cursor();
 		~Cursor();
-		void set_cursor(SDL_SystemCursor type);
+		void SetCursor(SDL_SystemCursor cursor_type);
 
-		void update();
-		void show_cursor();
-		void hide_cursor();
+		void Update();
+		void ShowCursor();
+		void HideCursor();
 	private:
-		SDL_Cursor* m_Cursor;
+		SDL_Cursor* m_cursor;
 	};
 
-	struct SDLProperties
-	{
-		std::string_view m_WindowTitle;
-		SDL_Window* m_Window;
-		SDL_Renderer* m_Renderer;
-		SDL_Event m_Event;
-		unsigned int m_Width;
-		unsigned int m_Height;
-		bool m_FullScreen;
-		int m_WindowPositionX;
-		int m_WindowPositionY;
+	struct SDLProperties {
+		std::string_view window_title;
+		SDL_Window* window;
+		SDL_Renderer* renderer;
+		SDL_Event event;
+		int width;
+		int height;
+		bool full_screen;
+		int window_x_position;
+		int window_y_position;
 
 		SDLProperties();
-		SDLProperties(const char* title, unsigned int width, unsigned int height, bool full, int x = SDL_WINDOWPOS_UNDEFINED, int y = SDL_WINDOWPOS_UNDEFINED);
+		SDLProperties(const char* window_title, int width, int height, bool full_screen, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED);
 	};
 
 	class EmberScreen
@@ -133,155 +114,143 @@ namespace Ember
 		EmberScreen(SDLProperties* properties);
 		~EmberScreen();
 		bool IterateEvents();
-		void AddEventFlags(EventFlags flag);
+		void AddEventFlags(EventFlags event_flag);
 		void Close();
-		inline SDLProperties* properties() { return m_Properties; }
-		inline EventHandler* events() { return &m_HandleEvents; }
-		inline void SetScreenSize(int w, int h) { SDL_SetWindowSize(m_Properties->m_Window, w, h); }
-		bool m_IsRunning;
-		Cursor cursor;
+
+		inline SDLProperties* Properties() { return m_properties; }
+		inline EventHandler* Events() { return &m_handle_events; }
+		inline void SetScreenSize(int screen_w, int screen_h) { SDL_SetWindowSize(m_properties->window, screen_w, screen_h); }
+
+		void StartTimer();
+		void EndTimer();
+
+		bool m_is_running;
+		Cursor m_cursor;
+		float m_elapsed_time;
 	private:
-		SDLProperties* m_Properties;
-		EventHandler m_HandleEvents;
+		SDLProperties* m_properties;
+		EventHandler m_handle_events;
 	};
 
-#ifndef ASSET_LOADER
-	bool initialize_mixer();
-	bool initialize_img();
-	bool initialize_font();
-	bool initialize_all_asset_loaders();
+	bool InitializeMixer();
+	bool InitializeImg();
+	bool InitializeFonts();
+	bool InitializeAllAssets();
 
-	class Font
-	{
+	class Font {
 	public:
-		Font(EmberScreen* screen, const char* filePath, const char* text, int size, const SDL_Color& color, int x, int y);
-		void unlock_font();
-		void change_font(const char* text, const SDL_Color& color);
-		void lock_font();
-		void render();
-		void set_position(int x, int y);
-		void update(int x, int y);
-		void clean_up();
+		Font(EmberScreen* screen, const char* file_path, const char* text, int size, const SDL_Color& color, int x, int y);
+		void UnlockFont();
+		void ChangeFont(const char* text, const SDL_Color& color);
+		void LockFont();
+		void Render();
+		void SetPosition(int x, int y);
+		inline void SetSize(int w, int h) { m_font_width = w; m_font_height = h; }
+		void Update(int vel_x, int vel_y);
+		void CleanUp();
+		inline void GetSize(int* w, int* h, const char* text) { TTF_SizeText(m_font, text, w, h); }
 	private:
-		int m_FontWidth;
-		int m_FontHeight;
-		TTF_Font* m_FontData;
-		SDL_Rect m_FontPosition;
-		SDL_Texture* m_FontTexture;
-		SDL_Color m_FontColor;
-		bool m_FontIsLocked;
-		EmberScreen* m_CurrentScreen;
+		int m_font_width;
+		int m_font_height;
+		TTF_Font* m_font;
+		SDL_Rect m_font_position;
+		SDL_Texture* m_font_texture;
+		SDL_Color m_font_color;
+		bool m_font_is_locked;
+		EmberScreen* m_screen;
 	};
 
-	class Image
-	{
+
+	class Image {
 	public:
-		Image(EmberScreen* screen, const char* filePath, int x, int y, int w, int h);
-		Image(EmberScreen* screen, const char* filePath, SDL_Rect position);
-		void render(float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
-		void set_color(int r, int g, int b);
-		void set_image_alptha(int alpha);
-		void set_position(int x, int y);
-		inline SDL_Texture* get_texture() { return m_Texture; }
+		Image(EmberScreen* screen, const char* file_path, int x, int y, int w, int h);
+		Image(EmberScreen* screen, const char* file_path, SDL_Rect position);
+		void Render(float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
+		void SetColor(int r, int g, int b);
+		void SetImageAlptha(int alptha);
+		void SetPosition(int x, int y);
+		inline SDL_Texture* get_texture() { return m_texture; }
 		~Image();
 	private:
-		SDL_Texture* m_Texture;
-		SDL_Rect m_Position;
-		EmberScreen* m_CurrentScreen;
+		SDL_Texture* m_texture;
+		SDL_Rect m_position;
+		EmberScreen* m_screen;
 	};
 
-	class AudioChunk
-	{
+	class AudioChunk {
 	public:
-		AudioChunk(const char* filePath);
-		void play_chunk();
-		void set_volume(unsigned int volume);
+		AudioChunk(const char* file_path);
+		void Play();
+		void Volume(unsigned int volume);
 		~AudioChunk();
 	private:
-		Mix_Chunk* m_ChunkName;
-		unsigned int m_CurrentVolume;
+		Mix_Chunk* m_chunk;
+		unsigned int m_volume;
 	};
 
-	class AudioMusic
-	{
+	class AudioMusic {
 	public:
-		AudioMusic(const char* filePath);
-		void play_music(); 
-		void set_volume(unsigned int volume);
+		AudioMusic(const char* file_path);
+		void Play();
+		void Volume(unsigned int volume);
 		~AudioMusic();
 	private:
-		Mix_Music* m_Music;
-		unsigned int m_CurrentVolume;
+		Mix_Music* m_music;
+		unsigned int m_volume;
 	};
 
-	SDL_Texture* load_texture(EmberScreen* screen, const char* filePath);
-	SDL_Texture* create_texture_with_surface(EmberScreen* screen, SDL_Surface* surface);
-	SDL_Surface* load_surface(const char* filePath);
+	SDL_Texture* LoadTexture(EmberScreen* screen, const char* file_path);
+	SDL_Texture* CreateTextureFromSurface(EmberScreen* screen, SDL_Surface* surface);
+	SDL_Surface* LoadSurface(const char* file_path);
 
-	void draw_no_source(EmberScreen* screen, SDL_Texture* texture, const SDL_FRect& dest, float angle = 0, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
-	void draw_with_source(EmberScreen* screen, SDL_Texture* texture, const SDL_FRect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0);
-	void draw_no_source(EmberScreen* screen, SDL_Texture* texture, const SDL_Rect& dest, float angle = 0, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
-	void draw_with_source(EmberScreen* screen, SDL_Texture* texture, const SDL_Rect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0);
+	void Draw(EmberScreen* screen, SDL_Texture* texture, const SDL_FRect& dest, float angle = 0, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
+	void Draw(EmberScreen* screen, SDL_Texture* texture, const SDL_FRect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0);
+	void Draw(EmberScreen* screen, SDL_Texture* texture, const SDL_Rect& dest, float angle = 0, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
+	void Draw(EmberScreen* screen, SDL_Texture* texture, const SDL_Rect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0);
 
-	void set_window_icon(EmberScreen* screen, const char* filePath);
+	void SetWindowIcon(EmberScreen* screen, const char* file_path);
 
-	void delete_texture(SDL_Texture* texture);
-	void set_texture_color(SDL_Texture* texture, int r, int g, int b);
-	void set_alptha(SDL_Texture* texture, int a);
-#endif
+	void DeleteTexture(SDL_Texture* texture);
+	void TextureColor(SDL_Texture* texture, int r, int g, int b);
+	void TextureAlptha(SDL_Texture* texture, int a);
+	void GetTextureInfo(SDL_Texture* texture, int& w, int& h);
 
-#ifndef SHAPES	
-	void pixel(SDL_Renderer* renderer, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void horizontal_line(SDL_Renderer* renderer, int x1, int x2, int y1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void line(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void vertical_line(SDL_Renderer* renderer, int y1, int y2, int x1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void Pixel(SDL_Renderer* renderer, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void HorizontalLine(SDL_Renderer* renderer, int x1, int x2, int y1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void Line(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void VerticalLine(SDL_Renderer* renderer, int y1, int y2, int x1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 
-	void rectangle_border(SDL_Renderer* renderer, int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void rectangle_fill(SDL_Renderer* renderer, int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void rectangle_borderF(SDL_Renderer* renderer, float x, float y, float w, float h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void rectangle_fillF(SDL_Renderer* renderer, float x, float y, float w, float h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void HorizontalLine(SDL_Renderer* renderer, float x1, float x2, float y1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void Line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void VerticalLine(SDL_Renderer* renderer, float y1, float y2, float x1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 
-	void draw_circle(SDL_Renderer* renderer, int centreX, int centreY, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void fill_circle(SDL_Renderer* renderer, int centreX, int centreY, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void RectangleBorder(SDL_Renderer* renderer, int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void RectangleFill(SDL_Renderer* renderer, int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void RectangleBorder(SDL_Renderer* renderer, float x, float y, float w, float h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void RectangleFill(SDL_Renderer* renderer, float x, float y, float w, float h, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 
-	void arcs(SDL_Renderer* renderer, int x0, int y0, int radiusX, int radiusY, int quad1, int quad2, int quad3, int quad4, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void DrawCircle(SDL_Renderer* renderer, int centreX, int centreY, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void FillCircle(SDL_Renderer* renderer, int centreX, int centreY, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 
-	/*
-	quad1 = TopRight
-	quad2 = TopLeft
-	quad3 = BottomLeft
-	quad4 = BottomRight
-	*/
-
-	void rounded_rectangle_fill_gui(SDL_Renderer* renderer, int headerSize, int x1, int y1, int x2, int y2, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 rh, Uint8 gh, Uint8 bh);
-	void rounded_rectangle_border_gui(SDL_Renderer* renderer, int x, int y, int w, int h, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 rh, Uint8 gh, Uint8 bh);
-
-	void rounded_rectangle_fill(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-	void rounded_rectangle_border(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-#endif 
-
-#ifndef FUNCTION
-	class Button
-	{
+	class Button {
 	public:
 		Button(EmberScreen* screen, SDL_Rect button);
 		Button(EmberScreen* screen, int x, int y, int w, int h);
-		bool hover();
-		bool click(int ID);
-		void update_position(int x, int y);
-		void update_size(int w, int h);
-		int in_out_click(int ID);
-		bool hold(int ID);
-		inline SDL_Rect retrieve_data() { return m_Position; }
+		bool Hover();
+		bool Click(int id);
+		void UpdatePosition(int x, int y);
+		void UpdateSize(int w, int h);
+		int InOutClick(int id);
+		bool Hold(int id);
+		inline SDL_Rect Rect() { return m_position; }
 	private:
-		EmberScreen* m_CurrentScreen;
-		SDL_Rect m_Position;
-		int m_InOut;
-		bool m_Clicked;
+		EmberScreen* m_screen;
+		SDL_Rect m_position;
+		int m_in_out;
+		bool m_clicked;
 	};
 
-	class EmberVec2
-	{
+	class EmberVec2 {
 	public:
 		float x;
 		float y;
@@ -311,10 +280,10 @@ namespace Ember
 		void operator*=(const EmberVec2& vec);
 		void operator/=(const EmberVec2& vec);
 
-		void negate();
-		float magnitude();
-		void normalize();
-		float dot_product(EmberVec2& vec2);
+		void Negate();
+		float Magnitude();
+		void Normalize();
+		float DotProduct(EmberVec2& vec2);
 	};
 
 	EmberVec2 operator+(const EmberVec2& v1, const EmberVec2& v2);
@@ -327,149 +296,11 @@ namespace Ember
 	EmberVec2 operator*(const EmberVec2& v1, const float s);
 	EmberVec2 operator/(const EmberVec2& v1, const float s);
 
-	class Grid
-	{
+	class EmberVec4 {
 	public:
-		Grid(EmberScreen* screen, int x, int y, unsigned int row, unsigned int col, int widthSize, int heightSize);
-		void resize_define(int x, int y, int widthSize, int heightSize);
-		void render_rects(Uint8 r, Uint8 g, Uint8 b);
-		void render_border(Uint8 r, Uint8 g, Uint8 b);
-		std::pair<int, int> hover();
-		std::pair<int, int> click(int ID);
+		EmberVec4(float x, float y, float w, float h);
+		EmberVec4();
 
-	protected:
-		unsigned int m_Rows, m_Cols;
-		int m_BlockWidth, m_BlockHeight;
-		int m_X, m_Y;
-		int m_StartX, m_StartY;
-
-		EmberScreen* m_CurrentScreen;
-		Button m_GridButtons;
-	};
-
-	class SpriteSheet
-	{
-	public:
-		SpriteSheet(EmberScreen* screen, char const* filePath, int row, int column);
-		SpriteSheet() = default;
-
-		~SpriteSheet();
-
-		void select_sprite(int x, int y);
-		void draw_selected_sprite(SDL_Rect position);
-
-		inline SDL_Texture* get_texture() const { return m_Sheet; }	
-		inline int Row() { return m_Row; }
-		inline int Col() { return m_Col; }
-	private:
-		SDL_Rect m_Clip;
-		SDL_Texture* m_Sheet;
-
-		int m_Row, m_Col;
-
-		EmberScreen* m_CurrentScreen;
-	};
-
-	struct TileTexture
-	{
-		SDL_Texture* texture;
-		uint32_t id;
-	};
-
-	class File
-	{
-	public:
-		File(const char* filePath);
-		virtual ~File();
-
-		void empty_file();
-		void close_file();
-		void delete_file();
-
-		inline const char* get_path() const { return m_FilePath; }
-		inline std::fstream& get_file() { return m_FileData; }
-		std::streampos get_current_location();
-		bool check_if_file_empty();
-		void change_file_location_pointer(int location);
-		void reset_location();
-		__int64 get_line_count();
-		unsigned int get_word_count();
-		unsigned int get_location_from_word(const char* word);
-		inline unsigned long long get_size() { return m_CurrentSize; }
-		std::string get_in_memory_data() const { return m_Data; }
-		unsigned long get_character_count();
-		bool is_empty() { return m_FileData.peek() == std::ifstream::traits_type::eof(); }
-
-		//reading functions
-		std::string read_all_file();
-		std::string read_line(int lineNumber);
-		std::string read_word(int location);
-		std::string get_word_from_location(int location);
-
-		//writing functions
-		template <typename _Type>
-		void write_at_end_of_file(const _Type& data, bool newLine);
-		template <typename _Type>
-		void write_at_end_of_word(const _Type& data, const char* finderWord);
-		template <typename _Type>
-		void write_at_end_of_line(const _Type& data, int lineNumber);
-	protected:
-		const char* m_FilePath;
-		std::fstream m_FileData;
-		unsigned long long m_CurrentSize;
-		bool m_FillInMemoryData;
-		std::string m_Data;
-
-		std::streamoff get_size_in_bytes();
-		void open();
-		void before_reading();
-		void before_writing();
-	};
-
-	bool BindFileToManager(File* file);
-	void CheckForDoubles(const char* fileClosingFrom);
-	void CloseAllFiles();
-
-	class TileMap : public Grid
-	{
-	public:
-		TileMap(EmberScreen* screen, int x, int y, unsigned int row, unsigned int col, int widthSize, int heightSize);
-		~TileMap();
-
-		void RenderSheet(SpriteSheet& spriteSheet, int x, int y);
-		void UseSheet(SpriteSheet& spriteSheet);
-
-		void RenderTexturePack();
-		void AddTexture(const char* filePath);  
-		void EditGrid();
-	private:
-		std::vector<TileTexture> m_Textures;
-		uint32_t m_Counter;
-		uint32_t m_CurrentTexture;
-
-		SDL_Rect m_Pos;
-		uint32_t** m_EachTileTexture;
-		EmberVec2 m_LastPosition;
-
-		//Sheet members
-		uint32_t** m_EachTileSheet;
-		EmberVec2 m_CurrentSheet;
-
-		//Serialization
-		File m_File;
-	};
-
-	class EmberVec4
-	{
-	public:
-		EmberVec4(float x, float y, float w, float h)
-			:a(x, y), b(w, h)
-		{
-		}
-		EmberVec4()
-			:a(0, 0), b(0, 0)
-		{
-		}
 		union
 		{
 			struct
@@ -483,19 +314,203 @@ namespace Ember
 		};
 	};
 
-#endif
+	class SpriteSheet {
+	public:
+		SpriteSheet(EmberScreen* screen, char const* file_path, int row, int column);
+		SpriteSheet() = default;
+
+		~SpriteSheet();
+
+		void SelectSprite(int x, int y);
+		void DrawSelectedSprite(SDL_Rect position);
+
+		inline SDL_Texture* Texture() const { return m_sheet; }
+		inline int Row() { return m_row; }
+		inline int Col() { return m_col; }
+	private:
+		SDL_Rect m_clip;
+		SDL_Texture* m_sheet;
+
+		int m_row, m_col;
+
+		EmberScreen* m_screen;
+	};
+
+	class Grid {
+	public:
+		Grid(EmberScreen* screen, int x, int y, unsigned int row, unsigned int col, int width_Size, int height_size);
+		void ReSizeGrid(int x, int y, int width_size, int height_size);
+		void RenderRects(Uint8 r, Uint8 g, Uint8 b);
+		void RenderBorder(Uint8 r, Uint8 g, Uint8 b);
+		std::pair<int, int> Hover();
+		std::pair<int, int> Click(int id);
+
+	protected:
+		unsigned int m_rows, m_cols;
+		int m_block_width, m_block_height;
+		int m_x, m_y;
+		int m_start_x, m_start_y;
+
+		EmberScreen* m_screen;
+		Button m_button;
+	};
 	
-	struct EmberRect
-	{
+	struct EmberRect {
 		EmberVec4 pos;
 		EmberVec2 vel;
 	};
 
 	bool PointVsRect(const EmberVec2& point, const EmberRect& rect);
 	bool RectVsRect(const EmberRect& rect1, const EmberRect& rect2);
-	bool RayVsRect(const EmberVec2& ray, const EmberVec2& rayDir, const EmberRect& rect, EmberVec2&  contact, EmberVec2& contact_normal, float& hitNear);
+	bool RayVsRect(const EmberVec2& ray, const EmberVec2& ray_dir, const EmberRect& rect, EmberVec2&  contact, EmberVec2& contact_normal, float& hit_near);
 
-	bool DynamicRectVsRect(const EmberRect& rect1, const EmberRect& rect2, EmberVec2& contact, EmberVec2& contact_normal, float& hitNear);
+	bool DynamicRectVsRect(const EmberRect& rect1, const EmberRect& rect2, EmberVec2& contact, EmberVec2& contact_normal, float& hit_near);
+
+	void BeganRender(EmberScreen* screen, Uint8 r, Uint8 g, Uint8 b);
+	void CloseRender(EmberScreen* screen);
+
+	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y);
+	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y);
+
+	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y, float scale_x, float scale_y);
+	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y, float scale_x, float scale_y);
+
+	class Component;
+	class Entity;
+
+	using ComponentID = std::size_t;
+
+	inline ComponentID GetComponentTypeID() {
+		static ComponentID current_component_id = 0;
+		return current_component_id++;
+	}
+
+	template <typename T> inline ComponentID GetComponentTypeID() {
+		static ComponentID typeID = GetComponentTypeID();
+		return typeID;
+	}
+
+	constexpr std::size_t kMaxComponents = 32;
+
+	class Component {
+	public:
+		Component();
+		virtual ~Component();
+
+		virtual void Init();
+		virtual void Update();
+		virtual void Render();
+
+		Entity* m_parent_entity;
+	};
+
+	class Entity {
+	public:
+		Entity(EmberScreen* screen);
+
+		template <typename T, typename... TArgs>
+		T& AddComponent(TArgs&&... mArgs) {
+			T* component(new T(std::forward<TArgs>(mArgs)...));
+			component->m_parent_entity = this;
+
+			std::unique_ptr<Component> component_pointer{ component };
+			m_components.emplace_back(std::move(component_pointer));
+
+			m_component_array[GetComponentTypeID<T>()] = component;
+			m_component_set[GetComponentTypeID<T>()] = true;
+			
+			component->Init();
+			return *component;
+		}
+
+		template <typename T>
+		T& GetComponent() {
+			auto component_pointer(m_component_array[GetComponentTypeID<T>()]);
+			return *static_cast<T*>(component_pointer);
+		}
+
+		template<typename T> bool HasComponent() {
+			return m_component_set[GetComponentTypeID<T>];
+		}
+
+		void Update();
+		void Render();
+
+		inline EmberScreen* GetScreen() { return m_screen; }
+		inline void Debug(bool is_active) { m_debug_is_active = is_active; }
+		inline bool Debug() { return m_debug_is_active; }
+	private:
+		std::vector<std::unique_ptr<Component>> m_components;
+		std::bitset<kMaxComponents> m_component_set;
+		std::array<Component*, kMaxComponents> m_component_array;
+		EmberScreen* m_screen;
+		bool m_debug_is_active;
+	};
+
+	class PositionComponent : public Component {
+	public:
+		PositionComponent(float x, float y, float w, float h);
+		PositionComponent(SDL_FRect position);
+		virtual ~PositionComponent();
+
+		void Init();
+		void Update();
+		void Render();
+
+		void ChangePosition(float x, float y);
+		void ChangeSize(float w, float h);
+		void UpdatePosition(float dx, float dy);
+		void UpdateSize(float dw, float dh);
+		void Angle(float angle);
+
+		inline SDL_FRect Position() { return m_position; }
+		inline float GetAngle() { return m_angle; }
+
+		void Scale(int on_x, int on_y);
+	private:
+		SDL_FRect m_position;
+		float m_angle;
+		EmberVec2 m_velocity;
+	};
+
+	class SpriteComponent : public Component {
+	public:
+		SpriteComponent(const char* file_path);
+		virtual ~SpriteComponent(); 
+
+		void Init();
+		void Update();
+		void Render();
+
+		void Flip(SDL_RendererFlip flip);
+		void SetColor(Uint8 r, Uint8 g, Uint8 b);
+		void SetAlptha(Uint8 alptha);
+
+		void ChangeSpriteClipping(int x, int y, int w, int h);
+	private:
+		PositionComponent* m_position;
+		EmberScreen* m_screen;
+		SDL_Texture* m_texture;
+		SDL_RendererFlip m_flip;
+		SDL_Rect m_clipping;
+
+		const char* m_file_path;
+	};
+
+	class Camera
+	{
+	public:
+		Camera(EmberScreen* screen);
+		Camera(EmberScreen* screen, float offset_x, float offset_y);
+		void Pan(int button_click);
+		void Scale(float scale_x, float scale_y);
+		void MoveCameraOffset(float offset_x, float offset_y);
+		void AddObject(SDL_FRect position);
+	private:
+		float m_offset_x, m_offset_y;
+		float m_scale_x, m_scale_y;
+		EmberScreen* m_screen;
+	};
 }
 
 #endif
