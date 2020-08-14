@@ -121,15 +121,16 @@ namespace ember {
 		inline EventHandler* Events() { return &m_handle_events; }
 		inline void SetScreenSize(int screen_w, int screen_h) { SDL_SetWindowSize(m_properties->window, screen_w, screen_h); }
 
-		void StartTimer();
-		void EndTimer();
-
 		bool m_is_running;
 		Cursor m_cursor;
-		float m_elapsed_time;
+
+		void StartTime();
+		float DeltaTime() { return m_delta_time; }
 	private:
 		SDLProperties* m_properties;
 		EventHandler m_handle_events;
+		Uint32 m_latest;
+		float m_delta_time;
 	};
 
 	bool InitializeMixer();
@@ -164,7 +165,7 @@ namespace ember {
 	class Image {
 	public:
 		Image(EmberScreen* screen, const char* file_path, int x, int y, int w, int h);
-		Image(EmberScreen* screen, const char* file_path, SDL_Rect position);
+		Image(EmberScreen* screen, const char* file_path, SDL_Rect& position);
 		void Render(float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
 		void SetColor(int r, int g, int b);
 		void SetImageAlptha(int alptha);
@@ -220,6 +221,7 @@ namespace ember {
 	void Line(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void VerticalLine(SDL_Renderer* renderer, int y1, int y2, int x1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 
+	void Pixel(SDL_Renderer* renderer, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void HorizontalLine(SDL_Renderer* renderer, float x1, float x2, float y1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void Line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void VerticalLine(SDL_Renderer* renderer, float y1, float y2, float x1, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
@@ -234,20 +236,18 @@ namespace ember {
 
 	class Button {
 	public:
-		Button(EmberScreen* screen, SDL_Rect button);
+		Button(EmberScreen* screen, SDL_Rect& button);
 		Button(EmberScreen* screen, int x, int y, int w, int h);
 		bool Hover();
 		bool Click(int id);
 		void UpdatePosition(int x, int y);
 		void UpdateSize(int w, int h);
-		int InOutClick(int id);
 		bool Hold(int id);
 		inline SDL_Rect Rect() { return m_position; }
-	private:
-		EmberScreen* m_screen;
+	protected:
 		SDL_Rect m_position;
-		int m_in_out;
-		bool m_clicked;
+		EmberScreen* m_screen;
+
 	};
 
 	class EmberVec2 {
@@ -282,7 +282,7 @@ namespace ember {
 
 		void Negate();
 		float Magnitude();
-		void Normalize();
+		EmberVec2 Normalize();
 		float DotProduct(EmberVec2& vec2);
 	};
 
@@ -314,6 +314,47 @@ namespace ember {
 		};
 	};
 
+	class EmberIVec2 {
+	public:
+		int x;
+		int y;
+
+		EmberIVec2(int x, int y);
+		EmberIVec2();
+
+		friend std::ostream& operator<<(std::ostream& os, const EmberIVec2& vec2);
+
+		friend EmberIVec2 operator+(const EmberIVec2& v1, const EmberIVec2& v2);
+		friend EmberIVec2 operator-(const EmberIVec2& v1, const EmberIVec2& v2);
+		friend EmberIVec2 operator*(const EmberIVec2& v1, const EmberIVec2& v2);
+		friend EmberIVec2 operator/(const EmberIVec2& v1, const EmberIVec2& v2);
+
+		friend EmberIVec2 operator+(const EmberIVec2& v1, const int s);
+		friend EmberIVec2 operator-(const EmberIVec2& v1, const int s);
+		friend EmberIVec2 operator*(const EmberIVec2& v1, const int s);
+		friend EmberIVec2 operator/(const EmberIVec2& v1, const int s);
+
+		void operator+=(const int scalar);
+		void operator-=(const int scalar);
+		void operator*=(const int scalar);
+		void operator/=(const int scalar);
+
+		void operator+=(const EmberIVec2& vec);
+		void operator-=(const EmberIVec2& vec);
+		void operator*=(const EmberIVec2& vec);
+		void operator/=(const EmberIVec2& vec);
+	};
+
+	EmberIVec2 operator+(const EmberIVec2& v1, const EmberIVec2& v2);
+	EmberIVec2 operator-(const EmberIVec2& v1, const EmberIVec2& v2);
+	EmberIVec2 operator*(const EmberIVec2& v1, const EmberIVec2& v2);
+	EmberIVec2 operator/(const EmberIVec2& v1, const EmberIVec2& v2);
+
+	EmberIVec2 operator+(const EmberIVec2& v1, const int s);
+	EmberIVec2 operator-(const EmberIVec2& v1, const int s);
+	EmberIVec2 operator*(const EmberIVec2& v1, const int s);
+	EmberIVec2 operator/(const EmberIVec2& v1, const int s);
+
 	class SpriteSheet {
 	public:
 		SpriteSheet(EmberScreen* screen, char const* file_path, int row, int column);
@@ -322,7 +363,7 @@ namespace ember {
 		~SpriteSheet();
 
 		void SelectSprite(int x, int y);
-		void DrawSelectedSprite(SDL_Rect position);
+		void DrawSelectedSprite(SDL_Rect& position);
 
 		inline SDL_Texture* Texture() const { return m_sheet; }
 		inline int Row() { return m_row; }
@@ -338,13 +379,12 @@ namespace ember {
 
 	class Grid {
 	public:
-		Grid(EmberScreen* screen, int x, int y, unsigned int row, unsigned int col, int width_Size, int height_size);
+		Grid(EmberScreen* screen, int x, int y, unsigned int col, unsigned int row, int width_size, int height_size);
 		void ReSizeGrid(int x, int y, int width_size, int height_size);
-		void RenderRects(Uint8 r, Uint8 g, Uint8 b);
+		void RenderRect(unsigned int col, unsigned int row, Uint8 r, Uint8 g, Uint8 b);
 		void RenderBorder(Uint8 r, Uint8 g, Uint8 b);
-		std::pair<int, int> Hover();
-		std::pair<int, int> Click(int id);
-
+		EmberIVec2 Hover();
+		EmberIVec2 Click(int id);
 	protected:
 		unsigned int m_rows, m_cols;
 		int m_block_width, m_block_height;
@@ -353,6 +393,13 @@ namespace ember {
 
 		EmberScreen* m_screen;
 		Button m_button;
+	};
+
+	class TileMap : public Grid {
+	public:
+		TileMap(EmberScreen* screen, int x, int y, unsigned int col, unsigned int row, int width_size, int height_size);
+	private:
+
 	};
 	
 	struct EmberRect {
@@ -368,12 +415,6 @@ namespace ember {
 
 	void BeganRender(EmberScreen* screen, Uint8 r, Uint8 g, Uint8 b);
 	void CloseRender(EmberScreen* screen);
-
-	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y);
-	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y);
-
-	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y, float scale_x, float scale_y);
-	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y, float scale_x, float scale_y);
 
 	class Component;
 	class Entity;
@@ -505,11 +546,107 @@ namespace ember {
 		void Pan(int button_click);
 		void Scale(float scale_x, float scale_y);
 		void MoveCameraOffset(float offset_x, float offset_y);
-		void AddObject(SDL_FRect position);
+
+		void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y);
+		void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y);
+
+		void RenderBoundry();
+		EmberVec2 Offset() { return { m_offset_x, m_offset_y }; }
+		EmberVec2 ScaleValue() { return { m_scale_x, m_scale_y }; }
+
 	private:
 		float m_offset_x, m_offset_y;
 		float m_scale_x, m_scale_y;
 		EmberScreen* m_screen;
+		bool m_down_flag;
+		float m_pan_x, m_pan_y;
+	};
+
+
+	class CameraComponent : public Component {
+	public:
+		CameraComponent(Camera* camera);
+		virtual ~CameraComponent();
+
+		void Init();
+		void Update();
+		void Render();
+	private:
+		PositionComponent* m_position;
+		Camera* m_camera;
+	};
+
+	struct Circle {
+		int radius;
+		int x, y;
+	};
+
+	struct CircleF {
+		float radius;
+		float x, y;
+	};
+
+	bool PointToCircle(EmberIVec2& point, Circle& circle);
+	bool PointToCircle(EmberVec2& point, CircleF& circle);
+
+	void Shadow(SDL_Renderer* renderer, SDL_Rect& position, int depth, SDL_Color start_color, int color_change);
+	void Curve(SDL_Renderer* renderer, int x[], int y[], SDL_Color color);
+	void AdvCurve(SDL_Renderer* renderer, int x[], int y[], SDL_Color color);
+
+	struct EmberTheme {
+		SDL_Color border_color;
+		SDL_Color main_color;
+		SDL_Color font_color;
+
+		SDL_Color border_hover_color;
+		SDL_Color main_hover_color;
+		SDL_Color font_hover_color;
+	
+		EmberTheme() = default;
+	};
+
+	struct EmberButtonTheme : public EmberTheme{
+		SDL_Color border_click_color;
+		SDL_Color main_click_color;
+		SDL_Color font_click_color;
+
+		EmberButtonTheme() = default;
+	};
+
+	class EmberButton : public Button {
+	public:
+		EmberButton(EmberScreen* screen, EmberIVec2& position, const char* file_path, int size);
+		EmberButton(EmberScreen* screen, EmberIVec2& position, const char* file_path, EmberButtonTheme& theme, int size);
+
+		virtual ~EmberButton();
+
+		void Render(const char* text, int id, int w_gap, int h_gap, int w_gap_s = -1, int h_gap_s = -1);
+
+		void HoverColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c);
+		void MainColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c);
+		void ClickColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c);
+
+		void LockText(bool lock) { (lock) ? m_font.LockFont() : m_font.UnlockFont(); }
+		void Border(bool border) { m_border = border; }
+		void InOut(bool in) { m_is_using_in = in; }
+		bool InOut() { return m_in; }
+		void ActivateClick(bool c) { m_click = c; }
+		void Main(bool m) { m_main = m; }
+
+		void OverRideWidth(int w) { m_max_sizes.x = w; }
+		void OverRideHeight(int h) { m_max_sizes.y = h; }
+	private:
+		Font m_font;
+		EmberButtonTheme m_theme;
+
+		void ThemeInit();
+		bool m_in;
+		bool m_border;
+		bool m_main;
+		bool m_is_using_in;
+		bool m_click;
+
+		EmberIVec2 m_max_sizes;
 	};
 }
 

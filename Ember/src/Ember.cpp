@@ -59,7 +59,7 @@ namespace ember {
 	}
 
 	EmberScreen::EmberScreen(SDLProperties* properties)
-		: m_properties(nullptr), m_elapsed_time(0.0f) {
+		: m_properties(nullptr), m_latest(0), m_delta_time(0.0f) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) { 
 		m_is_running = false;
 		std::cout << "Could Not Initialize SDL_INIT" << std::endl;
@@ -81,12 +81,19 @@ namespace ember {
 			m_is_running = true;
 			std::cout << "Loaded SDL2 And Created A Window And Renderer Called " << properties->window_title << std::endl;
 		}
+
+		m_latest = SDL_GetTicks();
 	}
 
 	m_is_running = InitializeAllAssets();
 
 	this->m_properties = properties;
 	EmberAssert(this->m_properties != NULL, "Could not initialize properties of ember screen");
+	}
+
+	void EmberScreen::StartTime() {
+		m_delta_time = (SDL_GetTicks() - m_latest);
+		m_latest = SDL_GetTicks();
 	}
 
 	bool EmberScreen::IterateEvents() {
@@ -132,7 +139,7 @@ namespace ember {
 				break;
 				case SDL_MOUSEWHEEL: {
 					m_handle_events.wheel.x_direction = m_properties->event.wheel.x;
-					m_handle_events.wheel.y_direction = m_properties->event.wheel.y;
+					m_handle_events.wheel.y_direction = m_properties->event.wheel.y; 
 					break;
 				}
 				break;
@@ -153,9 +160,6 @@ namespace ember {
 							break;
 						}
 					}
-				}
-				default: {
-					break;
 				}
 			}
 		}
@@ -321,8 +325,8 @@ namespace ember {
 		std::cout << "Created Image: " << file_path << std::endl;
 	}
 
-	Image::Image(EmberScreen* screen, const char* file_path, SDL_Rect Temp)
-		: m_screen(screen), m_texture(LoadTexture(screen, file_path)), m_position(Temp) {
+	Image::Image(EmberScreen* screen, const char* file_path, SDL_Rect& position)
+		: m_screen(screen), m_texture(LoadTexture(screen, file_path)), m_position(position) {
 		std::cout << "Created Image: " << file_path << std::endl;
 	}
 
@@ -473,11 +477,103 @@ namespace ember {
 		Mix_FreeMusic(m_music);
 	}
 
+
+	EmberIVec2::EmberIVec2(int x, int y)
+		: x(x), y(y) {}
+
+	EmberIVec2::EmberIVec2()
+		: x(0), y(0) {}
+
+	std::ostream& operator<<(std::ostream& os, const EmberIVec2& vec2) {
+		os << vec2.x << " " << vec2.y;
+		return os;
+	}
+
+	EmberIVec2 operator+(const EmberIVec2& v1, const EmberIVec2& v2) {
+		return (EmberIVec2(v1.x + v2.x, v1.y + v2.y));
+	}
+
+	EmberIVec2 operator-(const EmberIVec2& v1, const EmberIVec2& v2) {
+		return (EmberIVec2(v1.x - v2.x, v1.y - v2.y));
+	}
+
+	EmberIVec2 operator*(const EmberIVec2& v1, const EmberIVec2& v2) {
+		return (EmberIVec2(v1.x * v2.x, v1.y * v2.y));
+	}
+
+	EmberIVec2 operator/(const EmberIVec2& v1, const EmberIVec2& v2) {
+		return (EmberIVec2(v1.x / v2.x, v1.y / v2.y));
+	}
+
+	EmberIVec2 operator+(const EmberIVec2& v1, const int s) {
+		return (EmberIVec2(v1.x + s, v1.y + s));
+	}
+
+	EmberIVec2 operator-(const EmberIVec2& v1, const int s) {
+		return (EmberIVec2(v1.x - s, v1.y - s));
+	}
+
+	EmberIVec2 operator*(const EmberIVec2& v1, const int s) {
+		return (EmberIVec2(v1.x * s, v1.y * s));
+	}
+
+	EmberIVec2 operator/(const EmberIVec2& v1, const int s) {
+		return (EmberIVec2(v1.x / s, v1.y / s));
+	}
+
+	void EmberIVec2::operator+=(const int scalar) {
+		this->x += scalar;
+		this->y += scalar;
+	}
+
+	void EmberIVec2::operator-=(const int scalar) {
+		this->x -= scalar;
+		this->y -= scalar;
+	}
+
+	void EmberIVec2::operator*=(const int scalar) {
+		this->x *= scalar;
+		this->y *= scalar;
+	}
+
+	void EmberIVec2::operator/=(const int scalar) {
+		this->x /= scalar;
+		this->y /= scalar;
+	}
+
+	void EmberIVec2::operator+=(const EmberIVec2& vec) {
+		this->x += vec.x;
+		this->y += vec.y;
+	}
+
+	void EmberIVec2::operator-=(const EmberIVec2& vec) {
+		this->x -= vec.x;
+		this->y -= vec.y;
+	}
+
+	void EmberIVec2::operator*=(const EmberIVec2& vec) {
+		this->x *= vec.x;
+		this->y *= vec.y;
+	}
+
+	void EmberIVec2::operator/=(const EmberIVec2& vec) {
+		this->x /= vec.x;
+		this->y /= vec.y;
+	}
+
+
 	void Pixel(SDL_Renderer* renderer, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 		EmberAssert(renderer != NULL, "Shape function can not take in a NULL renderer");
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderDrawColor(renderer, r, g, b, a);
 		SDL_RenderDrawPoint(renderer, x, y);	
+	}
+
+	void Pixel(SDL_Renderer* renderer, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+		EmberAssert(renderer != NULL, "Shape function can not take in a NULL renderer");
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(renderer, r, g, b, a);
+		SDL_RenderDrawPointF(renderer, x, y);
 	}
 
 	void HorizontalLine(SDL_Renderer* renderer, int x1, int x2, int y1, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
@@ -606,12 +702,12 @@ namespace ember {
 		}
 	}
 
-	Button::Button(EmberScreen* screen, SDL_Rect button)
-		:m_screen(screen), m_position(button), m_in_out(1), m_clicked(false) {
+	Button::Button(EmberScreen* screen, SDL_Rect& button)
+		:m_screen(screen), m_position(button) {
 	}
 
 	Button::Button(EmberScreen* screen, int x, int y, int w, int h)
-		:m_screen(screen), m_position({ x, y, w, h }), m_in_out(1), m_clicked(false) {
+		:m_screen(screen), m_position({ x, y, w, h }) {
 	}
 
 	bool Button::Hover() {
@@ -635,23 +731,6 @@ namespace ember {
 		return false;
 	}
 
-	int Button::InOutClick(int id) {
-		if (m_screen->Events()->mouse.down && m_screen->Events()->mouse.id == id) {
-			if (m_clicked == false && m_screen->Events()->mouse.x >= m_position.x && m_screen->Events()->mouse.x <= m_position.x + m_position.w
-				&& m_screen->Events()->mouse.y >= m_position.y && m_screen->Events()->mouse.y <= m_position.y + m_position.h) {
-				m_clicked = true;
-				m_screen->Events()->mouse.down = false;
-				m_in_out = 2;
-			} else if (m_clicked == true && m_screen->Events()->mouse.x >= m_position.x && m_screen->Events()->mouse.x <= m_position.x + m_position.w
-				&& m_screen->Events()->mouse.y >= m_position.y && m_screen->Events()->mouse.y <= m_position.y + m_position.h) {
-				m_clicked = false;
-				m_screen->Events()->mouse.down = false;
-				m_in_out = 1;
-			}
-		}
-		return m_in_out;
-	}
-
 	void Button::UpdatePosition(int x, int y) {
 		m_position.x = x;
 		m_position.y = y;
@@ -672,92 +751,81 @@ namespace ember {
 		return false;
 	}
 
-	Grid::Grid(EmberScreen* screen, int x, int y, unsigned int row, unsigned int col, int width_size, int height_size)
+	Grid::Grid(EmberScreen* screen, int x, int y, unsigned int col, unsigned int row, int width_size, int height_size)
 		:m_screen(screen), m_rows(row), m_cols(col), m_block_width(width_size), m_block_height(height_size),
 		m_x(x), m_y(y), m_start_x(x), m_start_y(y), m_button(screen, x, y, m_block_width, m_block_height) {
 	}
 
 	void Grid::ReSizeGrid(int x, int y, int width_size, int height_size) {
-		m_x = x;
-		m_y = y;
+		m_start_x = x;
+		m_start_y = y;
 
 		m_block_width = width_size;
 		m_block_height = height_size;
 	}
 
-	void Grid::RenderRects(Uint8 r, Uint8 g, Uint8 b) {
-		m_x = m_start_x;
-		m_y = m_start_y;
-		int l = -1;
-		for (unsigned int i = 0; i < m_rows; i++) {
-			for (unsigned int j = 0; j < m_cols; j++) {
-				l++;
-
-				RectangleFill(m_screen->Properties()->renderer, m_x + 1, m_y + 1, m_block_width - 1, m_block_height - 1, r, g, b);
-
-				m_x += m_block_width;
-				if (l == m_rows - 1) {
-					m_y += m_block_height;
-					m_x = m_start_x;
-					l = -1;
-				}
-			}
-		}
+	void Grid::RenderRect(unsigned int col, unsigned int row, Uint8 r, Uint8 g, Uint8 b) {
+		RectangleFill(m_screen->Properties()->renderer, m_start_x + col * m_block_width, m_start_y + row * m_block_height, m_block_width, m_block_height, r, g, b);
 	}
 
 	void Grid::RenderBorder(Uint8 r, Uint8 g, Uint8 b) {
 		m_x = m_start_x;
 		m_y = m_start_y;
 
-		for (unsigned int i = 0; i < m_rows; i++) {
-			for (unsigned int j = 0; j < m_cols; j++) {
+		for (unsigned int i = 0; i < m_cols; i++) {
+			for (unsigned int j = 0; j < m_rows; j++) {
 				HorizontalLine(m_screen->Properties()->renderer, m_x, m_x + m_block_width, m_y, r, g, b);
 				VerticalLine(m_screen->Properties()->renderer, m_y, m_y + m_block_height, m_x, r, g, b);
 
-				m_x += m_block_width;
+				m_y += m_block_height;
 			}
-			m_y += m_block_height;
-			m_x = m_start_x;
+			m_x += m_block_width;
+			m_y = m_start_y;
 		}
 		HorizontalLine(m_screen->Properties()->renderer, m_start_x, m_start_x + (m_block_width * m_cols), m_start_y + (m_block_height * m_rows), r, g, b);
 		VerticalLine(m_screen->Properties()->renderer, m_start_y, m_start_y + (m_block_height * m_rows), m_start_x + (m_block_width * m_cols), r, g, b);
 	}
 
-	std::pair<int, int> Grid::Hover() {
+	EmberIVec2 Grid::Hover() {
 		m_x = m_start_x;
 		m_y = m_start_y;
 
-		for (unsigned int i = 0; i < m_rows; i++) {
-			for (unsigned int j = 0; j < m_cols; j++) {
+		for (unsigned int i = 0; i < m_cols; i++) {
+			for (unsigned int j = 0; j < m_rows; j++) {
 				m_button.UpdatePosition(m_x, m_y);
 				if (m_button.Hover()) {
-					return std::make_pair(i, j);
+					return { (int)i, (int)j };
 				}
 
-				m_x += m_block_width;
+				m_y += m_block_height;
 			}
-			m_y += m_block_height;
-			m_x = m_start_x;
+			m_x += m_block_width;
+			m_y = m_start_y;
 		}
-		return std::make_pair(-1, -1);
+		return { -1, -1 };
 	}
 
-	std::pair<int, int> Grid::Click(int id) {
+	EmberIVec2 Grid::Click(int id) {
 		m_x = m_start_x;
 		m_y = m_start_y;
 
-		for (unsigned int i = 0; i < m_rows; i++) {
-			for (unsigned int j = 0; j < m_cols; j++) {
+		for (unsigned int i = 0; i < m_cols; i++) {
+			for (unsigned int j = 0; j < m_rows; j++) {
 				m_button.UpdatePosition(m_x, m_y);
 				if (m_button.Click(id)) {
-					return std::make_pair(i, j);
+					return { (int) i, (int) j };
 				}
-				m_x += m_block_width;
+				m_y += m_block_height;
 			}
-			m_y += m_block_height;
-			m_x = m_start_x;
+			m_x += m_block_width;
+			m_y = m_start_y;
 		}
-		return std::make_pair(-1, -1);
+		return { -1, -1 };
+	}
+
+	TileMap::TileMap(EmberScreen* screen, int x, int y, unsigned int col, unsigned int row, int width_size, int height_size) 
+		: Grid(screen, x, y, col, row, width_size, height_size) {
+
 	}
 
 	SpriteSheet::SpriteSheet(EmberScreen* screen, char const* file_path, int row, int column) {
@@ -783,7 +851,7 @@ namespace ember {
 		m_clip.y = y * m_clip.h;
 	}
 
-	void SpriteSheet::DrawSelectedSprite(SDL_Rect position) {
+	void SpriteSheet::DrawSelectedSprite(SDL_Rect& position) {
 		SDL_RenderCopy(m_screen->Properties()->renderer, m_sheet, &m_clip, &position);
 	}
 
@@ -877,10 +945,13 @@ namespace ember {
 		return (std::sqrt((this->x * this->x) + (this->y * this->y)));
 	}
 
-	void EmberVec2::Normalize() {
+	EmberVec2 EmberVec2::Normalize() {
+		EmberVec2 return_vec2 = { this->x, this->y };
 		float m = Magnitude();
-		this->x /= m;
-		this->y /= m;
+		return_vec2.x /= m;
+		return_vec2.y /= m;
+
+		return return_vec2;
 	}
 
 	float EmberVec2::DotProduct(EmberVec2& vec2) {
@@ -976,26 +1047,6 @@ namespace ember {
 
 	void CloseRender(EmberScreen* screen)  {
 		SDL_RenderPresent(screen->Properties()->renderer);
-	}
-
-	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y) {
-		screen_x = (int)(f_world_x - off_set_x);
-		screen_y = (int)(f_world_y - off_set_y);
-	}
-
-	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y) {
-		f_world_x = (float)(screen_x + off_set_x);
-		f_world_y = (float)(screen_y + off_set_y);
-	}
-
-	void WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y, float off_set_x, float off_set_y, float scale_x, float scale_y) {
-		screen_x = (int)((f_world_x - off_set_x) * scale_x);
-		screen_y = (int)((f_world_y - off_set_y) * scale_y);
-	}
-
-	void ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y, float off_set_x, float off_set_y, float scale_x, float scale_y) {
-		f_world_x = (float)((screen_x / scale_y ) + off_set_x);
-		f_world_y = (float)((screen_y / scale_y ) + off_set_y);
 	}
 
 	Component::Component() {
@@ -1112,5 +1163,268 @@ namespace ember {
 
 	void SpriteComponent::ChangeSpriteClipping(int x, int y, int w, int h) {
 		m_clipping = { x, y, w, h };
+	}
+
+	Camera::Camera(EmberScreen* screen)
+		:m_screen(screen), m_offset_x(0.0f), m_offset_y(0.0f), m_scale_x(1.0f), m_scale_y(1.0f), m_down_flag(true),
+		 m_pan_x(0.0f), m_pan_y(0.0f) {
+	}
+
+	Camera::Camera(EmberScreen* screen, float offset_x, float offset_y)
+		:m_screen(screen), m_offset_x(offset_x), m_offset_y(offset_y), m_scale_x(1.0f), m_scale_y(1.0f), m_down_flag(true),
+		 m_pan_x(offset_x), m_pan_y(offset_y) {
+	}
+
+	void Camera::Pan(int button_click) {
+		if (m_screen->Events()->mouse.down && m_down_flag && m_screen->Events()->mouse.id == button_click) {
+			m_pan_x = (float) m_screen->Events()->mouse.x;
+			m_pan_y = (float)m_screen->Events()->mouse.y;
+			m_down_flag = false;
+		}
+		else if (m_screen->Events()->mouse.up) {
+			m_down_flag = true;
+		}
+
+		if (m_screen->Events()->mouse.down && m_screen->Events()->mouse.id == button_click) {
+			m_offset_x -= ((float) m_screen->Events()->mouse.x - m_pan_x) / m_scale_x;
+			m_offset_y -= ((float) m_screen->Events()->mouse.y - m_pan_y) / m_scale_y;
+
+			m_pan_x = (float) m_screen->Events()->mouse.x;
+			m_pan_y = (float) m_screen->Events()->mouse.y;
+		}
+	} 
+	void Camera::Scale(float scale_x, float scale_y) {
+		m_scale_x = scale_x;
+		m_scale_y = scale_y;
+	}
+
+	void Camera::MoveCameraOffset(float offset_x, float offset_y) {
+		m_offset_x = -offset_x;
+		m_offset_y = -offset_y;  
+	}
+
+	void Camera::WorldToScreen(float f_world_x, float f_world_y, int& screen_x, int& screen_y) {
+		screen_x = (int)((f_world_x - m_offset_x) * m_scale_x);
+		screen_y = (int)((f_world_y - m_offset_y) * m_scale_y);
+	}
+
+	void Camera::ScreenToWorld(int screen_x, int screen_y, float& f_world_x, float& f_world_y) {
+		f_world_x = (float)((screen_x / m_scale_y) + m_offset_x);
+		f_world_y = (float)((screen_y / m_scale_y) + m_offset_y);
+	}
+
+	void Camera::RenderBoundry() {
+		VerticalLine(m_screen->Properties()->renderer, m_offset_y, (float) m_screen->Properties()->height, m_offset_x , 255, 255, 255);
+		HorizontalLine(m_screen->Properties()->renderer, m_offset_x, (float)m_screen->Properties()->width, m_offset_y, 255, 255, 255);
+	}
+
+	CameraComponent::CameraComponent(Camera* camera) 
+		: m_camera(camera), m_position(nullptr) {
+	}
+	
+	CameraComponent::~CameraComponent() {
+
+	}
+
+	void CameraComponent::Init() {
+		m_position = &m_parent_entity->GetComponent<PositionComponent>();
+	}
+
+	void CameraComponent::Update() {
+		int screen_x, screen_y;
+		m_camera->WorldToScreen(m_position->Position().x, m_position->Position().y, screen_x, screen_y);
+		m_position->ChangePosition((float)screen_x, (float)screen_y);
+	}
+
+	void CameraComponent::Render() {
+
+	}
+
+	void Shadow(SDL_Renderer* renderer, SDL_Rect& position, int depth, SDL_Color start_color, int color_change)
+	{
+		if ((depth - 1) * color_change + start_color.a > 0) {
+			ember::RectangleFill(renderer, position.x, position.y, position.w, position.h, start_color.r, start_color.g, start_color.b, start_color.a);
+			for (int i = 0; i < depth; i++) {
+				ember::RectangleFill(renderer, position.x, position.y + position.h + i, position.w, 1, start_color.r, start_color.g, start_color.b, start_color.a - (i * color_change));
+			}
+		}
+	}
+
+	void Curve(SDL_Renderer* renderer, int x[], int y[], SDL_Color color) {
+		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
+			float px = ((1 - t) * (1 - t)) * x[0] + 2 * (1 - t) * t * x[1] + (t * t) * x[2];
+			float py = ((1 - t) * (1 - t)) * y[0] + 2 * (1 - t) * t * y[1] + (t * t) * y[2];
+			ember::Pixel(renderer, px, py, color.r, color.g, color.b, color.a);
+		}
+	}
+
+	void AdvCurve(SDL_Renderer* renderer, int x[], int y[], SDL_Color color) {
+		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
+			float px = ((1 - t) * (1 - t) * (1 - t)) * x[0] + 3 * ((1 - t) * (1 - t)) * t * x[1] + 3 * (1 - t) * (t * t) * x[2] + (t * t * t) * x[3];
+			float py = ((1 - t) * (1 - t) * (1 - t)) * y[0] + 3 * ((1 - t) * (1 - t)) * t * y[1] + 3 * (1 - t) * (t * t) * y[2] + (t * t * t) * y[3];
+			ember::Pixel(renderer, px, py, color.r, color.g, color.b, color.a);
+		}
+	}
+
+	bool PointToCircle(EmberIVec2& point, Circle& circle) {
+		int dx = (int) abs(point.x - circle.x);
+		int dy = (int) abs(point.y - circle.y);
+
+		if (dx > circle.radius || dy > circle.radius) {
+			return false;
+		}
+
+		if (dx + dy <= circle.radius) {
+			return true;
+		}
+
+		if (dx * dx + dy * dy <= circle.radius * circle.radius) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	bool PointToCircle(EmberVec2& point, CircleF& circle) {
+		float dx = (float)abs(point.x - circle.x);
+		float dy = (float)abs(point.y - circle.y);
+
+		if (dx > circle.radius || dy > circle.radius) {
+			return false;
+		}
+
+		if (dx + dy <= circle.radius) {
+			return true;
+		}
+
+		if (dx * dx + dy * dy <= circle.radius * circle.radius) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	EmberButton::EmberButton(EmberScreen* screen, EmberIVec2& position, const char* file_path, int size)
+		: m_font(screen, file_path, " ", size, { 0, 0, 0 }, position.x, position.y), Button(screen, position.x, position.y, 0, 0), m_in(false),
+		  m_border(false), m_is_using_in(false), m_main(true), m_max_sizes(-1, -1), m_click(false) {
+		m_font.UnlockFont();
+		ThemeInit();
+	}
+
+	EmberButton::EmberButton(EmberScreen* screen, EmberIVec2& position, const char* file_path, EmberButtonTheme& theme, int size)
+		: m_font(screen, file_path, " ", size, { 0, 0, 0 }, position.x, position.y), Button(screen, position.x, position.y, 0, 0), m_in(false),
+	      m_border(false), m_is_using_in(false), m_main(true), m_max_sizes(-1, -1), m_click(false) {
+		m_font.UnlockFont();
+		m_theme = theme;
+	}
+
+	EmberButton::~EmberButton() {
+		m_font.CleanUp();
+	}
+
+	void EmberButton::Render(const char* text, int id, int w_gap, int h_gap, int w_gap_s, int h_gap_s) {
+		bool hover = Hover();
+		bool click = Click(id);
+
+		if (click && !m_in) {
+			m_in = true;
+		}
+		else if (click && m_in) {
+			m_in = false;
+		}
+
+		int w, h;
+		m_font.GetSize(&w, &h, text);
+		m_font.SetPosition(m_position.x + w_gap, m_position.y + h_gap);
+		if (m_max_sizes.x != -1 && m_max_sizes.y != -1) {
+			UpdateSize(m_max_sizes.x, m_max_sizes.y);
+		} else if (m_max_sizes.x != -1) {
+			UpdateSize(m_max_sizes.x, h + h_gap_s * 2);
+		} else if (m_max_sizes.y != -1) {
+			UpdateSize(w + w_gap_s * 2, m_max_sizes.y);
+		} else if (w_gap_s == -1 && h_gap_s == -1) {
+			UpdateSize(w + w_gap * 2, h + h_gap * 2);
+		} else {
+			UpdateSize(w + w_gap_s * 2, h + h_gap_s * 2);
+		}
+
+		if (hover) {
+			if (m_main) {
+				ember::RectangleFill(m_screen->Properties()->renderer, m_position.x, m_position.y, m_position.w, m_position.h,
+					m_theme.main_hover_color.r, m_theme.main_hover_color.g, m_theme.main_hover_color.b);
+			}
+			if (m_border) {
+				ember::RectangleBorder(m_screen->Properties()->renderer, m_position.x - 1, m_position.y - 1, m_position.w + 2, m_position.h + 2,
+					m_theme.border_hover_color.r, m_theme.border_hover_color.g, m_theme.border_hover_color.b);
+			}
+			m_font.ChangeFont(text, m_theme.font_hover_color);
+		} 
+		if (!hover && !click) {
+			if (m_main) {
+				ember::RectangleFill(m_screen->Properties()->renderer, m_position.x, m_position.y, m_position.w, m_position.h,
+					m_theme.main_color.r, m_theme.main_color.g, m_theme.main_color.b);
+			}
+			if (m_border) {
+				ember::RectangleBorder(m_screen->Properties()->renderer, m_position.x - 1, m_position.y - 1, m_position.w + 2, m_position.h + 2,
+					m_theme.border_color.r, m_theme.border_color.g, m_theme.border_color.b);
+			}
+			m_font.ChangeFont(text, m_theme.font_color);
+		}
+		else if (click && m_click) {
+			if (m_main) {
+				ember::RectangleFill(m_screen->Properties()->renderer, m_position.x, m_position.y, m_position.w, m_position.h,
+					m_theme.main_click_color.r, m_theme.main_click_color.g, m_theme.main_click_color.b);
+			}
+			if (m_border) {
+				ember::RectangleBorder(m_screen->Properties()->renderer, m_position.x - 1, m_position.y - 1, m_position.w + 2, m_position.h + 2,
+					m_theme.border_click_color.r, m_theme.border_click_color.g, m_theme.border_click_color.b);
+			}
+			m_font.ChangeFont(text, m_theme.font_click_color);
+		}
+		if (m_in && m_is_using_in) {
+			if (m_main) {
+				ember::RectangleFill(m_screen->Properties()->renderer, m_position.x, m_position.y, m_position.w, m_position.h,
+					m_theme.main_click_color.r, m_theme.main_click_color.g, m_theme.main_click_color.b);
+			}
+			if (m_border) {
+				ember::RectangleBorder(m_screen->Properties()->renderer, m_position.x - 1, m_position.y - 1, m_position.w + 2, m_position.h + 2,
+					m_theme.border_click_color.r, m_theme.border_click_color.g, m_theme.border_click_color.b);
+			}
+			m_font.ChangeFont(text, m_theme.font_click_color);
+		}
+		m_font.Render();
+	}
+
+	void EmberButton::HoverColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c) {
+		m_theme.main_hover_color = main_c;
+		m_theme.border_hover_color = border_c;
+		m_theme.font_click_color = font_c;
+	}
+
+	void EmberButton::MainColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c) {
+		m_theme.main_color = main_c;
+		m_theme.border_color = border_c;
+		m_theme.font_color = font_c;
+	}
+
+	void EmberButton::ClickColor(SDL_Color border_c, SDL_Color main_c, SDL_Color font_c) {
+		m_theme.main_click_color = main_c;
+		m_theme.border_click_color = border_c;
+		m_theme.font_click_color = font_c;
+	}
+
+	void EmberButton::ThemeInit() {
+		m_theme.main_color = { 130, 130, 130 };
+		m_theme.border_color = { 81, 81, 81 };
+		m_theme.font_color = { 199, 199, 199 };
+
+		m_theme.main_hover_color = m_theme.main_color;
+		m_theme.border_hover_color = { 15, 155, 255 };
+		m_theme.font_hover_color = m_theme.font_color;
+		
+		m_theme.main_click_color = { 100, 100, 100 };
+		m_theme.border_click_color = { 50, 50, 50 };
+		m_theme.font_click_color = m_theme.font_color;
 	}
 }
