@@ -441,11 +441,16 @@ SDL_FORCE_INLINE void SDL_memset4(void *dst, Uint32 val, size_t dwords)
         return;
     switch (dwords % 4)
     {
-        case 0: do {    *_p++ = _val;   /* fallthrough */
-        case 3:         *_p++ = _val;   /* fallthrough */
-        case 2:         *_p++ = _val;   /* fallthrough */
-        case 1:         *_p++ = _val;   /* fallthrough */
+    case 0: do {
+        *_p++ = _val;  
+        case 3:         *_p++ = _val;   
+            break;/* fallthrough */
+        case 2:         *_p++ = _val;   
+            break;/* fallthrough */
+        case 1:         *_p++ = _val;   
+            break;/* fallthrough */
         } while ( --_n );
+        break;
     }
 #endif
 }

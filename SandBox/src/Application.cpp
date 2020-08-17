@@ -13,6 +13,9 @@ ember::EmberRect otherRect = { {300, 300, 100, 200}, {0, 0} };
 ember::Entity entity(&application);
 ember::Camera camera(&application, 0.0f, 0.0f);
 
+
+ember::File file("test.txt");
+
 void Collision() {
 	ember::EmberVec2 mouse = { (float)application.Events()->mouse.x, (float)application.Events()->mouse.y };
 	ember::EmberVec2 cp, cn;
