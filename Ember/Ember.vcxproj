@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ember\Core\AssetInitializers.h" />
+    <ClInclude Include="src\Ember\Core\AssetLoaders\Assets.h" />
     <ClInclude Include="src\Ember\Core\EventHandler.h" />
     <ClInclude Include="src\Ember\EditorLayer\Button\Button.h" />
     <ClInclude Include="src\Ember\EditorLayer\Editor.h" />
@@ -42,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Core\AssetInitializers.cpp" />
+    <ClCompile Include="src\Ember\Core\AssetLoaders\Assets.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
     <ClCompile Include="src\Ember\EditorLayer\Button\Button.cpp" />
     <ClCompile Include="src\Ember\EditorLayer\Editor.cpp" />

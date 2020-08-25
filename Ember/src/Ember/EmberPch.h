@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <unordered_map>
 
 #include <SDL.h>

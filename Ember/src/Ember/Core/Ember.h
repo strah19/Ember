@@ -3,6 +3,7 @@
 
 #include "Core/EventHandler.h"
 #include "Core/AssetInitializers.h"
+#include "Core/AssetLoaders/Assets.h"
 
 #include "Event/KeyboardEvents.h"
 #include "Event/WindowEvents.h"

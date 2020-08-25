@@ -7,6 +7,11 @@ namespace ember {
 	bool InitializeSoundLoader();
 
 	bool InitializeAssets();
+
+	void AssetCleanUp();
+
+	SDL_DisplayMode GetDisplay();
+	void CheckVersion();
 }
 
 #endif // !ASSET_INITIALIZERS_H
