@@ -1,16 +1,14 @@
 #ifndef SDL_RENDERER_H
 #define SDL_RENDERER_H
 
-#include "../Renderer2D.h"
-#include "../../Platform/Window.h"
-
-#include <SDL.h>
+#include "../Platform/Window.h"
+#include "../Structures/Color.h"
 
 namespace ember {
-    class SDLRenderer : public Renderer2D {
+    class Renderer2D {
     public:
-        SDLRenderer(Window* window);
-        virtual ~SDLRenderer();
+        Renderer2D(Window* window);
+        virtual ~Renderer2D();
 
         virtual SDL_Renderer* Renderer();
         virtual bool Initializer();

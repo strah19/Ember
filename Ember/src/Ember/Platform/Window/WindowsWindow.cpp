@@ -1,6 +1,8 @@
+#include "EmberPch.h"
 #include "WindowsWindow.h"
 
 namespace ember {
+#ifdef EMBER_WINDOW_PLATFORM
 	WindowsWindow::WindowsWindow(WindowProperties* properties) 
 		: is_running(false), native_window(nullptr) {
 		is_running = Initializer(properties);
@@ -65,4 +67,5 @@ namespace ember {
 			position->y = SDL_WINDOWPOS_CENTERED;
 		}
 	}
+#endif // EMBER_WINDOWS_PLATFORM
 }

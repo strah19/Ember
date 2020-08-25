@@ -2,10 +2,11 @@
 #define WINDOWS_WINDOW_H
 
 #include "../Window.h"
-
 #include <SDL.h>
+#include "../../PlatformDetection.h"
 
 namespace ember {
+#ifdef EMBER_WINDOW_PLATFORM
 	class WindowsWindow : public Window {
 	public:
 		WindowsWindow(WindowProperties* properties);
@@ -14,7 +15,7 @@ namespace ember {
 		virtual int GetWidth() const override { return properties->width; }
 		virtual int GetHeight() const override { return properties->height; }
 
-		virtual void* GetNativeWindow() const override { return native_window; }
+		virtual SDL_Window* GetNativeWindow() const override { return native_window; }
 
 		virtual bool IsRunning() const override { return is_running; }
 		void Quit() { is_running = false; }
@@ -36,6 +37,7 @@ namespace ember {
 		bool AssertSize(uint32_t width, uint32_t height);
 		void CalculatePosition(IVec2* position);
 	};
+#endif // EMBER_WINDOW_PLATFORM
 }
 
 #endif // !WINDOWS_WINDOW_H

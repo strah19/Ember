@@ -30,9 +30,6 @@
     <ClInclude Include="src\Ember\Event\WindowEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Renderer\Renderer2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Structures\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,16 +42,28 @@
     <ClInclude Include="src\Ember\Platform\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Renderer\SDL2\SDLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Ember.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Platform\Window\WindowAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Testing\Performance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Structures\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Renderer\2DRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\AssetInitializers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Ember.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\EmberPch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\PlatformDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,10 +77,19 @@
     <ClCompile Include="src\Ember\Platform\Window\WindowsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Renderer\SDL2\SDLRenderer.cpp">
+    <ClCompile Include="src\Ember\Platform\Window\WindowsAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Platform\Window\WindowsAPI.cpp">
+    <ClCompile Include="src\Ember\Renderer\2DRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Structures\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\AssetInitializers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\EmberPch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

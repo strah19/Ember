@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ember\Core\AssetInitializers.h" />
     <ClInclude Include="src\Ember\Core\EventHandler.h" />
+    <ClInclude Include="src\Ember\EmberPch.h" />
+    <ClInclude Include="src\Ember\PlatformDetection.h" />
+    <ClInclude Include="src\Ember\Structures\Texture.h" />
     <ClInclude Include="src\Ember\Testing\Performance.h" />
-    <ClInclude Include="src\Ember\Ember.h" />
+    <ClInclude Include="src\Ember\Core\Ember.h" />
     <ClInclude Include="src\Ember\Event\Event.h" />
     <ClInclude Include="src\Ember\Event\KeyboardEvents.h" />
     <ClInclude Include="src\Ember\Event\MouseEvents.h" />
@@ -29,16 +33,21 @@
     <ClInclude Include="src\Ember\Platform\Window.h" />
     <ClInclude Include="src\Ember\Platform\Window\WindowAPI.h" />
     <ClInclude Include="src\Ember\Platform\Window\WindowsWindow.h" />
-    <ClInclude Include="src\Ember\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Ember\Renderer\SDL2\SDLRenderer.h" />
+    <ClInclude Include="src\Ember\Renderer\2DRenderer.h" />
     <ClInclude Include="src\Ember\Structures\Color.h" />
     <ClInclude Include="src\Ember\Structures\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ember\Core\AssetInitializers.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\EmberPch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Ember\Platform\Window\WindowsAPI.cpp" />
     <ClCompile Include="src\Ember\Platform\Window\WindowsWindow.cpp" />
-    <ClCompile Include="src\Ember\Renderer\SDL2\SDLRenderer.cpp" />
+    <ClCompile Include="src\Ember\Renderer\2DRenderer.cpp" />
+    <ClCompile Include="src\Ember\Structures\Texture.cpp" />
     <ClCompile Include="src\Ember\Structures\Vec2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -111,7 +120,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Ember\src\Ember;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EmberPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -144,7 +153,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Ember\src\Ember;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EmberPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

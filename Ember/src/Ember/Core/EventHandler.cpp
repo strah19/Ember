@@ -1,5 +1,5 @@
+#include "EmberPch.h"
 #include "EventHandler.h"
-#include <memory>
 
 namespace ember {
 	EventHandler::EventHandler(Window* window)	
@@ -66,9 +66,9 @@ namespace ember {
 
 	bool EventHandler::Resize() {
 		return dispatchers[GetEventType<ResizeEvent>()].Dispatch<ResizeEvent>([&](ResizeEvent& resize_event) {
-			SDL_SetWindowResizable(static_cast<SDL_Window*>(window->GetNativeWindow()), SDL_TRUE);
+			SDL_SetWindowResizable((window->GetNativeWindow()), SDL_TRUE);
 			int w, h;
-			SDL_GetWindowSize(static_cast<SDL_Window*>(window->GetNativeWindow()), &w, &h);
+			SDL_GetWindowSize((window->GetNativeWindow()), &w, &h);
 			window->Properties()->width = w;
 			window->Properties()->height = h;
 

@@ -5,8 +5,6 @@
 #include "Event/WindowEvents.h"
 #include "Event/KeyboardEvents.h"
 #include "Platform/Window/WindowsWindow.h"
-#include <vector>
-#include <unordered_map>
 
 namespace ember {
 	using EventType = std::size_t;
@@ -43,7 +41,7 @@ namespace ember {
 
 		std::vector<EventDispatcher> dispatchers;
 		std::vector<Event*> events;
-
+		
 		bool is_resize_active;
 
 		void InitializeEvents();
