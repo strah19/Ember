@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ember\Core\EventHandler.h" />
-    <ClInclude Include="src\Ember\Debug\Performance.h" />
+    <ClInclude Include="src\Ember\Testing\Performance.h" />
     <ClInclude Include="src\Ember\Ember.h" />
     <ClInclude Include="src\Ember\Event\Event.h" />
     <ClInclude Include="src\Ember\Event\KeyboardEvents.h" />
