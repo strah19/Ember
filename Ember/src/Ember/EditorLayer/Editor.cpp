@@ -2,7 +2,6 @@
 #include "Editor.h"
 
 namespace ember {
-
 	ScaleableObject::ScaleableObject(const Rect& position, int* viewport_width, int* viewport_height)
 		: start_position(position), percantages({ 0, 0, 0, 0 }), width(viewport_width), height(viewport_height) {
 		CalculatePercentages();
