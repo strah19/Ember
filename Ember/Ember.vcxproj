@@ -19,10 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ember.h" />
+    <ClInclude Include="src\Ember\Core\EventHandler.h" />
+    <ClInclude Include="src\Ember\Debug\Performance.h" />
+    <ClInclude Include="src\Ember\Ember.h" />
+    <ClInclude Include="src\Ember\Event\Event.h" />
+    <ClInclude Include="src\Ember\Event\KeyboardEvents.h" />
+    <ClInclude Include="src\Ember\Event\MouseEvents.h" />
+    <ClInclude Include="src\Ember\Event\WindowEvents.h" />
+    <ClInclude Include="src\Ember\Platform\Window.h" />
+    <ClInclude Include="src\Ember\Platform\Window\WindowAPI.h" />
+    <ClInclude Include="src\Ember\Platform\Window\WindowsWindow.h" />
+    <ClInclude Include="src\Ember\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\Ember\Renderer\SDL2\SDLRenderer.h" />
+    <ClInclude Include="src\Ember\Structures\Color.h" />
+    <ClInclude Include="src\Ember\Structures\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ember.cpp" />
+    <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\Platform\Window\WindowsAPI.cpp" />
+    <ClCompile Include="src\Ember\Platform\Window\WindowsWindow.cpp" />
+    <ClCompile Include="src\Ember\Renderer\SDL2\SDLRenderer.cpp" />
+    <ClCompile Include="src\Ember\Structures\Vec2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -93,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Ember\src\Ember;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>EmberPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -126,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Ember\src\Ember;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>EmberPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
