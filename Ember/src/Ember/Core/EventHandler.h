@@ -27,6 +27,11 @@ namespace ember {
 		void Update();
 		bool KeyPressed() { return static_cast<KeyboardEvents*>(dispatchers[GetEventType<KeyboardEvents>()].GetEvent())->pressed; }
 		std::string PressedKey() { return static_cast<KeyboardEvents*>(dispatchers[GetEventType<KeyboardEvents>()].GetEvent())->name; }
+		IVec2 MousePosition() { return static_cast<MouseButtonEvents*>(dispatchers[GetEventType<MouseButtonEvents>()].GetEvent())->position; }
+		bool Down() { return static_cast<MouseButtonEvents*>(dispatchers[GetEventType<MouseButtonEvents>()].GetEvent())->down; }
+		int ButtonId() { return static_cast<MouseButtonEvents*>(dispatchers[GetEventType<MouseButtonEvents>()].GetEvent())->button_id; }
+		int ButtonClicks() { return static_cast<MouseButtonEvents*>(dispatchers[GetEventType<MouseButtonEvents>()].GetEvent())->clicks; }
+
 		void ResizeWin() { is_resize_active = true; }
 
 		template <typename T>
@@ -49,6 +54,7 @@ namespace ember {
 		bool WinEvents();
 		bool KeyEvents();
 		bool Resize();
+		bool Mouse();
 	};
 }
 

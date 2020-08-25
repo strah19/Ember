@@ -21,6 +21,7 @@ namespace ember {
 		while (SDL_PollEvent(&native_event_handler)) {
 			KeyEvents();
 			WinEvents();
+			Mouse();
 
 			if(is_resize_active)
 				Resize();
@@ -64,6 +65,25 @@ namespace ember {
 		});
 	}
 
+	bool EventHandler::Mouse() {
+		return dispatchers[GetEventType<MouseButtonEvents>()].Dispatch<MouseButtonEvents>([&](MouseButtonEvents& mouse_event) {
+			if (native_event_handler.type == SDL_MOUSEBUTTONDOWN) {
+				mouse_event.down = true;
+				mouse_event.button_id = native_event_handler.button.button;
+				mouse_event.clicks = native_event_handler.button.clicks;
+				return true;
+			}
+			else if (native_event_handler.type == SDL_MOUSEBUTTONUP) {
+				mouse_event.down = false;
+				return true;
+			}
+
+			mouse_event.position = { native_event_handler.button.x, native_event_handler.button.y };
+
+			return false;
+		});
+	}
+
 	bool EventHandler::Resize() {
 		return dispatchers[GetEventType<ResizeEvent>()].Dispatch<ResizeEvent>([&](ResizeEvent& resize_event) {
 			SDL_SetWindowResizable((window->GetNativeWindow()), SDL_TRUE);
@@ -80,5 +100,6 @@ namespace ember {
 		AddEvent<WindowEvents>("Window");
 		AddEvent<ResizeEvent>("Resize");
 		AddEvent<KeyboardEvents>("Keyboard");
+		AddEvent<MouseButtonEvents>("Mouse");
 	}
 }

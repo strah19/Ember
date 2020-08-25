@@ -17,4 +17,7 @@
 #include "Structures/Vec2.h"
 #include "Structures/Texture.h"
 
+#include "EditorLayer/Editor.h"
+#include "EditorLayer/Button/Button.h"
+
 #endif // !EMBER_H

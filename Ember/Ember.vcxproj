@@ -21,8 +21,11 @@
   <ItemGroup>
     <ClInclude Include="src\Ember\Core\AssetInitializers.h" />
     <ClInclude Include="src\Ember\Core\EventHandler.h" />
+    <ClInclude Include="src\Ember\EditorLayer\Button\Button.h" />
+    <ClInclude Include="src\Ember\EditorLayer\Editor.h" />
     <ClInclude Include="src\Ember\EmberPch.h" />
     <ClInclude Include="src\Ember\PlatformDetection.h" />
+    <ClInclude Include="src\Ember\Structures\Rect.h" />
     <ClInclude Include="src\Ember\Structures\Texture.h" />
     <ClInclude Include="src\Ember\Testing\Performance.h" />
     <ClInclude Include="src\Ember\Core\Ember.h" />
@@ -40,6 +43,8 @@
   <ItemGroup>
     <ClCompile Include="src\Ember\Core\AssetInitializers.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\EditorLayer\Button\Button.cpp" />
+    <ClCompile Include="src\Ember\EditorLayer\Editor.cpp" />
     <ClCompile Include="src\Ember\EmberPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
