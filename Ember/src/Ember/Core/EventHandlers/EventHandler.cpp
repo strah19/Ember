@@ -10,13 +10,6 @@ namespace ember {
 		InitializeEvents();
 	}
 
-	EventHandler::~EventHandler() {
-		size_t size = events.size();
-		for (size_t i = 0; i < events.size(); i++) {
-			delete events[i];
-		}
-	}
-
 	void EventHandler::Update()	{
 		while (SDL_PollEvent(&native_event_handler)) {
 			KeyEvents();
@@ -97,9 +90,16 @@ namespace ember {
 	}
 
 	void EventHandler::InitializeEvents() {
-		AddEvent<WindowEvents>("Window");
-		AddEvent<ResizeEvent>("Resize");
-		AddEvent<KeyboardEvents>("Keyboard");
-		AddEvent<MouseButtonEvents>("Mouse");
+		GetEventType<MouseButtonEvents>();
+		dispatchers.push_back(EventDispatcher(&events.mouse));		
+
+		GetEventType<KeyboardEvents>();
+		dispatchers.push_back(EventDispatcher(&events.keyboard));
+
+		GetEventType<WindowEvents>();
+		dispatchers.push_back(EventDispatcher(&events.window));
+
+		GetEventType<ResizeEvent>();
+		dispatchers.push_back(EventDispatcher(&events.resize));
 	}
 }

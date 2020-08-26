@@ -17,7 +17,7 @@ namespace ember {
 
 		bool Handled;
 
-		virtual std::string GetName() const = 0;
+		virtual std::string GetName() const { return ""; }
 	protected:
 		bool active;
 		std::string name;

@@ -4,6 +4,7 @@
 #include "../Renderer/2DRenderer.h"
 #include "Vec2.h"
 #include "Color.h"
+#include "Rect.h"
 
 namespace ember {
 	class Texture {
@@ -11,10 +12,10 @@ namespace ember {
 		Texture(const char* file_path, Renderer2D* renderer);
 		~Texture();
 
-		void Draw(const SDL_FRect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
-		void Draw(const SDL_FRect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0.0f);
-		void Draw(const SDL_Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
-		void Draw(const SDL_Rect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0.0f);
+		void Draw(const FRect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
+		void Draw(const FRect& dest, const Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0.0f);
+		void Draw(const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
+		void Draw(const Rect& dest, const Rect& src, const SDL_RendererFlip& flip = SDL_FLIP_NONE, float angle = 0.0f);
 
 		static SDL_Texture* LoadTexture(SDL_Renderer* renderer, const char* file_path);
 		static SDL_Surface* LoadSurface(const char* file_path);

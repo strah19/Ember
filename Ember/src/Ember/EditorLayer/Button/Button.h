@@ -3,13 +3,14 @@
 
 #include "../../Renderer/2DRenderer.h"
 #include "../../Structures/Rect.h"
-#include "../../Core/EventHandler.h"
+#include "../../Core/EventHandlers/EventHandler.h"
+#include "../../Core//EventHandlers/Input.h"
 
 namespace ember {
 	class Button {
 	public:
-		Button(EventHandler* events, Rect& button);
-		Button(EventHandler* events, int x, int y, int w, int h);
+		Button(Input* events, Rect& button);
+		Button(Input* events, int x, int y, int w, int h);
 		bool Hover();
 		bool Click(int id);
 		void UpdatePosition(int x, int y);
@@ -19,7 +20,7 @@ namespace ember {
 		inline Rect Position() { return position; }
 	protected:
 		Rect position;
-		EventHandler* events;
+		Input* events;
 		bool in;
 		bool clicked;
 	};

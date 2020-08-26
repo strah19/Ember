@@ -2,11 +2,11 @@
 #include "Button.h"
 
 namespace ember {
-	Button::Button(EventHandler* events, Rect& button)
+	Button::Button(Input* events, Rect& button)
 		: events(events), position(button), in(false), clicked(false) {
 	}
 
-	Button::Button(EventHandler* events, int x, int y, int w, int h)
+	Button::Button(Input* events, int x, int y, int w, int h)
 		: events(events), position({ x, y, w, h }), in(false), clicked(false) {
 	}
 

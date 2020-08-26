@@ -14,20 +14,20 @@ namespace ember {
 		DeleteTexture();
 	}
 
-	void Texture::Draw(const SDL_FRect& dest, float angle, const SDL_RendererFlip& flip) {
-		SDL_RenderCopyExF(renderer->Renderer(), texture, NULL, &dest, angle, NULL, flip);
+	void Texture::Draw(const FRect& dest, float angle, const SDL_RendererFlip& flip) {
+		SDL_RenderCopyExF(renderer->Renderer(), texture, NULL, &dest.rect, angle, NULL, flip);
 	}
 
-	void Texture::Draw(const SDL_FRect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip, float angle) {
-		SDL_RenderCopyExF(renderer->Renderer(), texture, &src, &dest, angle, NULL, flip);
+	void Texture::Draw(const FRect& dest, const Rect& src, const SDL_RendererFlip& flip, float angle) {
+		SDL_RenderCopyExF(renderer->Renderer(), texture, &src.rect, &dest.rect, angle, NULL, flip);
 	}
 
-	void Texture::Draw(const SDL_Rect& dest, float angle, const SDL_RendererFlip& flip) {
-		SDL_RenderCopyEx(renderer->Renderer(), texture, NULL, &dest, angle, NULL, flip);
+	void Texture::Draw(const Rect& dest, float angle, const SDL_RendererFlip& flip) {
+		SDL_RenderCopyEx(renderer->Renderer(), texture, NULL, &dest.rect, angle, NULL, flip);
 	}
 
-	void Texture::Draw(const SDL_Rect& dest, const SDL_Rect& src, const SDL_RendererFlip& flip, float angle) {
-		SDL_RenderCopyEx(renderer->Renderer(), texture, &src, &dest, angle, NULL, flip);
+	void Texture::Draw(const Rect& dest, const Rect& src, const SDL_RendererFlip& flip, float angle) {
+		SDL_RenderCopyEx(renderer->Renderer(), texture, &src.rect, &dest.rect, angle, NULL, flip);
 	}
 
 	SDL_Texture* Texture::LoadTexture(SDL_Renderer* renderer, const char* file_path) {
