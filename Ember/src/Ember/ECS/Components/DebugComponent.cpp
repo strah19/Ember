@@ -24,11 +24,9 @@ namespace ember {
 				py = input->MousePosition().y - position->Position().y;
 			}
 		}
-		else if (moving) {
+		else if (moving) 
 			position->ChangePosition(input->MousePosition().x - px, input->MousePosition().y - py);
-		}
-		if (!input->Down()) {
+		if (!input->Down()) 
 			moving = false;
-		}
 	}
 }
