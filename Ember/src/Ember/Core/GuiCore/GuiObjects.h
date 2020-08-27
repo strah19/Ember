@@ -1,13 +1,14 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include "../Structures/Vec2.h"
-#include "../Structures/Rect.h"
+#include "Structures/Vec2.h"
+#include "Structures/Rect.h"
 
 namespace ember {
 	class ScaleableObject {
 	public:
 		ScaleableObject(const Rect& position, int* viewport_width, int* viewport_height);
+		ScaleableObject();
 
 		Rect UpdatePosition();
 	private:

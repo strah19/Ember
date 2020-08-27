@@ -21,24 +21,25 @@
   <ItemGroup>
     <ClInclude Include="src\Ember\Animation\Animation.h" />
     <ClInclude Include="src\Ember\Animation\SpriteSheet.h" />
+    <ClInclude Include="src\Ember\Core\GuiCore\Button.h" />
     <ClInclude Include="src\Ember\Core\Camera.h" />
     <ClInclude Include="src\Ember\Core\AssetLoaders\AssetInitializers.h" />
     <ClInclude Include="src\Ember\Core\AssetLoaders\Assets.h" />
     <ClInclude Include="src\Ember\Core\Collision.h" />
+    <ClInclude Include="src\Ember\Core\GuiCore\GuiObjects.h" />
     <ClInclude Include="src\Ember\Core\EventHandlers\EventHandler.h" />
     <ClInclude Include="src\Ember\Core\EventHandlers\Input.h" />
+    <ClInclude Include="src\Ember\ECS\Components\DebugComponent.h" />
     <ClInclude Include="src\Ember\ECS\Components\PositionComponent.h" />
     <ClInclude Include="src\Ember\ECS\Components\SpriteComponent.h" />
     <ClInclude Include="src\Ember\ECS\Entity.h" />
-    <ClInclude Include="src\Ember\EditorLayer\Button\Button.h" />
-    <ClInclude Include="src\Ember\EditorLayer\Editor.h" />
     <ClInclude Include="src\Ember\EmberPch.h" />
     <ClInclude Include="src\Ember\PlatformDetection.h" />
     <ClInclude Include="src\Ember\Structures\Circle.h" />
     <ClInclude Include="src\Ember\Structures\FileManager.h" />
     <ClInclude Include="src\Ember\Structures\Rect.h" />
     <ClInclude Include="src\Ember\Structures\Texture.h" />
-    <ClInclude Include="src\Ember\Core\Testing\Performance.h" />
+    <ClInclude Include="src\Ember\Core\Debugger\Performance.h" />
     <ClInclude Include="src\Ember\Core\Ember.h" />
     <ClInclude Include="src\Ember\Event\Event.h" />
     <ClInclude Include="src\Ember\Event\KeyboardEvents.h" />
@@ -53,16 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Animation\SpriteSheet.cpp" />
+    <ClCompile Include="src\Ember\Core\GuiCore\Button.cpp" />
     <ClCompile Include="src\Ember\Core\Camera.cpp" />
     <ClCompile Include="src\Ember\Core\AssetLoaders\AssetInitializers.cpp" />
     <ClCompile Include="src\Ember\Core\AssetLoaders\Assets.cpp" />
     <ClCompile Include="src\Ember\Core\Collision.cpp" />
+    <ClCompile Include="src\Ember\Core\GuiCore\GuiObject.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandlers\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\ECS\Components\DebugComponent.cpp" />
     <ClCompile Include="src\Ember\ECS\Components\PositionComponent.cpp" />
     <ClCompile Include="src\Ember\ECS\Components\SpriteComponent.cpp" />
     <ClCompile Include="src\Ember\ECS\Entity.cpp" />
-    <ClCompile Include="src\Ember\EditorLayer\Button\Button.cpp" />
-    <ClCompile Include="src\Ember\EditorLayer\Editor.cpp" />
     <ClCompile Include="src\Ember\EmberPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -70,6 +72,7 @@
     <ClCompile Include="src\Ember\Platform\Window\WindowsAPI.cpp" />
     <ClCompile Include="src\Ember\Platform\Window\WindowsWindow.cpp" />
     <ClCompile Include="src\Ember\Renderer\2DRenderer.cpp" />
+    <ClCompile Include="src\Ember\Structures\FileManager.cpp" />
     <ClCompile Include="src\Ember\Structures\Texture.cpp" />
     <ClCompile Include="src\Ember\Structures\Vec2.cpp" />
   </ItemGroup>

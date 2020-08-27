@@ -12,8 +12,7 @@ namespace ember {
         virtual ~Renderer2D();
 
          SDL_Renderer* Renderer();
-        bool Initializer();
-        void Destroy();
+
 
         void SetViewport(int x, int y, int w, int h);
 
@@ -31,6 +30,9 @@ namespace ember {
     private:
         SDL_Renderer* renderer;
         Window* window;
+
+        bool Initializer();
+        void Destroy();
     };
 }
 

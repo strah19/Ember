@@ -6,6 +6,8 @@
 #include "Core/AssetLoaders/Assets.h"
 #include "Core/Camera.h"
 #include "Core/Collision.h"
+#include "Core/GuiCore/GuiObjects.h"
+#include "Core/GuiCore/Button.h"
 
 #include "Animation/SpriteSheet.h"
 
@@ -18,11 +20,9 @@
 #include "Structures/Texture.h"
 #include "Structures/FileManager.h"
 
-#include "EditorLayer/Editor.h"
-#include "EditorLayer/Button/Button.h"
-
 #include "ECS/Entity.h"
 #include "ECS/Components/PositionComponent.h"
 #include "ECS/Components/SpriteComponent.h"
+#include "ECS/Components/DebugComponent.h"
 
 #endif // !EMBER_H

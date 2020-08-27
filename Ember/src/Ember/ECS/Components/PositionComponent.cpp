@@ -2,11 +2,11 @@
 #include "PositionComponent.h"
 
 namespace ember {
-	PositionComponent::PositionComponent(float x, float y, float w, float h)
+	PositionComponent::PositionComponent(int x, int y, int w, int h)
 		: angle(0.0f), position({ x, y, w, h }) {
 	}
 
-	PositionComponent::PositionComponent(const FRect& position)
+	PositionComponent::PositionComponent(const Rect& position)
 		: angle(0.0f), position(position) {
 	}
 
@@ -15,22 +15,22 @@ namespace ember {
 	void PositionComponent::Update() { }
 	void PositionComponent::Render() { }
 
-	void PositionComponent::ChangePosition(float x, float y) {
+	void PositionComponent::ChangePosition(int x, int y) {
 		position.x = x;
 		position.y = y;
 	}
 
-	void PositionComponent::ChangeSize(float w, float h) {
+	void PositionComponent::ChangeSize(int w, int h) {
 		position.w = w;
 		position.h = h;
 	}
 
-	void PositionComponent::UpdatePosition(float dx, float dy) {
+	void PositionComponent::UpdatePosition(int dx, int dy) {
 		position.x += dx;
 		position.y += dy;
 	}
 
-	void PositionComponent::UpdateSize(float dw, float dh) {
+	void PositionComponent::UpdateSize(int dw, int dh) {
 		position.w += dw;
 		position.h += dh;
 	}

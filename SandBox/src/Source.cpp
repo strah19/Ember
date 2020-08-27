@@ -4,48 +4,41 @@ int main(int argc, char* argv[])
 {
 	ember::WindowProperties properties("App", 1000, 800);
 	ember::WindowsWindow window(&properties);
-
 	ember::Renderer2D renderer(&window);
 	ember::EventHandler events(&window);
-	ember::Camera camera;
+	ember::Input input(&events);
 
-	if (ember::InitializeAssets())
-		std::cout << "All Initialized\n";
-
-	ember::SetWindowIcon(window.GetNativeWindow(), "res/Dungeon_Tileset.png");
-	events.ResizeWin();
-	ember::Rect position = { 0, 0, 100, 100 };
-	ember::ScaleableObject panel(position, &properties.width, &properties.height);
-	ember::Input in(&events);
-
-	ember::Font f(&renderer, "res/Roboto-Medium.ttf", "SomeText", 32, { 0, 0, 0 }, 400, 0);
-	f.UnlockFont();
+	ember::InitializeAssets();
 
 	ember::Entity entity;
-	entity.AddComponent<ember::PositionComponent>(0, 0, 100, 100);
+	entity.AddComponent<ember::PositionComponent>(0, 0, 200, 200);
 	entity.AddComponent<ember::SpriteComponent>("res/Dungeon_Tileset.png", &renderer);
+	entity.AddComponent<ember::DebugComponent>(&input);
+	
+	ember::Camera camera(0.0f, 0.0f);
+
+	float d = 0.0f;
+	Uint32 l = 0;
 
 	while (window.IsRunning()) {  
+		d = (float)(SDL_GetTicks() - l);
+		l = SDL_GetTicks();
+
 		events.Update();
+		renderer.Clear({ 67, 120, 220 });
 
-		ember::Color background = { 67, 120, 220 };
-		renderer.Clear(background);
+		camera.Pan(input, 1);
 
-		//renderer.Rectangle(position, { 255, 0, 0, 255 });
-
-		camera.Pan(in, 1);
-
-		int x, y;
-		camera.WorldToScreen(0, 0, x, y);
-		//position.pos = { x, y };
-
-		entity.GetComponent<ember::PositionComponent>().ChangePosition((float) x, (float) y);
-
+		entity.Update();
 		entity.Render();
 
-		//f.Render();
+		int screen_x, screen_y;
+		camera.WorldToScreen(0, 0, screen_x, screen_y);
+		entity.GetComponent<ember::PositionComponent>().ChangePosition(screen_x, screen_y);
+
 		renderer.Show();
 	}
+
 
 	ember::AssetCleanUp();
 

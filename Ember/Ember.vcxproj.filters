@@ -60,12 +60,6 @@
     <ClInclude Include="src\Ember\Structures\Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\EditorLayer\Editor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\EditorLayer\Button\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Core\AssetLoaders\Assets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -79,9 +73,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Core\AssetLoaders\AssetInitializers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Testing\Performance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\ECS\Entity.h">
@@ -108,6 +99,18 @@
     <ClInclude Include="src\Ember\Structures\Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\ECS\Components\DebugComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Debugger\Performance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\GuiCore\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\GuiCore\GuiObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Structures\Vec2.cpp">
@@ -126,12 +129,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\EmberPch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\EditorLayer\Editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\EditorLayer\Button\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\AssetLoaders\Assets.cpp">
@@ -159,6 +156,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Structures\FileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\ECS\Components\DebugComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\GuiCore\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\GuiCore\GuiObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

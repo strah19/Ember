@@ -6,26 +6,26 @@
 namespace ember {
 	class PositionComponent : public Component {
 	public:
-		PositionComponent(float x, float y, float w, float h);
-		PositionComponent(const FRect& position);
+		PositionComponent(int x, int y, int w, int h);
+		PositionComponent(const Rect& position);
 		virtual ~PositionComponent();
 
 		void Init();
 		void Update();
 		void Render();
 
-		void ChangePosition(float x, float y);
-		void ChangeSize(float w, float h);
-		void UpdatePosition(float dx, float dy);
-		void UpdateSize(float dw, float dh);
+		void ChangePosition(int x, int y);
+		void ChangeSize(int w, int h);
+		void UpdatePosition(int dx, int dy);
+		void UpdateSize(int dw, int dh);
 		void Angle(float angle);
 
-		inline FRect Position() { return position; }
+		inline Rect Position() { return position; }
 		inline float GetAngle() { return angle; }
 
 		void Scale(int on_x, int on_y);
 	private:
-		FRect position;
+		Rect position;
 		float angle;
 	};
 }

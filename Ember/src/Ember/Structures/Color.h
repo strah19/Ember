@@ -8,7 +8,6 @@ namespace ember {
 		union {
 			struct {
 				Uint8 r, g, b, a;
-
 			};
 			struct {
 				SDL_Color color;
