@@ -10,12 +10,20 @@ int main(int argc, char* argv[])
 
 	ember::InitializeAssets();
 
-	ember::Entity entity;
-	entity.AddComponent<ember::PositionComponent>(0, 0, 200, 200);
-	entity.AddComponent<ember::SpriteComponent>("res/Dungeon_Tileset.png", &renderer);
-	entity.AddComponent<ember::DebugComponent>(&input);
-	
-	ember::Camera camera(0.0f, 0.0f);
+	ember::GridComponents gc;
+	ember::TileMapSerializer ser(gc, "tiles.txt");
+	ember::TileMapSerializer ser2(gc, "tiles2.txt");
+
+	std::vector<ember::TileInfo> texture_data = ser.ReadTextureInfo(gc.cols, gc.rows);
+	std::vector<ember::TileInfo> texture_data2 = ser2.ReadTextureInfo(gc.cols, gc.rows);
+
+	gc.start_x = 0;
+	gc.start_y = 0; 
+	ember::Texture t("res/Dungeon_Tileset.png", &renderer);
+	ember::SpriteSheet s(t, 10, 10);
+	ember::TileMap map(&renderer, &input, gc);
+	map.AddLayer(texture_data);
+	map.AddLayer(texture_data2);
 
 	float d = 0.0f;
 	Uint32 l = 0;
@@ -27,18 +35,10 @@ int main(int argc, char* argv[])
 		events.Update();
 		renderer.Clear({ 67, 120, 220 });
 
-		camera.Pan(input, 1);
-
-		entity.Update();
-		entity.Render();
-
-		int screen_x, screen_y;
-		camera.WorldToScreen(0, 0, screen_x, screen_y);
-		entity.GetComponent<ember::PositionComponent>().ChangePosition(screen_x, screen_y);
+		map.RenderTextures(s);
 
 		renderer.Show();
 	}
-
 
 	ember::AssetCleanUp();
 

@@ -51,6 +51,8 @@
     <ClInclude Include="src\Ember\Renderer\2DRenderer.h" />
     <ClInclude Include="src\Ember\Structures\Color.h" />
     <ClInclude Include="src\Ember\Structures\Vec2.h" />
+    <ClInclude Include="src\Ember\TileSystem\Grid.h" />
+    <ClInclude Include="src\Ember\TileSystem\TileMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Animation\SpriteSheet.cpp" />
@@ -75,6 +77,8 @@
     <ClCompile Include="src\Ember\Structures\FileManager.cpp" />
     <ClCompile Include="src\Ember\Structures\Texture.cpp" />
     <ClCompile Include="src\Ember\Structures\Vec2.cpp" />
+    <ClCompile Include="src\Ember\TileSystem\Grid.cpp" />
+    <ClCompile Include="src\Ember\TileSystem\TileMap.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -9,11 +9,14 @@ namespace ember {
 		SpriteSheet(Texture& texture, int rows, int cols);
 
 		void SelectSprite(int x, int y);
+		void DrawSelectedSprite(const Rect& rect);
+
 		Rect ReturnSourceRect();
 
 		IVec2 Size() { return { col, row }; }
 	private:
 		Rect clip;
+		Texture texture;
 		int row, col;
 	};
 }

@@ -210,4 +210,15 @@ namespace ember {
         EmptyFile();
         file << file_data;
     }
+
+    void File::DoEachWord(const std::function<void(std::string& word, unsigned int counter)>& func) {
+        ASSERT_OPEN;
+
+        std::string word_search;
+        unsigned int word_counter = 0;
+        while (file >> word_search) {
+            func(word_search, word_counter);
+            word_counter++;
+        }
+    }
 }

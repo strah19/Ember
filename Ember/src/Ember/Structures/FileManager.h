@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <functional>
 
 #ifdef FILE_STATUS_DEBUG
 #define ASSERT(condition, message) \
@@ -58,6 +59,8 @@ namespace ember
         std::string ReadLine(const int line_number);
         std::string ReadWord(const int location);
         int LocationToWord(const char* word);
+
+        void DoEachWord(const std::function<void(std::string& word, unsigned int counter)>& func);
 
         template <typename T>
         void Write(const T& data) {
@@ -112,6 +115,7 @@ namespace ember
             ASSERT_OPEN;
             file.write((char*)&obj, sizeof(obj));
         }
+
         template <typename T>
         void ReadObject(T& obj) {
             ASSERT_OPEN;

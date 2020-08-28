@@ -111,6 +111,12 @@
     <ClInclude Include="src\Ember\Core\GuiCore\GuiObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\TileSystem\Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\TileSystem\TileMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Structures\Vec2.cpp">
@@ -168,6 +174,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\GuiCore\GuiObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\TileSystem\Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\TileSystem\TileMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

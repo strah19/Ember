@@ -25,4 +25,7 @@
 #include "ECS/Components/SpriteComponent.h"
 #include "ECS/Components/DebugComponent.h"
 
+#include "TileSystem/Grid.h"
+#include "TileSystem/TileMap.h"
+
 #endif // !EMBER_H
