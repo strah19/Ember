@@ -15,6 +15,14 @@ namespace ember {
 		bool Down() { return handler->Event().mouse.down; }
 		int ButtonId() { return handler->Event().mouse.button_id; }
 		int ButtonClicks() { return handler->Event().mouse.clicks; }
+
+		bool KeyboardState(SDL_Scancode scancode) {
+			const Uint8* state = SDL_GetKeyboardState(NULL);
+			if (state[scancode]) {
+				return true;
+			}
+			return false;
+		}
 	private:
 		EventHandler* handler;
 	};

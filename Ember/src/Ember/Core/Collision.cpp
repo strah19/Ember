@@ -11,6 +11,15 @@ namespace ember {
 			rect1.pos.y < rect2.pos.y + rect2.h && rect1.pos.y + rect1.h > rect2.pos.y);
 	}
 
+	bool PointVsRect(const IVec2& point, const Rect& rect) {
+		return (point.x >= rect.pos.x && point.y >= rect.pos.y && point.x < rect.pos.x + rect.w && point.y < rect.pos.y + rect.h);
+	}
+
+	bool RectVsRect(const Rect& rect1, const Rect& rect2) {
+		return (rect1.pos.x < rect2.pos.x + rect2.w && rect1.pos.x + rect1.w > rect2.pos.x &&
+			rect1.pos.y < rect2.pos.y + rect2.h && rect1.pos.y + rect1.h > rect2.pos.y);
+	}
+
 	bool RayVsRect(const Vec2& ray, const Vec2& ray_dir, const FRect& rect, Vec2& contact, Vec2& contact_normal, float& hit_near) {
 		Vec2 near = (rect.pos - ray) / ray_dir;
 		Vec2 far = (rect.pos + rect.size - ray) / ray_dir;

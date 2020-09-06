@@ -32,8 +32,8 @@ namespace ember {
 	}
 
 	void Camera::Scale(float scale_x, float scale_y) {
-		scale_x *= scale_x;
-		scale_y *= scale_y;
+		this->scale_x *= scale_x;
+		this->scale_y *= scale_y;
 	}
 
 	void Camera::MoveCameraOffset(float offset_x, float offset_y) {

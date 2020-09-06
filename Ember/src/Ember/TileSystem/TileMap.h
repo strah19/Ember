@@ -13,7 +13,7 @@ namespace ember {
 	class TileMapSerializer {
 	public:
 		TileMapSerializer(GridComponents& grid, const char* file_path);
-		void Save(std::vector<TileInfo>& info);
+		void Save(GridComponents& grid, std::vector<TileInfo>& info);
 
 		std::vector<TileInfo> ReadTextureInfo(int col, int row);
 	private:
@@ -35,8 +35,20 @@ namespace ember {
 
 		void AddLayer(std::vector<TileInfo>& texture_info);
 		void RenderTextures(SpriteSheet& sprite_sheet);
+		void UploadTextureVector(std::vector<TileInfo>& texture_info, size_t layer_num);
 	private:
 		std::vector<std::vector<TileInfo>> layers_texture_info;
+	};
+
+	class TileMapEditor {
+	public:
+		TileMapEditor(TileMap& map);
+		void UpdateMap(std::vector<TileInfo>& texture_info);
+		void RenderSpriteSheet(SpriteSheet& sprite_sheet, const IVec2& start_location, int btn_id);
+	private:
+		TileMap map;
+		int current_user_texture;
+		Button texture_picker;
 	};
 }
 

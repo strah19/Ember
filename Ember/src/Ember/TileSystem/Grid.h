@@ -27,6 +27,10 @@ namespace ember {
 		void Personalize(const std::function<void(int x, int y, int bw, int bh)>& function);
 
 		IVec2 ConvertPoints(int col, int row);
+		inline GridComponents GridComponent() const { return grid; }
+
+		Renderer2D* Render() { return renderer; }
+		Input* Inputs() { return input; }
 	protected:
 		GridComponents grid;
 		int x, y;
@@ -35,8 +39,6 @@ namespace ember {
 		Input* input;
 		Button button;
 
-		Renderer2D* Render() { return renderer; }
-		Input* Inputs() { return input; }
 	};
 }
 

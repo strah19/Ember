@@ -3,7 +3,7 @@
 
 namespace ember {
 	Grid::Grid(Renderer2D* renderer, Input* input, GridComponents& grid)
-		: renderer(renderer), input(input), grid(grid), button(input, 0, 0, 0, 0), x(grid.start_x), y(grid.start_y) {
+		: renderer(renderer), input(input), grid(grid), button(input, 0, 0, grid.block_width, grid.block_height), x(grid.start_x), y(grid.start_y) {
 	}
 
 	void Grid::ResizeGrid(GridComponents& grid_component) {
@@ -12,6 +12,9 @@ namespace ember {
 
 		grid.cols = grid_component.cols;
 		grid.rows = grid_component.rows;
+
+		grid.start_x = grid_component.start_x;
+		grid.start_y = grid_component.start_y;
 	}
 
 	void Grid::RenderRect(int col, int row, const Color& color) {
