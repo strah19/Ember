@@ -10,7 +10,8 @@ namespace ember {
 			: handler(handler) { }
 
 		bool KeyPressed() { return handler->Event().keyboard.pressed; }
-		std::string PressedKey() { return handler->Event().keyboard.name; }
+		std::string PressedKey() { return handler->Event().keyboard.key_name; }
+
 		IVec2 MousePosition() { return handler->Event().mouse.position; }
 		bool Down() { return handler->Event().mouse.down; }
 		int ButtonId() { return handler->Event().mouse.button_id; }
@@ -23,6 +24,9 @@ namespace ember {
 			}
 			return false;
 		}
+
+		int VerticalScroll() { return handler->Event().mouse.vert; }
+		std::string TextInput() { return handler->Event().keyboard.text_input; }
 	private:
 		EventHandler* handler;
 	};

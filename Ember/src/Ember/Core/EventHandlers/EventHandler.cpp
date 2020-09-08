@@ -49,11 +49,14 @@ namespace ember {
 			if (native_event_handler.type == SDL_KEYDOWN) {
 				keyboard_event.pressed = true;
 				keyboard_event.repeat = native_event_handler.key.repeat;
-				keyboard_event.name = SDL_GetKeyName(native_event_handler.key.keysym.sym);
+				keyboard_event.key_name = SDL_GetKeyName(native_event_handler.key.keysym.sym);
 				return true;
 			}
 			else if(native_event_handler.type == SDL_KEYUP)
 				keyboard_event.pressed = false;
+			else if (native_event_handler.type == SDL_TEXTINPUT) {
+				keyboard_event.text_input = native_event_handler.text.text;
+			}
 			return false;
 		});
 	}
@@ -68,6 +71,11 @@ namespace ember {
 			}
 			else if (native_event_handler.type == SDL_MOUSEBUTTONUP) {
 				mouse_event.down = false;
+				return true;
+			}
+			else if (native_event_handler.type == SDL_MOUSEWHEEL) {
+				mouse_event.vert = native_event_handler.wheel.y;
+				mouse_event.horz = native_event_handler.wheel.x;
 				return true;
 			}
 

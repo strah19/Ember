@@ -37,6 +37,7 @@ namespace ember {
 		void ResizeWin() { is_resize_active = true; }
 
 		Events Event() { return events; }
+		SDL_Event NativeEvent() const { return native_event_handler; }
 	private:
 		Window* window;
 		SDL_Event native_event_handler;

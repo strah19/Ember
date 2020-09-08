@@ -1,0 +1,2 @@
+main_color 100 200 100
+border_color 50 255 0

@@ -6,14 +6,16 @@
 namespace ember {
 	struct KeyboardEvents : public Event {
 		KeyboardEvents(const std::string& name)
-			: Event(name), name(), pressed(false), repeat(0) { }
+			: Event(name), pressed(false), repeat(0) { }
 		virtual ~KeyboardEvents() = default;
 		
 		std::string GetName() const { return name; }
 
 		bool pressed;
 		int repeat;
-		std::string name;
+		std::string key_name;
+
+		std::string text_input;
 	};
 }
 

@@ -1,5 +1,6 @@
 #include "EmberPch.h"
 #include "AssetInitializers.h"
+#include "Assets.h"
 
 namespace ember {
 	bool InitializeImageLoader() {

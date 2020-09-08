@@ -5,11 +5,13 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include "../../Renderer/2DRenderer.h"
+#include <vector>
 
 namespace ember {
 	class Font {
 	public:
 		Font(Renderer2D* renderer, const char* file_path, const char* text, int size, const Color& color, int x, int y);
+		~Font();
 		void UnlockFont();
 
 		template <typename T>
@@ -37,7 +39,6 @@ namespace ember {
 		void SetPosition(int x, int y);
 		inline void SetSize(int w, int h) { font_width = w; font_height = h; }
 		void Update(int vel_x, int vel_y);
-		void CleanUp();
 		inline void GetSize(int* w, int* h, const char* text) { TTF_SizeText(font, text, w, h); }
 	private:
 		int font_width;

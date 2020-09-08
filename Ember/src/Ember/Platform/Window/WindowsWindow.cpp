@@ -1,5 +1,6 @@
 #include "EmberPch.h"
 #include "WindowsWindow.h"
+#include "Core/AssetLoaders/AssetInitializers.h"
 
 namespace ember {
 #ifdef EMBER_WINDOW_PLATFORM
@@ -26,14 +27,17 @@ namespace ember {
 		else 
 			initialize_checker = CreateWindow(properties);
 
+		initialize_checker = InitializeAssets();
+
 		return initialize_checker;
 	}
 
 	void WindowsWindow::Destroy() {
-			SDL_DestroyWindow(native_window);
-			SDL_Quit();
+		AssetCleanUp();
+		SDL_DestroyWindow(native_window);
+		SDL_Quit();
 
-			properties = nullptr;
+		properties = nullptr;
 	}
 
 	bool WindowsWindow::AssertProperties() {

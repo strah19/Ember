@@ -2,14 +2,20 @@
 #include "Assets.h"
 
 namespace ember {
+	static std::vector<TTF_Font*>fonts;
+
 	Font::Font(Renderer2D* renderer, const char* file_path, const char* text, int size, const Color& color, int x, int y)
 		: renderer(renderer), font_width(0), font_height(0), font(TTF_OpenFont(file_path, size)), font_position({ x, y, 0, 0 }),
 		font_texture(NULL), font_color(color), font_is_locked(true) {
+		fonts.push_back(font);
 		if(font) {
 			UnlockFont();
 			ChangeFont(text, color);
-			LockFont();
 		}
+	}
+
+	Font::~Font() {
+		TTF_CloseFont(font);
 	}
 
 	void Font::UnlockFont() {
@@ -38,10 +44,6 @@ namespace ember {
 			font_position.x = font_position.x + x;
 			font_position.y = font_position.y + y;
 		}
-	}
-
-	void Font::CleanUp() {
-		TTF_CloseFont(font);
 	}
 
 	AudioChunk::AudioChunk(const char* file_path)
