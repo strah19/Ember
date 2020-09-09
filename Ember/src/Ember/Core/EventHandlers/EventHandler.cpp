@@ -2,7 +2,7 @@
 #include "EventHandler.h"
 
 namespace ember {
-	EventHandler::EventHandler(Window* window)	
+	EventHandler::EventHandler(Window* window)
 		: window(nullptr), native_event_handler(), is_resize_active(false) {
 		if (window != nullptr) {
 			this->window = window;
@@ -10,13 +10,13 @@ namespace ember {
 		InitializeEvents();
 	}
 
-	void EventHandler::Update()	{
+	void EventHandler::Update() {
 		while (SDL_PollEvent(&native_event_handler)) {
 			KeyEvents();
 			WinEvents();
 			Mouse();
 
-			if(is_resize_active)
+			if (is_resize_active)
 				Resize();
 		}
 	}
@@ -41,7 +41,7 @@ namespace ember {
 				}
 			}
 			return false;
-		});
+			});
 	}
 
 	bool EventHandler::KeyEvents() {
@@ -52,13 +52,13 @@ namespace ember {
 				keyboard_event.key_name = SDL_GetKeyName(native_event_handler.key.keysym.sym);
 				return true;
 			}
-			else if(native_event_handler.type == SDL_KEYUP)
+			else if (native_event_handler.type == SDL_KEYUP)
 				keyboard_event.pressed = false;
 			else if (native_event_handler.type == SDL_TEXTINPUT) {
 				keyboard_event.text_input = native_event_handler.text.text;
 			}
 			return false;
-		});
+			});
 	}
 
 	bool EventHandler::Mouse() {
@@ -82,7 +82,7 @@ namespace ember {
 			mouse_event.position = { native_event_handler.button.x, native_event_handler.button.y };
 
 			return false;
-		});
+			});
 	}
 
 	bool EventHandler::Resize() {
@@ -94,12 +94,12 @@ namespace ember {
 			window->Properties()->height = h;
 
 			return false;
-		});
+			});
 	}
 
 	void EventHandler::InitializeEvents() {
 		GetEventType<MouseButtonEvents>();
-		dispatchers.push_back(EventDispatcher(&events.mouse));		
+		dispatchers.push_back(EventDispatcher(&events.mouse));
 
 		GetEventType<KeyboardEvents>();
 		dispatchers.push_back(EventDispatcher(&events.keyboard));

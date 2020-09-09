@@ -8,7 +8,7 @@ namespace ember {
 		KeyboardEvents(const std::string& name)
 			: Event(name), pressed(false), repeat(0) { }
 		virtual ~KeyboardEvents() = default;
-		
+
 		std::string GetName() const { return name; }
 
 		bool pressed;

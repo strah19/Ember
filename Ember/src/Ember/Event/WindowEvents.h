@@ -8,7 +8,7 @@ namespace ember {
 		WindowEvents(const std::string& name)
 			: Event(name), closed(false) { }
 		virtual ~WindowEvents() = default;
-		
+
 		std::string GetName() const { return name; }
 
 		bool closed;

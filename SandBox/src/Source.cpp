@@ -10,13 +10,11 @@ struct Theme {
 	std::unordered_map<std::string, ember::Color> colors;
 };
 
-struct ThemeFormatParser {
-	ember::File parser = ember::File("light-theme.txt");
-	Theme* theme;
-
-	void Parse() {
+void ParseTheme(Theme* theme, const std::string& file_path) {
+	ember::File parser = ember::File(file_path.c_str()); 
+	if (theme != nullptr) {
 		int each_counter = 0;
-		std::string current_color_id; 
+		std::string current_color_id;
 		parser.DoEachWord([&](std::string& word, unsigned int counter) {
 			if (counter % 4 == 0) {
 				current_color_id = word;
@@ -24,10 +22,10 @@ struct ThemeFormatParser {
 				each_counter = 0;
 			}
 			else {
-				switch (each_counter)
-				{
+				switch (each_counter) {
 				case 0:
 					theme->colors[current_color_id].r = std::stoi(word);
+					std::cout << theme->colors[current_color_id].r << std::endl;
 					break;
 				case 1:
 					theme->colors[current_color_id].g = std::stoi(word);
@@ -42,7 +40,7 @@ struct ThemeFormatParser {
 			}
 		});
 	}
-};
+}
 
 struct LogGuiAttributes {
 	int border_thickness = 2;
@@ -111,7 +109,7 @@ public:
 		logger.attribs.logger_font.Render();
 	}
 
-	void LogGui() {
+	bool LogGui() {
 		SDL_Rect sdl_temp = logger.attribs.command_start_position.rect;
 		sdl_temp.x -= logger.attribs.border_thickness;
 		sdl_temp.y -= logger.attribs.border_thickness;
@@ -151,6 +149,8 @@ public:
 		if (!input.Down())
 			logger.attribs.moving = false;
 		SDL_RenderSetClipRect(renderer.Renderer(), NULL);
+
+		return logger.attribs.moving;
 	}
 
 	void PrintLog(const std::string& signature) {
@@ -168,8 +168,9 @@ private:
 
 int main(int argc, char* argv[])
 {
-	Log log({ 100, 100, 200, 100 });
-	Log log2;
+	Log log;
+	Log log2({ 0, 0, 200, 200 });
+
 	log.AddToLogQueue("Starting program");
 	log.AddToLogQueue("Created Window!");
 	log.AddToLogQueue("Created Renderer!");
@@ -178,11 +179,8 @@ int main(int argc, char* argv[])
 
 	events.ResizeWin();
 
-	Theme t;
-	ThemeFormatParser p;
-	p.theme = &t;
-	p.Parse();
-	std::cout << (int) t.colors["border_color"].r << std::endl;
+	Theme theme;
+	ParseTheme(&theme, "light-theme.txt");
 
 	while (window.IsRunning()) {
 		events.Update();
@@ -193,7 +191,7 @@ int main(int argc, char* argv[])
 		log.PrintLog("Command: ");
 
 		log2.LogGui();
-		log2.PrintLog("Log2 Command: ");
+		log2.PrintLog("Log2 Command: ");	  
 
 		renderer.Show();
 	}

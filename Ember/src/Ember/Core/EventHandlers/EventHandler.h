@@ -42,7 +42,7 @@ namespace ember {
 		Window* window;
 		SDL_Event native_event_handler;
 		std::vector<EventDispatcher> dispatchers;
-		Events events;	
+		Events events;
 		bool is_resize_active;
 
 		void InitializeEvents();
