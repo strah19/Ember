@@ -4,10 +4,10 @@
 #include "Event.h"
 
 namespace ember {
-	struct WindowEvents : public Event {
-		WindowEvents(const std::string& name)
-			: Event(name), closed(false) { }
-		virtual ~WindowEvents() = default;
+	struct QuitEvent : public Event {
+		QuitEvent(bool closed)
+			: Event("Quit"), closed(closed) { }
+		virtual ~QuitEvent() = default;
 
 		std::string GetName() const { return name; }
 
@@ -15,13 +15,13 @@ namespace ember {
 	};
 
 	struct ResizeEvent : public Event {
-		ResizeEvent(const std::string& name)
-			: Event(name), resize(false) { }
+		ResizeEvent(int w, int h)
+			: Event("Resize"), w(w), h(h) { }
 		virtual ~ResizeEvent() = default;
 
 		std::string GetName() const { return name; }
 
-		bool resize;
+		int w, h;
 	};
 }
 

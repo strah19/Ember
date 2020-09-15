@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include "../Structures/Vec2.h"
-#include "EventHandlers/Input.h"
+#include "Event/EventHandler.h"
 
 namespace ember {
 	class Camera {

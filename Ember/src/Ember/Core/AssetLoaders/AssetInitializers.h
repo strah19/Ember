@@ -1,6 +1,8 @@
 #ifndef ASSET_INITIALIZERS_H
 #define ASSET_INITIALIZERS_H
 
+#include <SDL.h>
+
 namespace ember {
 	bool InitializeImageLoader();
 	bool InitializeFontLoader();

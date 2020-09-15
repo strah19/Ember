@@ -3,8 +3,7 @@
 
 #include "Renderer/2DRenderer.h"
 #include "Structures/Rect.h"
-#include "Core/EventHandlers/EventHandler.h"
-#include "Core//EventHandlers/Input.h"
+#include "Event/EventHandler.h"
 
 namespace ember {
 	class Button {

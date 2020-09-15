@@ -1,10 +1,5 @@
 #include "Core/Ember.h"
-
-ember::WindowProperties properties("App", 960, 800);
-ember::WindowsWindow window(&properties);
-ember::Renderer2D renderer(&window);
-ember::EventHandler events(&window);
-ember::Input input(&events);
+#include <array>
 
 struct Theme {
 	std::unordered_map<std::string, ember::Color> colors;
@@ -43,14 +38,18 @@ void ParseTheme(Theme* theme, const std::string& file_path) {
 }
 
 struct LogGuiAttributes {
+	LogGuiAttributes(std::shared_ptr<ember::Renderer2D> renderer, std::shared_ptr<ember::Input> input) 
+		: button(input.get(), 0, 0, 0, 0), logger_font(renderer.get(), "res/Inconsolata-Regular.ttf", " ", 14, { 200, 200, 200, 255 }, 0, 0) {
+
+	}
 	int border_thickness = 2;
-	ember::Rect command_start_position = { properties.width / 2 - 150, properties.height / 2 - 100, 300, 200 };
+	ember::Rect command_start_position = { 0, 0, 100, 300 };
 	int command_height = 25;
 
 	bool moving = false;
 	int px = 0, py = 0;
-	ember::Button button = ember::Button(&input, 0, 0, 0, 0);
-	ember::Font logger_font = ember::Font(&renderer, "res/Inconsolata-Regular.ttf", " ", 14, { 200, 200, 200, 255 }, 0, 0);
+	ember::Button button;
+	ember::Font logger_font;
 };
 
 struct LogTextColorDefs {
@@ -74,8 +73,11 @@ struct Logger {
 	LogColorInfo colors;
 	LogGuiAttributes attribs;
 	BackLog log;
+	std::shared_ptr<ember::Renderer2D> renderer;
+	std::shared_ptr<ember::Input> input;
 
-	Logger(const ember::Rect& rect) {
+	Logger(const ember::Rect& rect, std::shared_ptr<ember::Renderer2D> renderer, std::shared_ptr<ember::Input> input) 
+		: attribs(renderer, input), renderer(renderer), input(input) {
 		attribs.command_start_position = rect;
 	}
 
@@ -84,8 +86,8 @@ struct Logger {
 
 class Log {
 public:
-	Log(const ember::Rect& rect) {
-		logger.attribs.command_start_position = rect;
+	Log(const Logger& log)
+		: logger(log) {
 	}
 	Log() = default;
 
@@ -116,18 +118,18 @@ public:
 		sdl_temp.w += logger.attribs.border_thickness * 2;
 		sdl_temp.h += logger.attribs.border_thickness * 2;
 
-		SDL_RenderSetClipRect(renderer.Renderer(), &sdl_temp);
-		renderer.Rectangle({ logger.attribs.command_start_position.x - logger.attribs.border_thickness,
+		SDL_RenderSetClipRect(logger.renderer->Renderer(), &sdl_temp);
+		logger.renderer->Rectangle({ logger.attribs.command_start_position.x - logger.attribs.border_thickness,
 		logger.attribs.command_start_position.y - logger.attribs.border_thickness,
 		logger.attribs.command_start_position.w + logger.attribs.border_thickness * 2, logger.attribs.command_start_position.h + logger.attribs.border_thickness * 2 },
 			logger.colors.border_color);
 
-		renderer.Rectangle({ logger.attribs.command_start_position.x, logger.attribs.command_start_position.y,
+		logger.renderer->Rectangle({ logger.attribs.command_start_position.x, logger.attribs.command_start_position.y,
 			logger.attribs.command_start_position.w,
 			logger.attribs.command_start_position.h },
 			logger.colors.main_color);
 
-		renderer.Line({ logger.attribs.command_start_position.x,
+		logger.renderer->Line({ logger.attribs.command_start_position.x,
 		logger.attribs.command_start_position.y + logger.attribs.command_height },
 			{ logger.attribs.command_start_position.x + logger.attribs.command_start_position.w,  logger.attribs.command_start_position.y + logger.attribs.command_height },
 			logger.colors.border_color);
@@ -140,15 +142,15 @@ public:
 		if (logger.attribs.button.Click(1)) {
 			if (!logger.attribs.moving) {
 				logger.attribs.moving = true;
-				logger.attribs.px = input.MousePosition().x - logger.attribs.command_start_position.x;
-				logger.attribs.py = input.MousePosition().y - logger.attribs.command_start_position.y;
+				logger.attribs.px = logger.input->MousePosition().x - logger.attribs.command_start_position.x;
+				logger.attribs.py = logger.input->MousePosition().y - logger.attribs.command_start_position.y;
 			}
 		}
 		else if (logger.attribs.moving)
-			logger.attribs.command_start_position.pos = ember::IVec2(input.MousePosition().x - logger.attribs.px, input.MousePosition().y - logger.attribs.py);
-		if (!input.Down())
+			logger.attribs.command_start_position.pos = ember::IVec2(logger.input->MousePosition().x - logger.attribs.px, logger.input->MousePosition().y - logger.attribs.py);
+		if (!logger.input->Down())
 			logger.attribs.moving = false;
-		SDL_RenderSetClipRect(renderer.Renderer(), NULL);
+		SDL_RenderSetClipRect(logger.renderer->Renderer(), NULL);
 
 		return logger.attribs.moving;
 	}
@@ -166,35 +168,37 @@ private:
 	Logger logger;
 };
 
-int main(int argc, char* argv[])
-{
-	Log log;
-	Log log2({ 0, 0, 200, 200 });
+class Sandbox : public ember::Application {
+	void OnUserUpdate() {
+		renderer->Clear({ 100, 120, 190, 255 });
 
-	log.AddToLogQueue("Starting program");
-	log.AddToLogQueue("Created Window!");
-	log.AddToLogQueue("Created Renderer!");
+		log->LogGui();
+		log->PrintLog("Command: ");
 
-	log2.AddToLogQueue("New Queue");
-
-	events.ResizeWin();
-
-	Theme theme;
-	ParseTheme(&theme, "light-theme.txt");
-
-	while (window.IsRunning()) {
-		events.Update();
-
-		renderer.Clear({ 100, 120, 190, 255 });
-
-		log.LogGui();
-		log.PrintLog("Command: ");
-
-		log2.LogGui();
-		log2.PrintLog("Log2 Command: ");	  
-
-		renderer.Show();
+		renderer->Show();
 	}
+
+	void OnCreate() {
+		log = std::make_shared<Log>(Logger({ 0, 0, 100, 200 }, renderer, events));
+		log->AddToLogQueue("Starting program");
+		log->AddToLogQueue("Created Window!");
+		log->AddToLogQueue("Created Renderer!");
+	}
+
+	void UserDefEvent(ember::Event& event) {
+		
+	}
+public:
+	std::shared_ptr<ember::Input> In() { return events; }
+	std::shared_ptr<ember::Renderer2D> Renderer() { return renderer; }
+	std::shared_ptr<Log> log;
+};
+
+int main(int argc, char** argv)
+{
+	Sandbox sandbox;
+
+	sandbox.Run();
 
 	return 0;
 }

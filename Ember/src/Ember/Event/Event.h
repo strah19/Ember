@@ -3,7 +3,8 @@
 
 #include <string>
 #include <functional>
-#include <vector>
+
+#define EMBER_BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 namespace ember {
 	struct Event {
@@ -25,7 +26,7 @@ namespace ember {
 
 	class EventDispatcher {
 	public:
-		EventDispatcher(Event* event) 
+		EventDispatcher(Event* event)
 			: event(event) {
 		}
 
@@ -35,7 +36,7 @@ namespace ember {
 
 		template<typename T>
 		bool Dispatch(const std::function<bool(T&)> func) {
-			if (event->ActivityCheck()) {
+			if (event->ActivityCheck() && dynamic_cast<T*>(event)) {
 				event->Handled = func(static_cast<T&>(*event));
 				return true;
 			}
