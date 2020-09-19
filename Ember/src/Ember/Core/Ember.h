@@ -8,6 +8,8 @@
 
 #include "Core/GuiCore/GuiObjects.h"
 #include "Core/GuiCore/Button.h"
+#include "Core/GuiCore/Log.h"
+#include "Core/GuiCore/Widgets.h"
 
 #include "Platform/Window/WindowAPI.h"
 #include "Platform/Window/WindowsWindow.h"

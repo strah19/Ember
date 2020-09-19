@@ -15,6 +15,7 @@ namespace ember {
 			KeyEvent();
 			QuitEvent();
 			MouseEvent();
+			MousePositonEvent();
 			ResizeEvent();
 		}
 	}
@@ -30,6 +31,12 @@ namespace ember {
 	void EventHandler::KeyEvent() {
 		if (native_event_handler.type == SDL_KEYDOWN) {
 			KeyboardEvents keyboard(true, native_event_handler.key.repeat, native_event_handler.key.keysym.scancode);
+			input->keyboard_event = keyboard;
+			callback(keyboard);
+		}
+		else if (native_event_handler.type == SDL_KEYUP) {
+			KeyboardEvents keyboard(false, 0, 0);
+			input->keyboard_event = keyboard;
 			callback(keyboard);
 		}
 	}

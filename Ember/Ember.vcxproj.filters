@@ -90,6 +90,12 @@
     <ClInclude Include="src\Ember\Event\EventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Core\GuiCore\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\GuiCore\Widgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Structures\Vec2.cpp">
@@ -132,6 +138,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Event\EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\GuiCore\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\GuiCore\Widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

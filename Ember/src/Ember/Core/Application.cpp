@@ -11,11 +11,10 @@ namespace ember {
 		event_handler->SetEventCallback(EMBER_BIND_EVENT(OnEvent));
 
 		renderer = std::make_shared<Renderer2D>(window.get());
-
-		OnCreate();
 	}
 
 	void Application::Run() {
+		OnCreate();
 		while (is_running) {
 			event_handler->Update();
 			OnUserUpdate();

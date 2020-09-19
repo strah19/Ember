@@ -10,7 +10,7 @@
 namespace ember {
 	class Font {
 	public:
-		Font(Renderer2D* renderer, const char* file_path, const char* text, int size, const Color& color, int x, int y);
+		Font(std::shared_ptr<Renderer2D> renderer, const char* file_path, const char* text, int size, const Color& color, int x, int y);
 		~Font();
 		void UnlockFont();
 
@@ -48,7 +48,7 @@ namespace ember {
 		SDL_Texture* font_texture;
 		Color font_color;
 		bool font_is_locked;
-		Renderer2D* renderer;
+		std::shared_ptr<Renderer2D> renderer;
 	};
 
 	class AudioChunk {

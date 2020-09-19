@@ -25,6 +25,8 @@
     <ClInclude Include="src\Ember\Core\AssetLoaders\AssetInitializers.h" />
     <ClInclude Include="src\Ember\Core\AssetLoaders\Assets.h" />
     <ClInclude Include="src\Ember\Core\GuiCore\GuiObjects.h" />
+    <ClInclude Include="src\Ember\Core\GuiCore\Log.h" />
+    <ClInclude Include="src\Ember\Core\GuiCore\Widgets.h" />
     <ClInclude Include="src\Ember\Event\EventHandler.h" />
     <ClInclude Include="src\Ember\EmberPch.h" />
     <ClInclude Include="src\Ember\PlatformDetection.h" />
@@ -52,6 +54,8 @@
     <ClCompile Include="src\Ember\Core\AssetLoaders\AssetInitializers.cpp" />
     <ClCompile Include="src\Ember\Core\AssetLoaders\Assets.cpp" />
     <ClCompile Include="src\Ember\Core\GuiCore\GuiObject.cpp" />
+    <ClCompile Include="src\Ember\Core\GuiCore\Log.cpp" />
+    <ClCompile Include="src\Ember\Core\GuiCore\Widgets.cpp" />
     <ClCompile Include="src\Ember\Event\EventHandler.cpp" />
     <ClCompile Include="src\Ember\EmberPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

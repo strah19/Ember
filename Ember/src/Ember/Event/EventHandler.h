@@ -12,13 +12,13 @@ namespace ember {
 	class Input {
 	public:
 		Input() 
-			: mouse_event(false, 0, 0), keyboard_event(false, 0, 0), mouse_pos(0, 0) {
-
-		}
+			: mouse_event(false, 0, 0), keyboard_event(false, 0, 0), mouse_pos(0, 0) { }
 
 		bool Down() const { return mouse_event.down; }
 		IVec2 MousePosition() const { return mouse_pos.position; }
 		int ButtonId() const { return mouse_event.button_id; }
+		int KeyCode() { return keyboard_event.scancode; }
+		bool KeyDown() { return keyboard_event.pressed; }
 	private:
 		ember::MouseButtonEvents mouse_event;
 		ember::KeyboardEvents keyboard_event;

@@ -2,17 +2,18 @@
 #include "Button.h"
 
 namespace ember {
-	Button::Button(Input* events, Rect& button)
+	Button::Button(std::shared_ptr<Input> events, Rect& button)
 		: events(events), position(button), in(false), clicked(false) {
 	}
 
-	Button::Button(Input* events, int x, int y, int w, int h)
+	Button::Button(std::shared_ptr<Input> events, int x, int y, int w, int h)
 		: events(events), position({ x, y, w, h }), in(false), clicked(false) {
 	}
 
 	bool Button::Hover() {
 		if (events->MousePosition().x >= position.x && events->MousePosition().x <= position.x + position.w && events->MousePosition().y >= position.y
 			&& events->MousePosition().y <= position.y + position.h) {
+			std::cout << "Hover\n";
 			return true;
 		}
 		return false;
