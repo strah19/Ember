@@ -28,6 +28,7 @@ namespace ember {
 	class GuiLog {
 	public:
 		GuiLog(const Rect& rect, std::shared_ptr<Renderer2D> renderer, std::shared_ptr<Input> events);
+		~GuiLog() { logger_font.Destroy(); }
 		void Render();
 		void SetPrefixSuffix(const std::string& prefix, const std::string suffix);
 		Log Logger() { return log; }

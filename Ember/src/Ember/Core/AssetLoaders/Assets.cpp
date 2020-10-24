@@ -14,10 +14,6 @@ namespace ember {
 		}
 	}
 
-	Font::~Font() {
-		TTF_CloseFont(font);
-	}
-
 	void Font::UnlockFont() {
 		font_is_locked = false;
 	}

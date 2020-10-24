@@ -11,7 +11,6 @@ namespace ember {
 	class Font {
 	public:
 		Font(std::shared_ptr<Renderer2D> renderer, const char* file_path, const char* text, int size, const Color& color, int x, int y);
-		~Font();
 		void UnlockFont();
 
 		template <typename T>
@@ -40,6 +39,7 @@ namespace ember {
 		inline void SetSize(int w, int h) { font_width = w; font_height = h; }
 		void Update(int vel_x, int vel_y);
 		inline void GetSize(int* w, int* h, const char* text) { TTF_SizeText(font, text, w, h); }
+		void Destroy() { TTF_CloseFont(font); }
 	private:
 		int font_width;
 		int font_height;
