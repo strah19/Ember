@@ -1,8 +1,6 @@
-#include "EmberPch.h"
-#include "Vec2.h"
-#include <cmath>
+#include "Vector.h"
 
-namespace ember {
+namespace Ember {
 	Vec2::Vec2(const float x, const float y)
 		:x(x), y(y) {
 	}
@@ -120,7 +118,7 @@ namespace ember {
 		return ((this->x * vec2.x) + (this->y * vec2.y));
 	}
 
-		IVec2::IVec2(const int x, const int y)
+	IVec2::IVec2(const int x, const int y)
 		:x(x), y(y) {
 	}
 
@@ -236,4 +234,5 @@ namespace ember {
 	int IVec2::DotProduct(IVec2& vec2) {
 		return ((this->x * vec2.x) + (this->y * vec2.y));
 	}
+
 }

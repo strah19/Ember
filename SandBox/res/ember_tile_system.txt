@@ -1,0 +1,9 @@
+#sizes
+WindowView 1200 800
+TileView 35% 25%
+LeftEditorView 
+RightEditorView
+TopEditorView
+BottomEditorView
+#colors
+#logger

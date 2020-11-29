@@ -1,9 +1,9 @@
-#ifndef Vec2_H
-#define Vec2_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <iostream>
 
-namespace ember {
+namespace Ember {
 	class Vec2 {
 	public:
 		float x;
@@ -107,6 +107,7 @@ namespace ember {
 
 	bool operator!=(const IVec2& v1, const IVec2& v2);
 	bool operator==(const IVec2& v1, const IVec2& v2);
+
 }
 
-#endif // !Vec2_H
+#endif // !VECTOR_H
