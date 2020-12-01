@@ -77,7 +77,7 @@ namespace Ember {
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 			return initialize_checker;
 		else
-			initialize_checker = CreateWindow(properties);
+			initialize_checker = Create(properties);
 
 		initialize_checker = InitializeAssets();
 
@@ -108,7 +108,7 @@ namespace Ember {
 		return (properties != nullptr);
 	}
 
-	bool wWindow::CreateWindow(WindowProperties* properties) {
+	bool wWindow::Create(WindowProperties* properties) {
 		if (AssertSize(properties->width, properties->height)) {
 			CalculatePosition(&properties->position);
 

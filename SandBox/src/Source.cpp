@@ -1,4 +1,5 @@
 #include "Ember.h"
+#include "EGui.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -24,6 +25,14 @@ public:
 		percent.y = (float)map_info.start_y / window->Properties()->height * 100;
 		percent.w = (float)((map_info.block_width * map_info.cols) - 100) / window->Properties()->width * 100;
 		percent.h = (float)( (map_info.block_height * map_info.rows) - 200 ) / window->Properties()->height * 100;
+
+		Ember::CreateGuiInterfaceInApp(g_interface, this);
+		if (g_interface.CheckErrors() != Ember::InterfaceErrors::None) 
+			window->Quit();
+
+		s.Load("test.txt");
+	//	s.WriteSection("newSec");
+	//	s.WriteKeyValueToSection("newSec", "Key", "Value");
 	}
 
 	~Sandbox() {
@@ -70,6 +79,12 @@ public:
 		clipping.h = (int)px;
 
 		renderer->Clear(background);
+
+		Ember::StartFrame();
+
+		Ember::Begin("Properties");
+
+		Ember::End();
 
 		Ember::Rect c = { 0, 0, 0, 0 };
 		c.rect = clipping;
@@ -181,6 +196,9 @@ private:
 	Ember::IVec2 editor_tile_size = { 32, 32 };
 
 	Ember::FRect percent;
+
+	Ember::EGuiInterface g_interface;
+	Ember::CinderStructure s;
 
 	bool in_editor_mode = false;
 };

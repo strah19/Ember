@@ -1,0 +1,6 @@
+newSec:
+Key = Value
+Key2 = Value2
+
+NextSec:
+Position_x = 0

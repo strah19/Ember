@@ -46,7 +46,7 @@ namespace Ember {
 		file.close();
 	}
 
-	void File::DeleteFile() {
+	void File::Delete() {
 		file.close();
 		remove(file_path.c_str());
 	}
@@ -220,6 +220,116 @@ namespace Ember {
 				break;
 			word_counter++;
 		}
+
+		ResetLocation();
 	}
 
+	void File::DoEachLine(const std::function<bool(std::string& line, unsigned int counter)>& func) {
+		ASSERT_OPEN;
+
+		std::string line;
+		unsigned int line_counter = 0;
+		while (getline(file, line)) {
+			if (!func(line, line_counter))
+				break;
+			line_counter++;
+		}
+
+		ResetLocation();
+	}
+
+	bool CinderStructure::Load(const std::string& file_path) {
+		core_file = new File(file_path.c_str());
+		
+		bool inside_section = false;
+		bool reading_a_key = true;
+		size_t current_section = -1;
+		std::string save_key;
+		core_file->DoEachWord([&](std::string& word, unsigned int counter){
+			if (word.back() == ':') {
+				std::string copy_word = word;
+				copy_word.pop_back();
+				sections.push_back(Section(copy_word, counter));
+
+				inside_section = true;
+				current_section++;
+			}
+			else if (inside_section) {
+				if (word.back() == ':')
+					inside_section = false;
+				else {
+					if (reading_a_key) {
+						save_key = word;
+						reading_a_key = false;
+					}
+					else if (!reading_a_key && word != "=") {
+						sections[current_section].keys.push_back(KeyToValues(save_key, word));
+						reading_a_key = true;
+					}
+				}
+			}
+
+			return true;
+		});
+
+		for (auto i : sections) {
+			std::cout << i.section_name << std::endl;
+			for (auto j : i.keys) {
+				std::cout << j.key << " " << j.value << std::endl;
+			}
+		}
+
+		return true;
+	}
+
+	CinderStructure::~CinderStructure() {
+		delete core_file;
+	}
+
+	CinderStructure::CinderReturnCodes CinderStructure::WriteSection(const std::string& section_name) {
+		for (size_t i = 0; i < sections.size(); i++) {
+			if (sections[i].section_name == section_name) {
+				std::string all = core_file->ReadAll();
+				std::string::size_type found;
+				found = all.find(section_name + ":");
+				if (found != std::string::npos) 
+					all.erase(found, section_name.length() + 1);
+				
+				core_file->EmptyFile();
+				core_file->Write(all);
+
+				sections.erase(sections.begin() + i);
+				return CinderStructure::CinderReturnCodes::DeletedSection;
+			}
+		}
+
+		std::string code_input = section_name + ":\n";
+		core_file->Write(code_input);
+		sections.push_back(Section(section_name, core_file->WordCount() - 1));
+
+		return CinderStructure::CinderReturnCodes::Null;
+	}
+
+	CinderStructure::CinderReturnCodes CinderStructure::WriteKeyValueToSection(const CinderStructureType& section_name, const CinderStructureType& key, const CinderStructureType& value) {
+		for (size_t i = 0; i < sections.size(); i++) {
+			if (sections[i].section_name == section_name) {
+				for (size_t j = 0; j < sections[i].keys.size(); j++) {
+					if (sections[i].keys[j].key == key) {
+						sections[i].keys[j].value = value;
+
+						
+
+						return CinderStructure::CinderReturnCodes::Null;
+					}
+				}
+
+				std::string code_input = section_name + ":\n";
+				sections[i].keys.push_back(KeyToValues(key, value));
+				core_file->WriteAfterWord(key + '=' + value + '\n', code_input);
+				return CinderStructure::CinderReturnCodes::Null;
+			}
+		}
+
+		return CinderStructure::CinderReturnCodes::Null;
+	}
 }

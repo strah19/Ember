@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ember\EGui.h" />
     <ClInclude Include="src\Ember\Ember.h" />
     <ClInclude Include="src\Ember\File.h" />
     <ClInclude Include="src\Ember\Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ember\EGui.cpp" />
     <ClCompile Include="src\Ember\Ember.cpp" />
     <ClCompile Include="src\Ember\File.cpp" />
     <ClCompile Include="src\Ember\Vector.cpp" />

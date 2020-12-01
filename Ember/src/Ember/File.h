@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 #include <sstream>
 #include <functional>
 
@@ -35,7 +36,7 @@ namespace Ember {
 
 		void EmptyFile();
 		void CloseFile();
-		void DeleteFile();
+		void Delete();
 		bool IsEnd() { return file.eof(); }
 
 		std::streampos CurrentLocation();
@@ -58,6 +59,7 @@ namespace Ember {
 		bool AtEndOfFile() { return (CurrentLocation() == EOF); }
 
 		void DoEachWord(const std::function<bool(std::string& word, unsigned int counter)>& func);
+		void DoEachLine(const std::function<bool(std::string& line, unsigned int counter)>& func);
 
 		template <typename T>
 		void Write(const T& data) {
@@ -130,6 +132,40 @@ namespace Ember {
 	static bool Bind(File* file);
 	static void Check(const char* host_file);
 	static void Close();
+
+	using CinderStructureType = std::string;
+
+	struct KeyToValues {
+		CinderStructureType key;
+		CinderStructureType value;
+
+		KeyToValues(CinderStructureType key, CinderStructureType value) : key(key), value(value) { }
+	};
+
+	struct Section {
+		CinderStructureType section_name;
+		std::vector<KeyToValues> keys;
+		unsigned int word_position;
+		Section(CinderStructureType section_name, unsigned int word_position) : section_name(section_name), word_position(word_position) { }
+	};
+
+	class CinderStructure {
+	public:
+		enum class CinderReturnCodes {
+			DeletedSection, Null
+		};
+
+		bool Load(const std::string& file_path);
+		~CinderStructure();
+
+		CinderReturnCodes WriteSection(const std::string& section_name);
+		CinderReturnCodes WriteKeyValueToSection(const CinderStructureType& section_name, const CinderStructureType& key, const CinderStructureType& value);
+
+	private:
+		File* core_file;
+
+		std::vector<Section> sections;
+	};
 }
 
 #endif // !FILE_H

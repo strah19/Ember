@@ -192,7 +192,7 @@ namespace Ember {
 		void Destroy();
 		bool AssertProperties();
 
-		bool CreateWindow(WindowProperties* properties);
+		bool Create(WindowProperties* properties);
 		Uint32 IsFullScreen(WindowProperties* properties);
 		bool AssertSize(uint32_t width, uint32_t height);
 		void CalculatePosition(IVec2* position);
