@@ -158,8 +158,10 @@ namespace Ember {
 		bool Load(const std::string& file_path);
 		~CinderStructure();
 
-		CinderReturnCodes WriteSection(const std::string& section_name);
+		CinderReturnCodes WriteSection(const CinderStructureType& section_name);
 		CinderReturnCodes WriteKeyValueToSection(const CinderStructureType& section_name, const CinderStructureType& key, const CinderStructureType& value);
+		CinderReturnCodes DeleteKey(const CinderStructureType& section_name, const CinderStructureType& key);
+		std::string GetValue(const CinderStructureType& section_name, const CinderStructureType& key);
 
 	private:
 		File* core_file;

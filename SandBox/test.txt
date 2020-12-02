@@ -1,6 +1,4 @@
 newSec:
-Key = Value
-Key2 = Value2
-
-NextSec:
-Position_x = 0
+y = 0
+x = 0
+width = 250
