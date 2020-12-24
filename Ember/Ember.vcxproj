@@ -37,6 +37,8 @@
     <ClInclude Include="src\Ember\StartUp\Events\WindowEvents.h" />
     <ClInclude Include="src\Ember\StartUp\Renderer.h" />
     <ClInclude Include="src\Ember\StartUp\Window.h" />
+    <ClInclude Include="src\Ember\TileSystems\Grid.h" />
+    <ClInclude Include="src\Ember\TileSystems\TileMap.h" />
     <ClInclude Include="src\Ember\Vector.h" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +56,8 @@
     <ClCompile Include="src\Ember\StartUp\EventHandler.cpp" />
     <ClCompile Include="src\Ember\StartUp\Renderer.cpp" />
     <ClCompile Include="src\Ember\StartUp\Window.cpp" />
+    <ClCompile Include="src\Ember\TileSystems\Grid.cpp" />
+    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp" />
     <ClCompile Include="src\Ember\Vector.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
