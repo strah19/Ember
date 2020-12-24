@@ -107,7 +107,6 @@ namespace Ember {
 
 	bool operator!=(const IVec2& v1, const IVec2& v2);
 	bool operator==(const IVec2& v1, const IVec2& v2);
-
 }
 
 #endif // !VECTOR_H

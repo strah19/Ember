@@ -234,5 +234,4 @@ namespace Ember {
 	int IVec2::DotProduct(IVec2& vec2) {
 		return ((this->x * vec2.x) + (this->y * vec2.y));
 	}
-
 }

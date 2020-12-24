@@ -1,4 +1,0 @@
-newSec:
-y = 0
-x = 0
-width = 250

@@ -1,14 +1,11 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <Windows.h>
-#include <sstream>
-#include <functional>
+#include "Ember.h"
 
+#define FILE_STATUS_DEBUG
+
+#ifdef FILE_STATUS_DEBUG
 #define ASSERT(condition, message) \
         do { \
             if (! (condition)) { \
@@ -18,8 +15,9 @@
             } \
         } while (false)
 #define ASSERT_OPEN ASSERT(file.is_open(), "Could Not Open File " << file_path)
+#endif
 
-#ifdef  FILE_STATUS_DEBUG
+#ifndef  FILE_STATUS_DEBUG
 #define ASSERT(condition, message) do { } while (false)
 #define ASSERT_OPEN
 #endif
@@ -133,41 +131,6 @@ namespace Ember {
 	static void Check(const char* host_file);
 	static void Close();
 
-	using CinderStructureType = std::string;
-
-	struct KeyToValues {
-		CinderStructureType key;
-		CinderStructureType value;
-
-		KeyToValues(CinderStructureType key, CinderStructureType value) : key(key), value(value) { }
-	};
-
-	struct Section {
-		CinderStructureType section_name;
-		std::vector<KeyToValues> keys;
-		unsigned int word_position;
-		Section(CinderStructureType section_name, unsigned int word_position) : section_name(section_name), word_position(word_position) { }
-	};
-
-	class CinderStructure {
-	public:
-		enum class CinderReturnCodes {
-			DeletedSection, Null
-		};
-
-		bool Load(const std::string& file_path);
-		~CinderStructure();
-
-		CinderReturnCodes WriteSection(const CinderStructureType& section_name);
-		CinderReturnCodes WriteKeyValueToSection(const CinderStructureType& section_name, const CinderStructureType& key, const CinderStructureType& value);
-		CinderReturnCodes DeleteKey(const CinderStructureType& section_name, const CinderStructureType& key);
-		std::string GetValue(const CinderStructureType& section_name, const CinderStructureType& key);
-
-	private:
-		File* core_file;
-
-		std::vector<Section> sections;
-	};
 }
 
 #endif // !FILE_H
