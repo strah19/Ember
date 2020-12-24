@@ -20,6 +20,7 @@ namespace Ember {
 		virtual void UserDefEvent(Event& event) { }
 		virtual void OnUserUpdate() { }
 		virtual void OnCreate() { }
+		virtual void OnClosure() { }
 
 		Window* GetWindow() { return window; }
 		Events* GetEvents() { return events; }

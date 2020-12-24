@@ -145,7 +145,7 @@ namespace Ember {
 			texture_info[map.GridComponent().cols * click_id.y + click_id.x].texture_id = current_user_texture;
 	}
 
-	void TileMapEditor::DeleteTile(std::vector<TileInfo>& texture_info, SDL_Scancode scancode) {
+	void TileMapEditor::DeleteTile(std::vector<TileInfo>& texture_info, EmberKeyCode scancode) {
 		IVec2 hover_on = map.Hover();
 		if (map.Event()->KeyCode() == scancode)
 			if (hover_on.x != -1 && hover_on.y != -1)

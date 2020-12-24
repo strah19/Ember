@@ -15,6 +15,8 @@ namespace Ember {
 	}
 
 	Application::~Application() {
+		OnClosure();
+
 		delete properties;
 		delete window;
 		delete events;

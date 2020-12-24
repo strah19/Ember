@@ -15,7 +15,10 @@ namespace Ember {
 			Quit();
 			MouseEvent();
 			MousePositonEvent();
-			Resize();
+			WindowResizeEvent();
+			KeyboardInputEvent();
+			JoystickEvent();
+			MouseWheelEvent();
 		}
 	}
 
@@ -29,14 +32,21 @@ namespace Ember {
 
 	void EventHandler::KeyEvent() {
 		if (native_event_handler.type == SDL_KEYDOWN) {
-			KeyboardEvents keyboard(true, native_event_handler.key.repeat, native_event_handler.key.keysym.scancode);
+			KeyboardEvents keyboard(true, native_event_handler.key.repeat, (EmberKeyCode) native_event_handler.key.keysym.scancode);
 			events->keyboard_event = keyboard;
 			callback(keyboard);
 		}
 		else if (native_event_handler.type == SDL_KEYUP) {
-			KeyboardEvents keyboard(false, 0, 0);
+			KeyboardEvents keyboard(false, 0, EmberKeyCode::Null);
 			events->keyboard_event = keyboard;
 			callback(keyboard);
+		}
+	}
+
+	void EventHandler::KeyboardInputEvent() {
+		if (native_event_handler.type == SDL_TEXTINPUT) {
+			KeyboardTextInputEvents input(native_event_handler.text.text);
+			callback(input);
 		}
 	}
 
@@ -53,7 +63,7 @@ namespace Ember {
 		}
 	}
 
-	void EventHandler::Resize() {
+	void EventHandler::WindowResizeEvent() {
 		if (native_event_handler.type == SDL_WINDOWEVENT) {
 			if (native_event_handler.window.event == SDL_WINDOWEVENT_RESIZED) {
 				ResizeEvent resize(native_event_handler.window.data1, native_event_handler.window.data2);
@@ -67,10 +77,33 @@ namespace Ember {
 
 	void EventHandler::MousePositonEvent() {
 		if (native_event_handler.type == SDL_MOUSEMOTION) {
-			MouseButtonPositionEvents pos(native_event_handler.button.x, native_event_handler.button.y);
+			MouseButtonPositionEvents pos({ native_event_handler.button.x, native_event_handler.button.y }, { native_event_handler.motion.x, native_event_handler.motion.y });
 			events->mouse_pos = pos;
 			callback(pos);
 		}
 	}
 
+	void EventHandler::JoystickEvent() {
+		int axis = 0, value = 0, button = 0;
+		if (native_event_handler.type == SDL_JOYBUTTONDOWN) {
+			button = native_event_handler.jbutton.button;
+
+			JoystickEvents joystick(axis, value, button);
+			callback(joystick);
+		}
+		if (native_event_handler.type == SDL_JOYAXISMOTION) {
+			axis = native_event_handler.jaxis.axis;
+			value = native_event_handler.jaxis.value;
+
+			JoystickEvents joystick(axis, value, button);
+			callback(joystick);
+		}
+	}
+
+	void EventHandler::MouseWheelEvent() {
+		if (native_event_handler.type == SDL_MOUSEWHEEL) {
+			MouseWheelEvents wheel(native_event_handler.wheel.direction);
+			callback(wheel);
+		}
+	}
 }

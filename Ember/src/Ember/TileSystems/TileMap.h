@@ -5,6 +5,7 @@
 #include "TileSystems/Grid.h"
 #include "File/File.h"
 #include "Animation/Spritesheet.h"
+#include "StartUp/Events/KeyboardCodes.h"
 
 namespace Ember {
 	struct TileInfo {
@@ -52,7 +53,7 @@ namespace Ember {
 		TileMapEditor(TileMap& map);
 		void UpdateMap(std::vector<TileInfo>& texture_info, ButtonIds btn_id, const IVec2& camera_position);
 		void RenderSpriteSheet(SpriteSheet& sprite_sheet, const IVec2& start_location, ButtonIds btn_id, const IVec2& size);
-		void DeleteTile(std::vector<TileInfo>& texture_info, SDL_Scancode scancode);
+		void DeleteTile(std::vector<TileInfo>& texture_info, EmberKeyCode scancode);
 	private:
 		TileMap map;
 		int current_user_texture;

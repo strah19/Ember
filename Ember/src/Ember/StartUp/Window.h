@@ -2,6 +2,7 @@
 #define WINDOWS_H
 
 #include "Ember.h"
+#include "SDL_syswm.h"
 
 namespace Ember {
 	struct WindowProperties {
@@ -48,6 +49,8 @@ namespace Ember {
 		bool AssertSize(uint32_t width, uint32_t height);
 		void CalculatePosition(IVec2* position);
 	};
+
+	SDL_SysWMinfo GetSystemInfo(Window* window);
 }
 
 #endif // !WINDOWS_H

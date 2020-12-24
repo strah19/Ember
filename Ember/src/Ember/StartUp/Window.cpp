@@ -82,4 +82,11 @@ namespace Ember {
 			position->y = SDL_WINDOWPOS_CENTERED;
 		}
 	}
+
+	SDL_SysWMinfo GetSystemInfo(Window* window) {
+		SDL_SysWMinfo info;
+		SDL_VERSION(&info.version);
+
+		return info;
+	}
 }

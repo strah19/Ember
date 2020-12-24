@@ -30,8 +30,11 @@
     <ClInclude Include="src\Ember\Gui\Button.h" />
     <ClInclude Include="src\Ember\Layer.h" />
     <ClInclude Include="src\Ember\StartUp\Application.h" />
+    <ClInclude Include="src\Ember\StartUp\Cursor.h" />
     <ClInclude Include="src\Ember\StartUp\EventHandler.h" />
     <ClInclude Include="src\Ember\StartUp\Events\Events.h" />
+    <ClInclude Include="src\Ember\StartUp\Events\JoystickEvents.h" />
+    <ClInclude Include="src\Ember\StartUp\Events\KeyboardCodes.h" />
     <ClInclude Include="src\Ember\StartUp\Events\KeyboardEvents.h" />
     <ClInclude Include="src\Ember\StartUp\Events\MouseEvents.h" />
     <ClInclude Include="src\Ember\StartUp\Events\WindowEvents.h" />
@@ -53,6 +56,7 @@
     <ClCompile Include="src\Ember\Gui\Button.cpp" />
     <ClCompile Include="src\Ember\Layer.cpp" />
     <ClCompile Include="src\Ember\StartUp\Application.cpp" />
+    <ClCompile Include="src\Ember\StartUp\Cursor.cpp" />
     <ClCompile Include="src\Ember\StartUp\EventHandler.cpp" />
     <ClCompile Include="src\Ember\StartUp\Renderer.cpp" />
     <ClCompile Include="src\Ember\StartUp\Window.cpp" />

@@ -5,6 +5,7 @@
 #include "StartUp/Events/MouseEvents.h"
 #include "StartUp/Events/WindowEvents.h"
 #include "StartUp/Events/KeyBoardEvents.h"
+#include "StartUp/Events/JoystickEvents.h"
 
 #include "StartUp/Window.h"
 
@@ -14,12 +15,12 @@ namespace Ember {
 	class Events {
 	public:
 		Events()
-			: mouse_event(false, 0, 0), keyboard_event(false, 0, 0), mouse_pos(0, 0) { }
+			: mouse_event(false, 0, 0), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }) { }
 
 		bool Down() const { return mouse_event.down; }
 		IVec2 MousePosition() const { return mouse_pos.position; }
 		ButtonIds ButtonId() const { return mouse_event.button_id; }
-		int KeyCode() { return keyboard_event.scancode; }
+		EmberKeyCode KeyCode() { return keyboard_event.scancode; }
 		bool KeyDown() { return keyboard_event.pressed; }
 	private:
 		MouseButtonEvents mouse_event;
@@ -44,9 +45,12 @@ namespace Ember {
 
 		void Quit();
 		void KeyEvent();
-		void Resize();
+		void WindowResizeEvent();
 		void MouseEvent();
 		void MousePositonEvent();
+		void KeyboardInputEvent();
+		void JoystickEvent();
+		void MouseWheelEvent();
 	};
 }
 
