@@ -34,6 +34,9 @@ namespace Ember {
 	struct MouseWheelEvents : public Event {
 		MouseWheelEvents(int direction)
 			: Event("Wheel"), direction(direction) { }
+		virtual ~MouseWheelEvents() = default;
+
+		std::string GetName() const { return name; }
 
 		int direction;
 	};

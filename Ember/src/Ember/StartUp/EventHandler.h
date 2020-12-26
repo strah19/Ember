@@ -15,17 +15,22 @@ namespace Ember {
 	class Events {
 	public:
 		Events()
-			: mouse_event(false, 0, 0), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }) { }
+			: mouse_event(false, 0, 0), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }), input(" "), wheel(0) { }
 
 		bool Down() const { return mouse_event.down; }
 		IVec2 MousePosition() const { return mouse_pos.position; }
 		ButtonIds ButtonId() const { return mouse_event.button_id; }
-		EmberKeyCode KeyCode() { return keyboard_event.scancode; }
-		bool KeyDown() { return keyboard_event.pressed; }
+		EmberKeyCode KeyCode() const { return keyboard_event.scancode; }
+		bool KeyDown() const { return keyboard_event.pressed; }
+		IVec2 MouseMotion() const { return mouse_pos.motion; }
+		std::string UserInput() const { return input.input_text; }
+		int MouseWheelDirection() const { return wheel.direction; }
 	private:
 		MouseButtonEvents mouse_event;
 		KeyboardEvents keyboard_event;
 		MouseButtonPositionEvents mouse_pos;
+		KeyboardTextInputEvents input;
+		MouseWheelEvents wheel;
 		friend class EventHandler;
 	};
 

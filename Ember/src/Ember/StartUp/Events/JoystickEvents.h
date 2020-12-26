@@ -10,6 +10,8 @@ namespace Ember {
 	struct JoystickEvents : public Event {
 		JoystickEvents(int axis, int value, int button) :
 			Event("Joystick"), axis(axis), value(value), button(button) { }
+		virtual ~JoystickEvents() = default;
+		std::string GetName() const { return name; }
 
 		static inline void SetUpJoystick() { 
 			if (SDL_NumJoysticks() < 1) 

@@ -21,6 +21,7 @@ namespace Ember {
 		KeyboardTextInputEvents(const std::string& input)
 			: Event("KeyboardTextInput"), input_text(input) { }
 		virtual ~KeyboardTextInputEvents() = default;
+		std::string GetName() const { return name; }
 
 		static inline void StartTextInput() { SDL_StartTextInput(); }
 		static inline void StopTextInput() { SDL_StopTextInput(); }

@@ -1,6 +1,4 @@
 #include "StartUp/Application.h"
-#include "Assets/Font.h"
-#include "Assets/Texture.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -11,7 +9,7 @@ public:
 		window->Update();
 
 		renderer->Clear(background_color);
-
+		
 		renderer->Show();
 	}
 
@@ -19,7 +17,7 @@ public:
 		Ember::EventDispatcher dispath(&event);
 	}
 private:
-	Ember::Color background_color = { 0, 0,0, 255 };
+	Ember::Color background_color = { 0, 0, 0, 255 };
 };
 
 int main(int argc, char** argv) {

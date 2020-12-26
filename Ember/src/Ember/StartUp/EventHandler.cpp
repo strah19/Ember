@@ -46,6 +46,7 @@ namespace Ember {
 	void EventHandler::KeyboardInputEvent() {
 		if (native_event_handler.type == SDL_TEXTINPUT) {
 			KeyboardTextInputEvents input(native_event_handler.text.text);
+			events->input = input;
 			callback(input);
 		}
 	}
@@ -76,7 +77,7 @@ namespace Ember {
 
 	void EventHandler::MousePositonEvent() {
 		if (native_event_handler.type == SDL_MOUSEMOTION) {
-			MouseButtonPositionEvents pos({ native_event_handler.button.x, native_event_handler.button.y }, { native_event_handler.motion.x, native_event_handler.motion.y });
+			MouseButtonPositionEvents pos({ native_event_handler.button.x, native_event_handler.button.y }, { native_event_handler.motion.xrel, native_event_handler.motion.yrel });
 			events->mouse_pos = pos;
 			callback(pos);
 		}
@@ -101,7 +102,8 @@ namespace Ember {
 
 	void EventHandler::MouseWheelEvent() {
 		if (native_event_handler.type == SDL_MOUSEWHEEL) {
-			MouseWheelEvents wheel(native_event_handler.wheel.direction);
+			MouseWheelEvents wheel(native_event_handler.wheel.y);
+			events->wheel = wheel;
 			callback(wheel);
 		}
 	}
