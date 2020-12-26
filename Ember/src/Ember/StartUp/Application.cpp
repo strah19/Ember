@@ -11,7 +11,7 @@ namespace Ember {
 
 		renderer = new rRenderer(window);
 
-		OnUserUpdate();
+		OnCreate();
 	}
 
 	Application::~Application() {

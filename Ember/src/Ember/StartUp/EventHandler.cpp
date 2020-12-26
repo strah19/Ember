@@ -72,7 +72,6 @@ namespace Ember {
 				callback(resize);
 			}
 		}
-		SDL_SetWindowResizable(window->GetNativeWindow(), SDL_TRUE);
 	}
 
 	void EventHandler::MousePositonEvent() {
