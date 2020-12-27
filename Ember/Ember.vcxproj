@@ -28,6 +28,7 @@
     <ClInclude Include="src\Ember\File\CinderStructure.h" />
     <ClInclude Include="src\Ember\File\File.h" />
     <ClInclude Include="src\Ember\Gui\Button.h" />
+    <ClInclude Include="src\Ember\Gui\GuiObjectFramework.h" />
     <ClInclude Include="src\Ember\Layer.h" />
     <ClInclude Include="src\Ember\StartUp\Application.h" />
     <ClInclude Include="src\Ember\StartUp\Cursor.h" />
@@ -54,6 +55,7 @@
     <ClCompile Include="src\Ember\File\CinderStructure.cpp" />
     <ClCompile Include="src\Ember\File\File.cpp" />
     <ClCompile Include="src\Ember\Gui\Button.cpp" />
+    <ClCompile Include="src\Ember\Gui\GuiObjectFramework.cpp" />
     <ClCompile Include="src\Ember\Layer.cpp" />
     <ClCompile Include="src\Ember\StartUp\Application.cpp" />
     <ClCompile Include="src\Ember\StartUp\Cursor.cpp" />

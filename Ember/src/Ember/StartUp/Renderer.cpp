@@ -89,4 +89,47 @@ namespace Ember {
 		SDL_RenderDrawPointF(renderer, point.x, point.y);
 	}
 
+	void rRenderer::DrawCircle(const IVec2& position, int radius, const Color& color) {
+		const int diameter = (radius * 2);
+
+		int x = (radius - 1);
+		int y = 0;
+		int tx = 1;
+		int ty = 1;
+		int error = (tx - diameter);
+		SetColor(color);
+		while (x >= y) {
+			SDL_RenderDrawPoint(renderer, position.x + x, position.y - y);
+			SDL_RenderDrawPoint(renderer, position.x + x, position.y + y);
+			SDL_RenderDrawPoint(renderer, position.x - x, position.y - y);
+			SDL_RenderDrawPoint(renderer, position.x - x, position.y + y);
+			SDL_RenderDrawPoint(renderer, position.x + y, position.y - x);
+			SDL_RenderDrawPoint(renderer, position.x + y, position.y + x);
+			SDL_RenderDrawPoint(renderer, position.x - y, position.y - x);
+			SDL_RenderDrawPoint(renderer, position.x - y, position.y + x);
+
+			if (error <= 0) {
+				++y;
+				error += ty;
+				ty += 2;
+			}
+
+			if (error > 0) {
+				--x;
+				tx += 2;
+				error += (tx - diameter);
+			}
+		}
+	}
+
+	void rRenderer::FillCircle(const IVec2& position, int radius, const Color& color) {
+		SetColor(color);
+
+		for (double dy = 1; dy <= radius; dy += 1.0) {
+			double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
+			int x = position.x - (int)dx;
+			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y + (int)dy - radius, position.x + (int)dx, position.y + (int)dy - radius);
+			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y - (int)dy + radius, position.x + (int)dx, position.y - (int)dy + radius);
+		}
+	}
 }

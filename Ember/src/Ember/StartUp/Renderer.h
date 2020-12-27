@@ -22,6 +22,8 @@ namespace Ember {
 		void Border(const Rect& rect, const Color& color);
 		void Line(const IVec2& point1, const IVec2& point2, const Color& color);
 		void Point(const IVec2& point, const Color& color);
+		void DrawCircle(const IVec2& position, int radius, const Color& color);
+		void FillCircle(const IVec2& position, int radius, const Color& color);
 
 		void RectangleF(const FRect& rect, const Color& color);
 		void BorderF(const FRect& rect, const Color& color);
