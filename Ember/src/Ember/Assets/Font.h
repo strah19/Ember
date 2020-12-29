@@ -13,13 +13,11 @@ namespace Ember {
 
 		void Initialize(rRenderer* renderer, const std::string& file_path, const char* text, int size, const Color& color, int x, int y);
 		void UnlockFont();
-		void UpdateFont();
 
 		void UpdateColor(const Color& color) { font_color = color; }
 		template<typename T>
-		void UpdateText(const T& text) { 
+		void UpdateText(const T& text) {
 			std::stringstream ss;
-			ss.str(std::string);
 			ss << text;
 
 			current_text_being_draw = ss.str();
@@ -31,7 +29,11 @@ namespace Ember {
 		inline void SetSize(int w, int h) { font_width = w; font_height = h; }
 		void Translate(const Ember::IVec2& translation);
 		Ember::IVec2 GetSize();
+		Ember::IVec2 GetSizeFromText(const std::string& text);
+
+		void SetStyle(int style);
 	private:
+		void UpdateFont();
 		int font_width;
 		int font_height;
 		TTF_Font* font;

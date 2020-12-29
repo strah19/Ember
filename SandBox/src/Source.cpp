@@ -3,7 +3,6 @@
 
 class Sandbox : public Ember::Application {
 public:
-	void OnClosure() { }
 	void OnCreate() { 
 		scale.CalculatePercents({ 0, 0, 100, 100 }, { properties->width, properties->height });
 	}

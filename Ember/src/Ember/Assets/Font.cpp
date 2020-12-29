@@ -6,7 +6,7 @@ namespace Ember {
 	}
 
 	Font::Font() : renderer(nullptr), font_width(0), font_height(0), font(nullptr), font_position({ 0, 0, 0, 0 }), font_texture(nullptr), font_color({ 0, 0, 0, 255 }), font_is_locked(true),
-				   current_text_being_draw(" ") { }
+		current_text_being_draw(" ") { }
 
 	Font::~Font() {
 		TTF_CloseFont(font);
@@ -40,8 +40,10 @@ namespace Ember {
 	}
 
 	void Font::Render() {
-		if (!font_is_locked && renderer != nullptr)
+		if (!font_is_locked && renderer != nullptr) {
+			UpdateFont();
 			SDL_RenderCopy(renderer->Renderer(), font_texture, nullptr, &font_position);
+		}
 	}
 
 	void Font::SetPosition(int x, int y) {
@@ -66,19 +68,31 @@ namespace Ember {
 		return { *w, *h };
 	}
 
+	Ember::IVec2 Font::GetSizeFromText(const std::string& text) {
+		int* w = &font_position.w;
+		int* h = &font_position.h;
+		TTF_SizeText(font, text.c_str(), w, h);
+
+		return { *w, *h };
+	}
+
 	void Font::UpdateFont() {
-		if (!font_is_locked) {
+		if (!font_is_locked && current_text_being_draw != "") {
 			SDL_DestroyTexture(font_texture);
-			SDL_Surface* fontSurface = TTF_RenderText_Blended(font, current_text_being_draw.c_str(), font_color.color);
-			font_width = fontSurface->w;
-			font_height = fontSurface->h;
+			SDL_Surface* font_surface = TTF_RenderText_Blended(font, current_text_being_draw.c_str(), font_color.color);
+			font_width = font_surface->w;
+			font_height = font_surface->h;
 
 			font_position.w = font_width;
 			font_position.h = font_height;
 
-			font_texture = SDL_CreateTextureFromSurface(renderer->Renderer(), fontSurface);
+			font_texture = SDL_CreateTextureFromSurface(renderer->Renderer(), font_surface);
 
-			SDL_FreeSurface(fontSurface);
+			SDL_FreeSurface(font_surface);
 		}
+	}
+
+	void Font::SetStyle(int style) {
+		TTF_SetFontStyle(font, style);
 	}
 }

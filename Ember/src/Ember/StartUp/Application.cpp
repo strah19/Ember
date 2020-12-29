@@ -15,8 +15,6 @@ namespace Ember {
 	}
 
 	Application::~Application() {
-		OnClosure();
-
 		delete properties;
 		delete window;
 		delete events;
@@ -25,7 +23,6 @@ namespace Ember {
 	}
 
 	void Application::Run() {
-		OnCreate();
 		while (window->IsRunning()) {
 			event_handler->Update();
 			OnUserUpdate();
