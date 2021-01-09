@@ -3,9 +3,9 @@
 
 #include "Ember.h"
 #include "TileSystems/Grid.h"
-#include "CinderFileSystem/CinderFileSys.h"
+#include "../CinderFileSystem/CinderFileSys.h"
 #include "Animation/Spritesheet.h"
-#include "StartUp/Events/KeyboardCodes.h"
+#include "Core/Events/KeyboardCodes.h"
 
 namespace Ember {
 	struct TileInfo {

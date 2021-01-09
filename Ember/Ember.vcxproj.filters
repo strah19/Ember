@@ -33,31 +33,7 @@
     <ClInclude Include="src\Ember\Assets\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\EventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\Events.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\MouseEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\KeyboardEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\WindowEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Assets\Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Gui\Button.h">
@@ -72,22 +48,46 @@
     <ClInclude Include="src\Ember\TileSystems\TileMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\KeyboardCodes.h">
+    <ClInclude Include="src\Ember\Core\Events\Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Cursor.h">
+    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\StartUp\Events\JoystickEvents.h">
+    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\CinderFileSystem\CinderStructure.h">
+    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\CinderFileSystem\CinderFileSys.h">
+    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\CinderFileSystem\CFSFile.h">
+    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CinderFileSystem\CFSFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CinderFileSystem\CinderFileSys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CinderFileSystem\CinderStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,19 +110,7 @@
     <ClCompile Include="src\Ember\Assets\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\StartUp\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\StartUp\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\StartUp\EventHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Ember\Assets\Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\StartUp\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Gui\Button.cpp">
@@ -137,13 +125,25 @@
     <ClCompile Include="src\Ember\TileSystems\TileMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\StartUp\Cursor.cpp">
+    <ClCompile Include="src\Ember\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\CinderFileSystem\CinderStructure.cpp">
+    <ClCompile Include="src\Ember\Core\Cursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\CinderFileSystem\CFSFile.cpp">
+    <ClCompile Include="src\Ember\Core\EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

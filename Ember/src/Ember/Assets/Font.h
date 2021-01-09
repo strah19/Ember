@@ -2,7 +2,7 @@
 #define FONT_H
 
 #include "Ember.h"
-#include "StartUp/Renderer.h"
+#include "Core/Renderer.h"
 
 namespace Ember {
 	class Font {

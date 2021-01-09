@@ -2,7 +2,7 @@
 #define TEXTURE_H
 
 #include "Ember.h"
-#include "StartUp/Renderer.h"
+#include "Core/Renderer.h"
 
 namespace Ember {
 	class Texture {
@@ -27,6 +27,7 @@ namespace Ember {
 		void TextureColor(const Color& color);
 		void TextureAlptha(Uint8 alptha);
 		IVec2 GetTextureInfo();
+		SDL_Texture* GetNativeTexture() { return texture; }
 	private:
 		SDL_Texture* texture;
 		rRenderer* renderer;

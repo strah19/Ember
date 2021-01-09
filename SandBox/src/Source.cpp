@@ -1,5 +1,5 @@
-#include "StartUp/Application.h"
-#include "StartUp/Cursor.h"
+#include "Core/Application.h"
+#include "Assets/Texture.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -12,19 +12,23 @@ public:
 
 	void OnUserUpdate() {
 		window->Update();
-		window->SetResizeable(true);
 
 		renderer->Clear(background_color);
-	
 
 		renderer->Show();
 	}
 
-	void UserDefEvent(Ember::Event& event) {
-		Ember::EventDispatcher dispath(&event);
+	bool Keyboard(Ember::KeyboardEvents& keyboard) {
+
+		return false;
+	}
+
+	void UserDefEvent(Ember::Event& event) { 
+		Ember::EventDispatcher dispatch(&event);
+		dispatch.Dispatch<Ember::KeyboardEvents>(EMBER_BIND_FUNC(Keyboard));
 	}
 private:
-	Ember::Color background_color = { 0, 0, 0, 255 };
+	Ember::Color background_color = { 200, 100, 50, 255 };
 };
 
 int main(int argc, char** argv) {

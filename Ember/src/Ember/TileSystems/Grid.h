@@ -2,8 +2,8 @@
 #define GRID_H
 
 #include "Ember.h"
-#include "StartUp/Renderer.h"
-#include "StartUp/EventHandler.h"
+#include "Core/Renderer.h"
+#include "Core/EventHandler.h"
 #include "Gui/Button.h"
 
 namespace Ember {
