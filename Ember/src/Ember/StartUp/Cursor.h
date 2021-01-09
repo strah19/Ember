@@ -23,6 +23,7 @@ namespace Ember {
 		void Hide();
 	private:
 		SDL_Cursor* cursor = nullptr;
+		CursorType type = CursorType::arrow;
 	};
 }
 

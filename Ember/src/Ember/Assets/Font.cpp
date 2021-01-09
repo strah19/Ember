@@ -1,8 +1,8 @@
 #include "Font.h"
 
 namespace Ember {
-	Font::Font(rRenderer* renderer, const std::string& file_path, const char* text, int size, const Color& color, int x, int y) {
-		Initialize(renderer, file_path, text, size, color, x, y);
+	Font::Font(rRenderer* renderer, const std::string& file_path, int size) {
+		Initialize(renderer, file_path, size);
 	}
 
 	Font::Font() : renderer(nullptr), font_width(0), font_height(0), font(nullptr), font_position({ 0, 0, 0, 0 }), font_texture(nullptr), font_color({ 0, 0, 0, 255 }), font_is_locked(true),
@@ -12,17 +12,18 @@ namespace Ember {
 		TTF_CloseFont(font);
 	}
 
-	void Font::Initialize(rRenderer* renderer, const std::string& file_path, const char* text, int size, const Color& color, int x, int y) {
+	void Font::Initialize(rRenderer* renderer, const std::string& file_path, int size) {
 		this->renderer = renderer;
 		font_width = 0;
 		font_height = 0;
+		this->file_path = file_path.c_str();
 
 		font = TTF_OpenFont(file_path.c_str(), size);
-		font_position = { x, y, 0, 0 };
+		font_position = { 0, 0, 0, 0 };
 		font_texture = nullptr;
-		font_color = color;
+		font_color = { 0, 0, 0, 255 };
 
-		current_text_being_draw = text;
+		current_text_being_draw = " ";
 
 		font_is_locked = true;
 		if (font) {

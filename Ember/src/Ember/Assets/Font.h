@@ -7,11 +7,11 @@
 namespace Ember {
 	class Font {
 	public:
-		Font(rRenderer* renderer, const std::string& file_path, const char* text, int size, const Color& color, int x, int y);
+		Font(rRenderer* renderer, const std::string& file_path, int size);
 		Font();
 		~Font();
 
-		void Initialize(rRenderer* renderer, const std::string& file_path, const char* text, int size, const Color& color, int x, int y);
+		void Initialize(rRenderer* renderer, const std::string& file_path, int size);
 		void UnlockFont();
 
 		void UpdateColor(const Color& color) { font_color = color; }
@@ -31,8 +31,12 @@ namespace Ember {
 		Ember::IVec2 GetSize();
 		Ember::IVec2 GetSizeFromText(const std::string& text);
 
+		int GetMaxHeight() { return TTF_FontHeight(font); }
 		void SetStyle(int style);
+
+		const char* GetPath() { return file_path; }
 	private:
+		const char* file_path;
 		void UpdateFont();
 		int font_width;
 		int font_height;

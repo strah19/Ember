@@ -21,7 +21,7 @@ namespace Ember {
 	}
 
 	bool rRenderer::Initializer() {
-		renderer = SDL_CreateRenderer((SDL_Window*)window->GetNativeWindow(), RenderingIndex,
+		renderer = SDL_CreateRenderer(window->GetNativeWindow(), RenderingIndex,
 			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		return (renderer != nullptr);
 	}
@@ -130,6 +130,22 @@ namespace Ember {
 			int x = position.x - (int)dx;
 			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y + (int)dy - radius, position.x + (int)dx, position.y + (int)dy - radius);
 			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y - (int)dy + radius, position.x + (int)dx, position.y - (int)dy + radius);
+		}
+	}
+
+	void rRenderer::Curve(IVec2 pos[], const Color& color) {
+		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
+			float px = ((1 - t) * (1 - t)) * pos[0].x + 2 * (1 - t) * t * pos[1].x + (t * t) * pos[2].x;
+			float py = ((1 - t) * (1 - t)) * pos[0].y + 2 * (1 - t) * t * pos[1].y + (t * t) * pos[2].y;
+			PointF({ px, py }, color);
+		}
+	}
+
+	void rRenderer::AdvCurve(IVec2 pos[], const Color& color) {
+		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
+			float px = ((1 - t) * (1 - t) * (1 - t)) * pos[0].x + 3 * ((1 - t) * (1 - t)) * t * pos[1].x + 3 * (1 - t) * (t * t) * pos[2].x + (t * t * t) * pos[3].x;
+			float py = ((1 - t) * (1 - t) * (1 - t)) * pos[0].y + 3 * ((1 - t) * (1 - t)) * t * pos[1].y + 3 * (1 - t) * (t * t) * pos[2].y + (t * t * t) * pos[3].y;
+			PointF({ px, py }, color);
 		}
 	}
 }

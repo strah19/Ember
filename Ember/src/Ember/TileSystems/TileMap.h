@@ -3,7 +3,7 @@
 
 #include "Ember.h"
 #include "TileSystems/Grid.h"
-#include "File/File.h"
+#include "CinderFileSystem/CinderFileSys.h"
 #include "Animation/Spritesheet.h"
 #include "StartUp/Events/KeyboardCodes.h"
 
@@ -23,7 +23,7 @@ namespace Ember {
 		std::vector<TileInfo> AddNewLayer(int col, int row);
 
 	private:
-		File serialier;
+		Cinder::CFSFile serialier;
 		int index;
 		std::stringstream output;
 

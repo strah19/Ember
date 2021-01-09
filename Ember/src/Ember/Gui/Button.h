@@ -18,7 +18,7 @@ namespace Ember {
 
 		void UpdatePosition(IVec2& pos) { position.pos = pos; }
 		void UpdateSize(IVec2 size) { position.size = size; }
-
+		 
 		bool Hold(ButtonIds id);
 		bool InOut(ButtonIds id);
 		inline Rect Position() { return position; }

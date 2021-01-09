@@ -21,12 +21,6 @@
     <ClInclude Include="src\Ember\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\File\File.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\File\CinderStructure.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,18 +81,18 @@
     <ClInclude Include="src\Ember\StartUp\Events\JoystickEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Gui\GuiObjectFramework.h">
+    <ClInclude Include="src\Ember\CinderFileSystem\CinderStructure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\CinderFileSystem\CinderFileSys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\CinderFileSystem\CFSFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\File\File.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\File\CinderStructure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Layer.cpp">
@@ -146,7 +140,10 @@
     <ClCompile Include="src\Ember\StartUp\Cursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Gui\GuiObjectFramework.cpp">
+    <ClCompile Include="src\Ember\CinderFileSystem\CinderStructure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\CinderFileSystem\CFSFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

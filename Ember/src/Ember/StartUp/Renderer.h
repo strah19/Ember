@@ -29,6 +29,9 @@ namespace Ember {
 		void BorderF(const FRect& rect, const Color& color);
 		void LineF(const Vec2& point1, const Vec2& point2, const Color& color);
 		void PointF(const Vec2& point, const Color& color);
+
+		void Curve(IVec2 pos[], const Color& color);
+		void AdvCurve(IVec2 pos[], const Color& color);
 	private:
 		SDL_Renderer* renderer;
 		Window* window;

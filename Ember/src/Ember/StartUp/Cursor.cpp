@@ -9,11 +9,11 @@ namespace Ember {
 	}
 
 	void Cursor::SetCursor(CursorType type) {
-		if (cursor != nullptr)
-			cursor = SDL_CreateSystemCursor((SDL_SystemCursor)type);
+		this->type = type;
 	}
 
 	void Cursor::Update() {
+		cursor = SDL_CreateSystemCursor((SDL_SystemCursor)type);
 		SDL_SetCursor(cursor);
 	}
 

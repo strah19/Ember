@@ -53,7 +53,7 @@ namespace Ember {
 
 	void TileMapSerializer::ReadTextureInfo(int col, int row, std::vector<TileInfo>& data) {
 		unsigned int texture_id_num = col * row;
-		serialier.DoEachWord([&](std::string& word, unsigned int counter) {
+		serialier.DoEachWord([&](std::string& word, const uint32_t counter) {
 			if (counter < texture_id_num)
 				data.push_back({ std::stoi(word) });
 
@@ -65,7 +65,7 @@ namespace Ember {
 		unsigned int texture_id_num = col * row;
 		size_t current_layer = 0;
 		data.push_back(std::vector<Ember::TileInfo>());
-		serialier.DoEachWord([&](std::string& word, unsigned int counter) {
+		serialier.DoEachWord([&](std::string& word, const uint32_t counter) {
 			if (counter >= texture_id_num) {
 				data.push_back(std::vector<Ember::TileInfo>());
 				texture_id_num += texture_id_num;
