@@ -19,7 +19,6 @@ public:
 	}
 
 	bool Keyboard(Ember::KeyboardEvents& keyboard) {
-
 		return false;
 	}
 

@@ -12,7 +12,7 @@ namespace Ember {
 
 		std::string GetName() const { return name; }
 
-		bool GetKeyboardState(EmberKeyCode key_code) {
+		static bool GetKeyboardState(EmberKeyCode key_code) {
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 
 			return (state[(SDL_Scancode)key_code]);
