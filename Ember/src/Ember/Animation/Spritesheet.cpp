@@ -23,11 +23,30 @@ namespace Ember {
 		clip.y = y * clip.h;
 	}
 
-	void SpriteSheet::DrawSelectedSprite(const Rect& rect) {
-		texture.Draw(rect, clip);
-	}
-
 	Rect SpriteSheet::ReturnSourceRect() {
 		return clip;
+	}
+
+	RandomAccessSpriteSheet::RandomAccessSpriteSheet(Texture& texture, const std::initializer_list<Rect>& rects) {
+		Initialize(texture, rects);
+	}
+
+	RandomAccessSpriteSheet::RandomAccessSpriteSheet() { }
+
+	void RandomAccessSpriteSheet::Initialize(Texture& texture, const std::initializer_list<Rect>& rects) {
+		this->texture = texture;
+
+		list_clips = rects;
+	}
+
+	Rect RandomAccessSpriteSheet::ReturnSourceRect() {
+		if (current_index < list_clips.size())
+			return list_clips[current_index];
+		return { 0, 0, 0, 0 };
+	}
+
+	void RandomAccessSpriteSheet::SelectSprite(size_t list_index) {
+		if (list_index > -1)
+			current_index = list_index;
 	}
 }

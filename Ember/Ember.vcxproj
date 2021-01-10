@@ -22,6 +22,7 @@
     <ClInclude Include="src\CinderFileSystem\CFSFile.h" />
     <ClInclude Include="src\CinderFileSystem\CinderFileSys.h" />
     <ClInclude Include="src\CinderFileSystem\CinderStructure.h" />
+    <ClInclude Include="src\Ember\Animation\Animation.h" />
     <ClInclude Include="src\Ember\Animation\Spritesheet.h" />
     <ClInclude Include="src\Ember\Assets\Assets.h" />
     <ClInclude Include="src\Ember\Assets\Audio.h" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp" />
     <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp" />
+    <ClCompile Include="src\Ember\Animation\Animation.cpp" />
     <ClCompile Include="src\Ember\Animation\Spritesheet.cpp" />
     <ClCompile Include="src\Ember\Assets\Assets.cpp" />
     <ClCompile Include="src\Ember\Assets\Audio.cpp" />

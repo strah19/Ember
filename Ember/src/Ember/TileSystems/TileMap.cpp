@@ -125,7 +125,7 @@ namespace Ember {
 				for (int j = 0; j < grid.rows; j++) {
 					if (layer[grid.cols * j + i].texture_id != -1) {
 						sprite_sheet.SelectSprite(layer[grid.cols * j + i].texture_id % sprite_sheet.Size().x, layer[grid.cols * j + i].texture_id / sprite_sheet.Size().x);
-						sprite_sheet.DrawSelectedSprite({ x, y, grid.block_width, grid.block_height });
+						sprite_sheet.GetTexture()->Draw(Ember::Rect({ x, y, grid.block_width, grid.block_height }));
 					}
 					y += grid.block_height;
 				}
@@ -157,8 +157,8 @@ namespace Ember {
 			for (int j = 0; j < sprite_sheet.Size().y; j++) {
 				texture_picker.UpdatePosition(start_location.x + i * size.x, start_location.y + j * size.y);
 				sprite_sheet.SelectSprite(i, j);
-				sprite_sheet.DrawSelectedSprite({ start_location.x + i * size.x, start_location.y + j * size.y,
-					size.x, size.y });
+				sprite_sheet.GetTexture()->Draw(Ember::Rect({ start_location.x + i * size.x, start_location.y + j * size.y,
+					size.x, size.y }));
 				if (texture_picker.Click(btn_id))
 					current_user_texture = sprite_sheet.Size().x * j + i;
 			}
