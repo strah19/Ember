@@ -15,27 +15,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{900E1D0D-FC22-45BE-C5A4-E81D317841EF}</ProjectGuid>
+    <ProjectGuid>{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Ember</RootNamespace>
+    <RootNamespace>Sandbox</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
@@ -54,28 +54,31 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\bin\Debug-windows-x86\Ember\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86\Ember\</IntDir>
-    <TargetName>Ember</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86\Sandbox\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86\Sandbox\</IntDir>
+    <TargetName>Sandbox</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\bin\Release-windows-x86\Ember\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86\Ember\</IntDir>
-    <TargetName>Ember</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86\Sandbox\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86\Sandbox\</IntDir>
+    <TargetName>Sandbox</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
-    <OutDir>..\bin\Dist-windows-x86\Ember\</OutDir>
-    <IntDir>..\bin-int\Dist-windows-x86\Ember\</IntDir>
-    <TargetName>Ember</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Dist-windows-x86\Sandbox\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86\Sandbox\</IntDir>
+    <TargetName>Sandbox</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -83,19 +86,15 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -106,20 +105,16 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -130,65 +125,18 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\CinderFileSystem\CFSFile.h" />
-    <ClInclude Include="src\CinderFileSystem\CinderFileSys.h" />
-    <ClInclude Include="src\CinderFileSystem\CinderStructure.h" />
-    <ClInclude Include="src\Ember\Animation\Animation.h" />
-    <ClInclude Include="src\Ember\Animation\Spritesheet.h" />
-    <ClInclude Include="src\Ember\Assets\Assets.h" />
-    <ClInclude Include="src\Ember\Assets\Audio.h" />
-    <ClInclude Include="src\Ember\Assets\Font.h" />
-    <ClInclude Include="src\Ember\Assets\Texture.h" />
-    <ClInclude Include="src\Ember\Core\Application.h" />
-    <ClInclude Include="src\Ember\Core\Cursor.h" />
-    <ClInclude Include="src\Ember\Core\EventHandler.h" />
-    <ClInclude Include="src\Ember\Core\Events\Events.h" />
-    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h" />
-    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h" />
-    <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
-    <ClInclude Include="src\Ember\Core\Renderer.h" />
-    <ClInclude Include="src\Ember\Core\Window.h" />
-    <ClInclude Include="src\Ember\Ember.h" />
-    <ClInclude Include="src\Ember\Gui\Button.h" />
-    <ClInclude Include="src\Ember\Layer.h" />
-    <ClInclude Include="src\Ember\TileSystems\Grid.h" />
-    <ClInclude Include="src\Ember\TileSystems\TileMap.h" />
-    <ClInclude Include="src\Ember\Vector.h" />
+    <ClCompile Include="..\Sandbox\src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CinderFileSystem\CFSFile.cpp" />
-    <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp" />
-    <ClCompile Include="src\Ember\Animation\Animation.cpp" />
-    <ClCompile Include="src\Ember\Animation\Spritesheet.cpp" />
-    <ClCompile Include="src\Ember\Assets\Assets.cpp" />
-    <ClCompile Include="src\Ember\Assets\Audio.cpp" />
-    <ClCompile Include="src\Ember\Assets\Font.cpp" />
-    <ClCompile Include="src\Ember\Assets\Texture.cpp" />
-    <ClCompile Include="src\Ember\Core\Application.cpp" />
-    <ClCompile Include="src\Ember\Core\Cursor.cpp" />
-    <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
-    <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
-    <ClCompile Include="src\Ember\Core\Renderer.cpp" />
-    <ClCompile Include="src\Ember\Core\Window.cpp" />
-    <ClCompile Include="src\Ember\Ember.cpp" />
-    <ClCompile Include="src\Ember\Gui\Button.cpp" />
-    <ClCompile Include="src\Ember\Layer.cpp" />
-    <ClCompile Include="src\Ember\TileSystems\Grid.cpp" />
-    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp" />
-    <ClCompile Include="src\Ember\Vector.cpp" />
+    <ProjectReference Include="Ember.vcxproj">
+      <Project>{900E1D0D-FC22-45BE-C5A4-E81D317841EF}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

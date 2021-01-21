@@ -1,162 +1,174 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="CinderFileSystem">
+      <UniqueIdentifier>{FF0FDEC8-EB08-FD1A-143B-E29F0093DC26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Ember">
+      <UniqueIdentifier>{900E1D0D-FC22-45BE-C5A4-E81D317841EF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Ember\Animation">
+      <UniqueIdentifier>{7F3B4159-EBC6-AE1D-F4D7-311260E20A1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ember\Assets">
+      <UniqueIdentifier>{72531BCB-5EB6-AA6F-073C-E325F37D76F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ember\Core">
+      <UniqueIdentifier>{E8CCD5C2-D484-1710-3D8C-F06B2963B200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ember\Core\Events">
+      <UniqueIdentifier>{CCE3F6FD-38FA-F493-8171-80B5EDC6C51B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ember\Gui">
+      <UniqueIdentifier>{E4D93C5B-5044-F1D1-9982-A277052CCF26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ember\TileSystems">
+      <UniqueIdentifier>{25754352-918B-41E8-DA02-CD0946581270}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ember\Ember.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Assets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Gui\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Animation\Spritesheet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\TileSystems\Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\TileSystems\TileMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\Events.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Cursor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\EventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\CinderFileSystem\CFSFile.h">
-      <Filter>Header Files</Filter>
+      <Filter>CinderFileSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\CinderFileSystem\CinderFileSys.h">
-      <Filter>Header Files</Filter>
+      <Filter>CinderFileSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\CinderFileSystem\CinderStructure.h">
-      <Filter>Header Files</Filter>
+      <Filter>CinderFileSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Animation\Animation.h">
-      <Filter>Header Files</Filter>
+      <Filter>Ember\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Animation\Spritesheet.h">
+      <Filter>Ember\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Assets\Assets.h">
+      <Filter>Ember\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Assets\Audio.h">
+      <Filter>Ember\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Assets\Font.h">
+      <Filter>Ember\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Assets\Texture.h">
+      <Filter>Ember\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Application.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Cursor.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\EventHandler.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\Events.h">
+      <Filter>Ember\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h">
+      <Filter>Ember\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h">
+      <Filter>Ember\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h">
+      <Filter>Ember\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h">
+      <Filter>Ember\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
+      <Filter>Ember\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Core\OSDepStructures.h">
-      <Filter>Header Files</Filter>
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Renderer.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Window.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Ember.h">
+      <Filter>Ember</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Gui\Button.h">
+      <Filter>Ember\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Layer.h">
+      <Filter>Ember</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\TileSystems\Grid.h">
+      <Filter>Ember\TileSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\TileSystems\TileMap.h">
+      <Filter>Ember\TileSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Vector.h">
+      <Filter>Ember</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ember\Vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Ember.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Assets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Gui\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Animation\Spritesheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\TileSystems\Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Cursor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\EventHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>CinderFileSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>CinderFileSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Animation\Animation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Ember\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Animation\Spritesheet.cpp">
+      <Filter>Ember\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Assets\Assets.cpp">
+      <Filter>Ember\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Assets\Audio.cpp">
+      <Filter>Ember\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Assets\Font.cpp">
+      <Filter>Ember\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Assets\Texture.cpp">
+      <Filter>Ember\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Application.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Cursor.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\EventHandler.cpp">
+      <Filter>Ember\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Renderer.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Window.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Ember.cpp">
+      <Filter>Ember</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Gui\Button.cpp">
+      <Filter>Ember\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Layer.cpp">
+      <Filter>Ember</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\TileSystems\Grid.cpp">
+      <Filter>Ember\TileSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp">
+      <Filter>Ember\TileSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Vector.cpp">
+      <Filter>Ember</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
