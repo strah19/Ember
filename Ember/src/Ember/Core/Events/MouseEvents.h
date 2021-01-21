@@ -9,8 +9,8 @@ namespace Ember {
 	};
 
 	struct MouseButtonEvents : public Event {
-		MouseButtonEvents(bool down, int id, int clicks)
-			: Event("Mouse"), down(down), button_id(static_cast<ButtonIds>(id)), clicks(clicks) { }
+		MouseButtonEvents(bool down, int id, int clicks, bool clicked)
+			: Event("Mouse"), down(down), button_id(static_cast<ButtonIds>(id)), clicks(clicks), clicked(clicked) { }
 		virtual ~MouseButtonEvents() = default;
 
 		std::string GetName() const { return name; }
@@ -18,6 +18,7 @@ namespace Ember {
 		bool down;
 		ButtonIds button_id;
 		int clicks;
+		bool clicked;
 	};
 
 	struct MouseButtonPositionEvents : public Event {

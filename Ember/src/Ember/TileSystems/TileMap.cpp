@@ -57,7 +57,7 @@ namespace Ember {
 			if (counter < texture_id_num)
 				data.push_back({ std::stoi(word) });
 
-			return true;
+			return false;
 			});
 	}
 
@@ -105,6 +105,17 @@ namespace Ember {
 		col_count = grid.cols;
 	}
 
+	void TileMapSerializer::GenerateLayer(std::vector<std::vector<TileInfo>>& data, GridComponents& grid) {
+		grid = { 10, 10, 32, 32, 0, 0 };
+		data.push_back(std::vector<TileInfo>());
+		for (int i = 0; i < grid.cols; i++) {
+			for (int j = 0; j < grid.rows; j++) {
+				data.back().push_back(TileInfo({ -1 }));
+			}
+		}
+		Save(grid, data.back());
+	}
+
 	TileMap::TileMap(rRenderer* renderer, Events* Events, const GridComponents& grid)
 		: Grid(renderer, Events, grid) { }
 
@@ -125,7 +136,7 @@ namespace Ember {
 				for (int j = 0; j < grid.rows; j++) {
 					if (layer[grid.cols * j + i].texture_id != -1) {
 						sprite_sheet.SelectSprite(layer[grid.cols * j + i].texture_id % sprite_sheet.Size().x, layer[grid.cols * j + i].texture_id / sprite_sheet.Size().x);
-						sprite_sheet.GetTexture()->Draw(Ember::Rect({ x, y, grid.block_width, grid.block_height }));
+						sprite_sheet.GetTexture()->Draw(Ember::Rect({ x, y, grid.block_width, grid.block_height }), sprite_sheet.ReturnSourceRect());
 					}
 					y += grid.block_height;
 				}
@@ -158,7 +169,7 @@ namespace Ember {
 				texture_picker.UpdatePosition(start_location.x + i * size.x, start_location.y + j * size.y);
 				sprite_sheet.SelectSprite(i, j);
 				sprite_sheet.GetTexture()->Draw(Ember::Rect({ start_location.x + i * size.x, start_location.y + j * size.y,
-					size.x, size.y }));
+					size.x, size.y }), sprite_sheet.ReturnSourceRect());
 				if (texture_picker.Click(btn_id))
 					current_user_texture = sprite_sheet.Size().x * j + i;
 			}

@@ -28,6 +28,7 @@
     <ClInclude Include="src\Ember\Assets\Audio.h" />
     <ClInclude Include="src\Ember\Assets\Font.h" />
     <ClInclude Include="src\Ember\Assets\Texture.h" />
+    <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
     <ClInclude Include="src\Ember\Ember.h" />
     <ClInclude Include="src\Ember\Gui\Button.h" />
     <ClInclude Include="src\Ember\Layer.h" />
@@ -55,6 +56,7 @@
     <ClCompile Include="src\Ember\Assets\Audio.cpp" />
     <ClCompile Include="src\Ember\Assets\Font.cpp" />
     <ClCompile Include="src\Ember\Assets\Texture.cpp" />
+    <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
     <ClCompile Include="src\Ember\Ember.cpp" />
     <ClCompile Include="src\Ember\Gui\Button.cpp" />
     <ClCompile Include="src\Ember\Layer.cpp" />

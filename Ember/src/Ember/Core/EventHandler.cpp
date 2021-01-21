@@ -32,7 +32,7 @@ namespace Ember {
 
 	void EventHandler::KeyEvent() {
 		if (native_event_handler.type == SDL_KEYDOWN) {
-			KeyboardEvents keyboard(true, native_event_handler.key.repeat, (EmberKeyCode) native_event_handler.key.keysym.scancode);
+			KeyboardEvents keyboard(true, native_event_handler.key.repeat, (EmberKeyCode)native_event_handler.key.keysym.scancode);
 			events->keyboard_event = keyboard;
 			callback(keyboard);
 		}
@@ -53,15 +53,17 @@ namespace Ember {
 
 	void EventHandler::MouseEvent() {
 		if (native_event_handler.type == SDL_MOUSEBUTTONDOWN) {
-			MouseButtonEvents mouse(true, native_event_handler.button.button, native_event_handler.button.clicks);
+			MouseButtonEvents mouse(true, native_event_handler.button.button, native_event_handler.button.clicks, true);
 			events->mouse_event = mouse;
 			callback(mouse);
 		}
 		else if (native_event_handler.type == SDL_MOUSEBUTTONUP) {
-			MouseButtonEvents mouse(false, native_event_handler.button.button, native_event_handler.button.clicks);
+			MouseButtonEvents mouse(false, native_event_handler.button.button, native_event_handler.button.clicks, false);
 			events->mouse_event = mouse;
 			callback(mouse);
 		}
+		else
+			events->mouse_event.clicked = false;
 	}
 
 	void EventHandler::WindowResizeEvent() {

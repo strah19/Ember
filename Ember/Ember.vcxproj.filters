@@ -93,6 +93,9 @@
     <ClInclude Include="src\Ember\Animation\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Core\OSDepStructures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ember\Vector.cpp">
@@ -150,6 +153,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Animation\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\OSDepStructures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

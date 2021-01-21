@@ -15,7 +15,7 @@ namespace Ember {
 	class Events {
 	public:
 		Events()
-			: mouse_event(false, 0, 0), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }), input(" "), wheel(0) { }
+			: mouse_event(false, 0, 0, false), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }), input(" "), wheel(0) { }
 
 		bool Down() const { return mouse_event.down; }
 		IVec2 MousePosition() const { return mouse_pos.position; }
@@ -25,6 +25,8 @@ namespace Ember {
 		IVec2 MouseMotion() const { return mouse_pos.motion; }
 		std::string UserInput() const { return input.input_text; }
 		int MouseWheelDirection() const { return wheel.direction; }
+		void ResetWheel() { wheel.direction = 0; }
+		bool Clicked() { return mouse_event.clicked; }
 	private:
 		MouseButtonEvents mouse_event;
 		KeyboardEvents keyboard_event;
@@ -41,7 +43,7 @@ namespace Ember {
 		void Update();
 		void SetEventCallback(const Callback& callback) { this->callback = callback; }
 
-		SDL_Event NativeEvent() const { return native_event_handler; }
+		SDL_Event* NativeEvent() { return &native_event_handler; }
 	private:
 		Window* window;
 		SDL_Event native_event_handler;

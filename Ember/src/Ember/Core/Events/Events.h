@@ -1,16 +1,20 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+#include "Ember.h"
+#include "Vector.h"
+
 #include <string>
 #include <functional>
-
-#include "Vector.h"
 
 namespace Ember {
 	struct Event {
 	public:
 		Event(const std::string& name)
-			: active(true), Handled(false), name(name) { }
+			: active(true), Handled(false), name(name) {
+			SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
+		}
+
 		virtual ~Event() = default;
 
 		bool ActivityCheck() const { return active; }

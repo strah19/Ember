@@ -156,13 +156,11 @@ namespace Cinder {
         std::string line_search;
         uint32_t line_counter = 0;
 
-        if (line_number > -1) {
-            while (getline(file, line_search)) {
-                if (line_counter == line_number)
-                    return line_search;
-                line_counter++;
-            }
-        }
+        while (getline(file, line_search)) {
+            if (line_counter == line_number)
+                return line_search;
+            line_counter++;
+        }   
 
         return "";
     }
@@ -173,12 +171,10 @@ namespace Cinder {
 
         std::string word_search;
         uint32_t word_counter = 0;
-        if (location > -1) {
-            while (file >> word_search) {
-                if (word_counter == location)
-                    return word_search;
-                word_counter++;
-            }
+        while (file >> word_search) {
+            if (word_counter == location)
+                return word_search;
+            word_counter++;
         }
         return "";
     }

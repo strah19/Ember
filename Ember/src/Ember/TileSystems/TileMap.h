@@ -21,7 +21,8 @@ namespace Ember {
 		size_t ReadLayeredTexture(int col, int row, std::vector<std::vector<TileInfo>>& data);
 
 		std::vector<TileInfo> AddNewLayer(int col, int row);
-
+		void GenerateLayer(std::vector<std::vector<TileInfo>>& data, GridComponents& grid);
+		Cinder::CFSFile GetSerializer() { return serialier; }
 	private:
 		Cinder::CFSFile serialier;
 		int index;
