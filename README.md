@@ -27,4 +27,4 @@ private:
 
 ```
 
-Simple call this class in main with it's initialize and run function and thats it's!
+Simply call this class in main with it's initialize and run function and thats it's!
