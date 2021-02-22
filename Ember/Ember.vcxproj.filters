@@ -108,6 +108,8 @@
     <ClInclude Include="src\Ember\Vector.h">
       <Filter>Ember</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Gui\Camera.h" />
+    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
@@ -170,5 +172,7 @@
     <ClCompile Include="src\Ember\Vector.cpp">
       <Filter>Ember</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ember\Gui\Camera.cpp" />
+    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp" />
   </ItemGroup>
 </Project>

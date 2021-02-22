@@ -74,12 +74,12 @@ private:
 	Ember::SpriteSheetToAnimation animation_source;
 	Ember::Animation animation;
 
-	Ember::TileMap* map;
+	Ember::TileMap* map = nullptr;
 	Ember::GridComponents map_info;
-	Ember::TileMapSerializer* map_serializer;
+	Ember::TileMapSerializer* map_serializer = nullptr;
 	std::vector<std::vector<Ember::TileInfo>> map_layers;
-	Ember::Texture* map_textures;
-	Ember::SpriteSheet* map_texture_sheet;
+	Ember::Texture* map_textures = nullptr;
+	Ember::SpriteSheet* map_texture_sheet = nullptr;
 	size_t current_map_layer = 0;
 };
 

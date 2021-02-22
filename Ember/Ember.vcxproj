@@ -145,6 +145,7 @@
     <ClInclude Include="src\CinderFileSystem\CinderStructure.h" />
     <ClInclude Include="src\Ember\Animation\Animation.h" />
     <ClInclude Include="src\Ember\Animation\Spritesheet.h" />
+    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h" />
     <ClInclude Include="src\Ember\Assets\Assets.h" />
     <ClInclude Include="src\Ember\Assets\Audio.h" />
     <ClInclude Include="src\Ember\Assets\Font.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="src\Ember\Core\Window.h" />
     <ClInclude Include="src\Ember\Ember.h" />
     <ClInclude Include="src\Ember\Gui\Button.h" />
+    <ClInclude Include="src\Ember\Gui\Camera.h" />
     <ClInclude Include="src\Ember\Layer.h" />
     <ClInclude Include="src\Ember\TileSystems\Grid.h" />
     <ClInclude Include="src\Ember\TileSystems\TileMap.h" />
@@ -173,6 +175,7 @@
     <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp" />
     <ClCompile Include="src\Ember\Animation\Animation.cpp" />
     <ClCompile Include="src\Ember\Animation\Spritesheet.cpp" />
+    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp" />
     <ClCompile Include="src\Ember\Assets\Assets.cpp" />
     <ClCompile Include="src\Ember\Assets\Audio.cpp" />
     <ClCompile Include="src\Ember\Assets\Font.cpp" />
@@ -185,6 +188,7 @@
     <ClCompile Include="src\Ember\Core\Window.cpp" />
     <ClCompile Include="src\Ember\Ember.cpp" />
     <ClCompile Include="src\Ember\Gui\Button.cpp" />
+    <ClCompile Include="src\Ember\Gui\Camera.cpp" />
     <ClCompile Include="src\Ember\Layer.cpp" />
     <ClCompile Include="src\Ember\TileSystems\Grid.cpp" />
     <ClCompile Include="src\Ember\TileSystems\TileMap.cpp" />

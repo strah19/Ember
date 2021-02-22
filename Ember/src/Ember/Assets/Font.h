@@ -31,10 +31,25 @@ namespace Ember {
 		Ember::IVec2 GetSize();
 		Ember::IVec2 GetSizeFromText(const std::string& text);
 
+		enum Styles {
+			Bold = TTF_STYLE_BOLD,
+			Italic = TTF_STYLE_ITALIC,
+			Underline = TTF_STYLE_UNDERLINE,
+			Strike = TTF_STYLE_STRIKETHROUGH,
+			Normal = TTF_STYLE_NORMAL
+		};
+
 		int GetMaxHeight() { return TTF_FontHeight(font); }
-		void SetStyle(int style);
+		void SetStyle(Styles style);
 
 		const char* GetPath() { return file_path; }
+		template <typename T>
+		static void Draw(const T& data, const Color& color, const Ember::IVec2& position, Font* font) {
+			font->UpdateText(data);
+			font->SetPosition(position);
+			font->UpdateColor(color);
+			font->Render();
+		}
 	private:
 		const char* file_path;
 		void UpdateFont();

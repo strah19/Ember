@@ -104,7 +104,6 @@ project "Sandbox"
 	filter "system:windows"
 		systemversion "latest"
 
-
 	filter "configurations:Debug"
 		defines "EMBER_DEBUG"
 		runtime "Debug"

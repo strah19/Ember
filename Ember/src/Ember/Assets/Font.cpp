@@ -93,7 +93,7 @@ namespace Ember {
 		}
 	}
 
-	void Font::SetStyle(int style) {
+	void Font::SetStyle(Styles style) {
 		TTF_SetFontStyle(font, style);
 	}
 }

@@ -71,6 +71,12 @@ namespace Ember {
 		Tab = SDL_SCANCODE_TAB,
 		Cap = SDL_SCANCODE_CAPSLOCK,
 		Space = SDL_SCANCODE_SPACE,
+
+		LeftArrow = SDL_SCANCODE_LEFT,
+		RightArrow = SDL_SCANCODE_RIGHT,
+		UpArrow = SDL_SCANCODE_UP,
+		DownArrow = SDL_SCANCODE_DOWN,
+
 		Null = 0
 	};
 }

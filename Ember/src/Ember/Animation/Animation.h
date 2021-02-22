@@ -6,7 +6,7 @@
 namespace Ember {
 	class AnimationSource {
 	public:
-		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) = 0;
+		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) { };
 		int GetMaxSize() { return MAX_FRAMES; }
 		void DefineStart(int s);
 		void MaxFrames(int f) { MAX_FRAMES = f; }
@@ -25,7 +25,7 @@ namespace Ember {
 	public:
 		void Initialize(SpriteSheet& sheet, int max_frames);
 		void SetIterator(SpriteSheetIterators iterator);
-		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
+		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
 	private:
 		SpriteSheetIterators iterator = SpriteSheetIterators::NONE;
 		SpriteSheet spritesheet;
@@ -34,8 +34,8 @@ namespace Ember {
 	class IndividualFramesToAnimation : public AnimationSource {
 	public:
 		void Initialize(const std::initializer_list<Texture>& textures);
-		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE);
-	private:
+		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
+	private: 
 		std::vector<Texture> textures;
 	};
 

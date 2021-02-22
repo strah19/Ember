@@ -2,12 +2,20 @@
 #define VECTOR_H
 
 #include <iostream>
+#include <SDL.h>
 
 namespace Ember {
 	class Vec2 {
 	public:
-		float x;
-		float y;
+		union {
+			struct {
+				float x;
+				float y;
+			};
+			struct {
+				SDL_FPoint point;
+			};
+		};
 
 		Vec2(const float x, const float y);
 		Vec2() :x(0), y(0) {}
@@ -58,9 +66,15 @@ namespace Ember {
 
 	class IVec2 {
 	public:
-		int x;
-		int y;
-
+		union {
+			struct {
+				int x;
+				int y;
+			};
+			struct {
+				SDL_Point point;
+			};
+		};
 		IVec2(const int x, const int y);
 		IVec2() :x(0), y(0) {}
 
