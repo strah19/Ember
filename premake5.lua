@@ -14,6 +14,52 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["SDL2"] = "Dependencies/SDL2/include"
 
+project "Sandbox"
+	location "Ember"
+	kind "ConsoleApp"
+	language "C++"
+	staticruntime "on"
+	cppdialect "C++17"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Ember/src/Ember",
+		"Ember/src/CinderFileSystem",
+		"%{IncludeDir.SDL2}",
+	}
+
+	links
+	{
+		"Ember"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "EMBER_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "EMBER_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "EMBER_DIST"
+		runtime "Release"
+		optimize "on"
+
 project "Ember"
 	location "Ember"
 	kind "StaticLib"
@@ -53,52 +99,6 @@ project "Ember"
 
 	libdirs {
 		"Dependencies/SDl2/lib/x86"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "EMBER_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "EMBER_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "EMBER_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "Sandbox"
-	location "Ember"
-	kind "ConsoleApp"
-	language "C++"
-	staticruntime "on"
-	cppdialect "C++17"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"Ember/src/Ember",
-		"Ember/src/CinderFileSystem",
-		"%{IncludeDir.SDL2}",
-	}
-
-	links
-	{
-		"Ember"
 	}
 
 	filter "system:windows"

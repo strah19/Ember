@@ -42,6 +42,9 @@
     <ClInclude Include="src\Ember\Animation\Spritesheet.h">
       <Filter>Ember\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h">
+      <Filter>Ember\Animation</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ember\Assets\Assets.h">
       <Filter>Ember\Assets</Filter>
     </ClInclude>
@@ -96,6 +99,9 @@
     <ClInclude Include="src\Ember\Gui\Button.h">
       <Filter>Ember\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Gui\Camera.h">
+      <Filter>Ember\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ember\Layer.h">
       <Filter>Ember</Filter>
     </ClInclude>
@@ -108,8 +114,6 @@
     <ClInclude Include="src\Ember\Vector.h">
       <Filter>Ember</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Gui\Camera.h" />
-    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
@@ -122,6 +126,9 @@
       <Filter>Ember\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Animation\Spritesheet.cpp">
+      <Filter>Ember\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp">
       <Filter>Ember\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Assets\Assets.cpp">
@@ -160,6 +167,9 @@
     <ClCompile Include="src\Ember\Gui\Button.cpp">
       <Filter>Ember\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ember\Gui\Camera.cpp">
+      <Filter>Ember\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ember\Layer.cpp">
       <Filter>Ember</Filter>
     </ClCompile>
@@ -172,7 +182,5 @@
     <ClCompile Include="src\Ember\Vector.cpp">
       <Filter>Ember</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Gui\Camera.cpp" />
-    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp" />
   </ItemGroup>
 </Project>
