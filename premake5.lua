@@ -15,7 +15,7 @@ IncludeDir = {}
 IncludeDir["SDL2"] = "Dependencies/SDL2/include"
 
 project "Sandbox"
-	location "Ember"
+	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	staticruntime "on"

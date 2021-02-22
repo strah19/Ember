@@ -2,7 +2,7 @@
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { }
+	void OnCreate() { 	}
 
 	virtual ~Sandbox() { }
 
