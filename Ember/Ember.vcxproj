@@ -161,6 +161,7 @@
     <ClInclude Include="src\Ember\Core\Events\WindowEvents.h" />
     <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
     <ClInclude Include="src\Ember\Core\Renderer.h" />
+    <ClInclude Include="src\Ember\Core\Timer.h" />
     <ClInclude Include="src\Ember\Core\Window.h" />
     <ClInclude Include="src\Ember\Ember.h" />
     <ClInclude Include="src\Ember\Gui\Button.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
     <ClCompile Include="src\Ember\Core\Renderer.cpp" />
+    <ClCompile Include="src\Ember\Core\Timer.cpp" />
     <ClCompile Include="src\Ember\Core\Window.cpp" />
     <ClCompile Include="src\Ember\Ember.cpp" />
     <ClCompile Include="src\Ember\Gui\Button.cpp" />

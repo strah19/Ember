@@ -1,4 +1,5 @@
 #include "Core/Application.h"
+#include "Core/Timer.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -8,6 +9,9 @@ public:
 
 	void OnUserUpdate() {
 		window->Update();
+
+		timer.Update();
+		std::cout << timer.GetSeconds() << std::endl;
 
 		renderer->Clear(background_color);
 
@@ -28,6 +32,7 @@ public:
 	}
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
+	Ember::Timer timer;
 };
 
 int main(int argc, char** argv) {

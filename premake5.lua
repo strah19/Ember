@@ -2,8 +2,7 @@ workspace "Ember"
 	architecture "x86"
 	startproject "Sandbox"
 
-	configurations
-	{
+	configurations {
 		"Debug",
 		"Release",
 		"Dist"
@@ -24,14 +23,12 @@ project "Sandbox"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
+	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs
-	{
+	includedirs {
 		"Ember/src/Ember",
 		"Ember/src/CinderFileSystem",
 		"%{IncludeDir.SDL2}",
@@ -70,35 +67,31 @@ project "Ember"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
+	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs
-	{
+	includedirs {
 		"Ember/src/Ember",
 		"Ember/src/CinderFileSystem",
 		"%{IncludeDir.SDL2}",
 	}
 
-	defines
-	{
+	defines {
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 
-	links 
-	{
+	libdirs {
+		"Dependencies/SDl2/lib/x86"
+	}
+
+	links {
 		"SDL2.lib",
 		"SDL2main.lib",
 		"SDL2_image.lib",
 		"SDL2_ttf.lib",
 		"SDL2_mixer.lib" 
-	}
-
-	libdirs {
-		"Dependencies/SDl2/lib/x86"
 	}
 
 	filter "system:windows"

@@ -27,7 +27,7 @@ namespace Ember {
 
 		inline void SetBorder(bool border) { SDL_SetWindowBordered(native_window, ConvertToSDLBool(border)); }
 		inline void SetBrightness(float brightness) { SDL_SetWindowBrightness(native_window, brightness); }
-		inline void SetWindowIcon(const char* file_path);
+		void SetWindowIcon(const char* file_path);
 		inline void SetResizeable(bool resize) { SDL_SetWindowResizable(native_window, ConvertToSDLBool(resize)); }
 		bool IsRunning() const { return is_running; }
 		void Quit() { is_running = false; }
