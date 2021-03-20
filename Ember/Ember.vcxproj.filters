@@ -90,9 +90,6 @@
     <ClInclude Include="src\Ember\Core\Renderer.h">
       <Filter>Ember\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Core\Window.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ember\Ember.h">
       <Filter>Ember</Filter>
     </ClInclude>
@@ -115,6 +112,12 @@
       <Filter>Ember</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Core\Timer.h" />
+    <ClInclude Include="src\Ember\Core\Windows\Window.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h" />
+    <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h" />
+    <ClInclude Include="src\Ember\Core\Windows\VulkanWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
@@ -159,9 +162,6 @@
     <ClCompile Include="src\Ember\Core\Renderer.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Core\Window.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\Ember\Ember.cpp">
       <Filter>Ember</Filter>
     </ClCompile>
@@ -184,5 +184,11 @@
       <Filter>Ember</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\Timer.cpp" />
+    <ClCompile Include="src\Ember\Core\Windows\Window.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp" />
+    <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp" />
+    <ClCompile Include="src\Ember\Core\Windows\VulkanWindow.cpp" />
   </ItemGroup>
 </Project>

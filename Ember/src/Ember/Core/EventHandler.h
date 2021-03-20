@@ -7,7 +7,7 @@
 #include "Core/Events/KeyBoardEvents.h"
 #include "Core/Events/JoystickEvents.h"
 
-#include "Core/Window.h"
+#include "Core/Windows/Window.h"
 
 namespace Ember {
 	using Callback = std::function<void(Event&)>;

@@ -6,7 +6,7 @@
 #include "Ember.h"
 #include "EventHandler.h"
 #include "Renderer.h"
-#include "Window.h"
+#include "Core/Windows/Window.h"
 
 namespace Ember {
 	class Application {

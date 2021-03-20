@@ -5,7 +5,7 @@ namespace Ember {
 	HWND GetNativeWindowHandler(Ember::Window* window) {
 		SDL_SysWMinfo wmInfo;
 		SDL_VERSION(&wmInfo.version);
-		SDL_GetWindowWMInfo(window->GetNativeWindow(), &wmInfo);
+		SDL_GetWindowWMInfo(static_cast<SDL_Window*>(window->GetNativeWindow()), &wmInfo);
 		return wmInfo.info.win.window;
 	}
 

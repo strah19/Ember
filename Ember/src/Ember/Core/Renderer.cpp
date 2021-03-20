@@ -21,7 +21,7 @@ namespace Ember {
 	}
 
 	bool rRenderer::Initializer() {
-		renderer = SDL_CreateRenderer(window->GetNativeWindow(), RenderingIndex,
+		renderer = SDL_CreateRenderer(static_cast<SDL_Window*>(window->GetNativeWindow()), RenderingIndex,
 			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	
 		return (renderer != nullptr);

@@ -2,7 +2,7 @@
 #define RENDERER_H
 
 #include "Ember.h"
-#include "Core/Window.h"
+#include "Core/Windows/Window.h"
 
 namespace Ember {
 	class rRenderer {

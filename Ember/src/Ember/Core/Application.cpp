@@ -4,7 +4,7 @@ namespace Ember {
 	void Application::Initialize(const std::string& name, bool full_screen, uint32_t width, uint32_t height) {
 		properties = new WindowProperties(name, width, height);
 		properties->full_screen = full_screen;
-		window = new Window(properties);
+		window = Window::CreateEmberWindow(properties);
 		events = new Events();
 		event_handler = new EventHandler(window, events);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));

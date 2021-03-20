@@ -1,7 +1,7 @@
 #ifndef OSDEP_H
 #define OSDEP_H
 
-#include "Window.h"
+#include "Core/Windows/Window.h"
 #include "EventHandler.h"
 
 #if !defined(__cplusplus)

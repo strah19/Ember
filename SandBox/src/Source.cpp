@@ -10,10 +10,9 @@ public:
 	void OnUserUpdate() {
 		window->Update();
 
-		timer.Update();
-		std::cout << timer.GetSeconds() << std::endl;
-
 		renderer->Clear(background_color);
+
+		renderer->Rectangle(Ember::Rect({ 0, 0, 200, 200 }), { 255, 0, 0, 255 });
 
 		renderer->Show();
 	}
@@ -32,12 +31,11 @@ public:
 	}
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
-	Ember::Timer timer;
 };
 
 int main(int argc, char** argv) {
 	Sandbox sandbox;
-	sandbox.Initialize();
+	sandbox.Initialize("Ember");
 
 	sandbox.Run();
 
