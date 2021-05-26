@@ -11,7 +11,7 @@
 namespace Ember {
 	class Application {
 	public:
-		void Initialize(const std::string& name = "Ember", bool full_screen = false, uint32_t width = 1280, uint32_t height = 720);
+		void Initialize(const std::string& name = "EmberApp", bool full_screen = false, uint32_t width = 1280, uint32_t height = 720);
 
 		virtual ~Application();
 

@@ -11,7 +11,7 @@ workspace "Ember"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["SDL2"] = "Dependencies/SDL2/include"
+IncludeDir["SDL2"] = "libs/SDL2/include"
 
 project "Sandbox"
 	location "Sandbox"
@@ -83,7 +83,7 @@ project "Ember"
 	}
 
 	libdirs {
-		"Dependencies/SDl2/lib/x86"
+		"libs/SDL2/lib/x86"
 	}
 
 	links {

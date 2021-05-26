@@ -38,6 +38,17 @@ namespace Ember {
 		}
 	}
 
+	void SpriteSheetDividerToAnimation::Initialize(UserDividedSpritesheet& sheet, Ember::Texture& texture) {
+		spritesheet = sheet;
+		MAX_FRAMES = spritesheet.GetMaxSize();
+		this->texture = texture;
+	}
+
+	void SpriteSheetDividerToAnimation::DrawCurrentFrame(int& current_frame, const Rect& dest, float angle, const SDL_RendererFlip& flip) {
+		spritesheet.SetSelected(current_frame);
+		texture.Draw(dest, spritesheet.ReturnSourceRect(), flip, angle);
+	}
+
 	void IndividualFramesToAnimation::Initialize(const std::initializer_list<Texture>& textures) {
 		this->textures = textures;
 	}

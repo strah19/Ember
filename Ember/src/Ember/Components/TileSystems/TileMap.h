@@ -2,9 +2,9 @@
 #define TILE_MAP_H
 
 #include "Ember.h"
-#include "TileSystems/Grid.h"
+#include "Components/TileSystems/Grid.h"
 #include "../CinderFileSystem/CinderFileSys.h"
-#include "Animation/Spritesheet.h"
+#include "Components/Animation/Spritesheet.h"
 #include "Core/Events/KeyboardCodes.h"
 
 namespace Ember {

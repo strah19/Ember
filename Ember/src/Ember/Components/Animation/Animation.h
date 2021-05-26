@@ -1,7 +1,8 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include "Animation/Spritesheet.h"
+#include "Components/Animation/Spritesheet.h"
+#include "Components/Animation/SpritesheetDividerParser.h"
 
 namespace Ember {
 	class AnimationSource {
@@ -29,6 +30,15 @@ namespace Ember {
 	private:
 		SpriteSheetIterators iterator = SpriteSheetIterators::NONE;
 		SpriteSheet spritesheet;
+	};
+
+	class SpriteSheetDividerToAnimation : public AnimationSource {
+	public:
+		void Initialize(UserDividedSpritesheet& sheet, Ember::Texture& texture);
+		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
+	private:
+		Ember::Texture texture;
+		UserDividedSpritesheet spritesheet;
 	};
 
 	class IndividualFramesToAnimation : public AnimationSource {

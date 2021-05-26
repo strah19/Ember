@@ -1,7 +1,15 @@
 #include "Application.h"
+#include "VersionControl.h"
 
 namespace Ember {
 	void Application::Initialize(const std::string& name, bool full_screen, uint32_t width, uint32_t height) {
+		static bool backlog_init = false;
+		if (!backlog_init) {
+			backlog_init = true;
+			InitBacklog();
+		}
+		CompatibilityCheck();
+
 		properties = new WindowProperties(name, width, height);
 		properties->full_screen = full_screen;
 		window = Window::CreateEmberWindow(properties);

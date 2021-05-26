@@ -4,7 +4,7 @@
 #include "Ember.h"
 #include "Core/Renderer.h"
 #include "Core/EventHandler.h"
-#include "Gui/Button.h"
+#include "Components/Button.h"
 
 namespace Ember {
 	struct GridComponents {
@@ -44,6 +44,36 @@ namespace Ember {
 		rRenderer* renderer;
 		Events* events;
 		Button button;
+	};
+
+	template <class T>
+	class DataGrid : public Grid {
+	public:
+		void InitializeData() {
+			data = new int* [grid.rows];
+			for (int i = 0; i < grid.rows; ++i) {
+				data[i] = new int[grid.cols];
+			}
+		}
+
+		~DataGrid() {
+			if (data) {
+				for (int i = 0; i < grid.rows; ++i) {
+					delete[] data[i];
+				}
+				delete[] data;
+			}
+		}
+
+		void SetData(int col, int row, const T& data) {
+			this->data[row][col] = data;
+		}
+
+		T& GetData(int col, int row) {
+			return data[row][col];
+		}
+	private:
+		T** data = nullptr;
 	};
 }
 

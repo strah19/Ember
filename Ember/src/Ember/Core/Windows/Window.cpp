@@ -1,7 +1,6 @@
 #include "Window.h"
 #include "SDLWindow.h"
 #include "OpenGLWindow.h"
-#include "VulkanWindow.h"
 
 namespace Ember {
 	Window* Window::CreateEmberWindow(WindowProperties* properties) {

@@ -16,11 +16,11 @@ class UserDividedSpritesheet {
 public:
 	inline void SetDividers(const std::vector<Ember::Rect>& dividers) { this->dividers = dividers; }
 	inline void SetSelected(size_t index) { selected = index; }
+	inline size_t GetMaxSize() const { return selected; }
 	inline Ember::Rect ReturnSourceRect() const { return dividers[selected]; }
 private:
 	size_t selected;
 	std::vector<Ember::Rect> dividers;
-
 };
 
 #endif // !SPRITESHEET_PARSER_H

@@ -19,6 +19,9 @@
     <Filter Include="Ember\Core\Events">
       <UniqueIdentifier>{CCE3F6FD-38FA-F493-8171-80B5EDC6C51B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ember\Core\Windows">
+      <UniqueIdentifier>{22DFB508-0EC3-765E-7723-71B1632661E0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Ember\Gui">
       <UniqueIdentifier>{E4D93C5B-5044-F1D1-9982-A277052CCF26}</UniqueIdentifier>
     </Filter>
@@ -36,13 +39,13 @@
     <ClInclude Include="src\CinderFileSystem\CinderStructure.h">
       <Filter>CinderFileSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Animation\Animation.h">
+    <ClInclude Include="src\Ember\Components\Animation\Animation.h">
       <Filter>Ember\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Animation\Spritesheet.h">
+    <ClInclude Include="src\Ember\Components\Animation\Spritesheet.h">
       <Filter>Ember\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h">
+    <ClInclude Include="src\Ember\Components\Animation\SpritesheetDividerParser.h">
       <Filter>Ember\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Assets\Assets.h">
@@ -84,40 +87,48 @@
     <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
       <Filter>Ember\Core\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Core\Layer.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ember\Core\OSDepStructures.h">
       <Filter>Ember\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Core\Renderer.h">
       <Filter>Ember\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ember\Core\Timer.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Vector.h">
+      <Filter>Ember\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ember\Core\Windows\Window.h">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ember\Ember.h">
       <Filter>Ember</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Gui\Button.h">
+    <ClInclude Include="src\Ember\Components\Button.h">
       <Filter>Ember\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Gui\Camera.h">
+    <ClInclude Include="src\Ember\Components\Camera.h">
       <Filter>Ember\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Layer.h">
-      <Filter>Ember</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\TileSystems\Grid.h">
+    <ClInclude Include="src\Ember\Components\TileSystems\Grid.h">
       <Filter>Ember\TileSystems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\TileSystems\TileMap.h">
+    <ClInclude Include="src\Ember\Components\TileSystems\TileMap.h">
       <Filter>Ember\TileSystems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Vector.h">
-      <Filter>Ember</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Timer.h" />
-    <ClInclude Include="src\Ember\Core\Windows\Window.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h" />
-    <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h" />
-    <ClInclude Include="src\Ember\Core\Windows\VulkanWindow.h" />
+    <ClInclude Include="src\Ember\Core\VersionControl.h" />
+    <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
+    <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
@@ -126,13 +137,13 @@
     <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp">
       <Filter>CinderFileSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Animation\Animation.cpp">
+    <ClCompile Include="src\Ember\Components\Animation\Animation.cpp">
       <Filter>Ember\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Animation\Spritesheet.cpp">
+    <ClCompile Include="src\Ember\Components\Animation\Spritesheet.cpp">
       <Filter>Ember\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp">
+    <ClCompile Include="src\Ember\Components\Animation\SpritesheetDividerParser.cpp">
       <Filter>Ember\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Assets\Assets.cpp">
@@ -156,39 +167,47 @@
     <ClCompile Include="src\Ember\Core\EventHandler.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ember\Core\Layer.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\Renderer.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ember\Core\Timer.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Vector.cpp">
+      <Filter>Ember\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember\Core\Windows\Window.cpp">
+      <Filter>Ember\Core\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ember\Ember.cpp">
       <Filter>Ember</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Gui\Button.cpp">
+    <ClCompile Include="src\Ember\Components\Button.cpp">
       <Filter>Ember\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Gui\Camera.cpp">
+    <ClCompile Include="src\Ember\Components\Camera.cpp">
       <Filter>Ember\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Layer.cpp">
-      <Filter>Ember</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\TileSystems\Grid.cpp">
+    <ClCompile Include="src\Ember\Components\TileSystems\Grid.cpp">
       <Filter>Ember\TileSystems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp">
+    <ClCompile Include="src\Ember\Components\TileSystems\TileMap.cpp">
       <Filter>Ember\TileSystems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Vector.cpp">
-      <Filter>Ember</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Timer.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\Window.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\VulkanWindow.cpp" />
+    <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
+    <ClCompile Include="src\Ember\Core\VersionControl.cpp" />
+    <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
   </ItemGroup>
 </Project>

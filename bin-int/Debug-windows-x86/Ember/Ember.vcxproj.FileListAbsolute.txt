@@ -1,2 +1,0 @@
-C:\Users\stra2\source\repos\Ember\bin\Debug-windows-x86\Ember\Ember.pdb
-C:\Users\stra2\source\repos\Ember\bin-int\Debug-windows-x86\Ember\Ember.pdb

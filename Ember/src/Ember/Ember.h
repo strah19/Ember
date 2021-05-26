@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
 #include <memory>
 #include <sstream>
 
-#include "Vector.h" 
+#include "Core/Vector.h" 
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -63,6 +63,7 @@ int main(int argc, char** argv) {
 #include <SDL_mixer.h>
 
 #define EMBER_BIND_FUNC(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+#define EMBER_VERSION 1.0
 
 namespace Ember {
 	struct Rect {
@@ -77,6 +78,14 @@ namespace Ember {
 				SDL_Rect rect;
 			};
 		};
+
+		Rect() = default;
+		~Rect() = default;
+
+		Rect(const Rect& rect) { this->rect = rect.rect; }
+		Rect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) { }
+
+		void operator=(const Rect& rect) { this->rect = rect.rect; }
 	};
 
 	struct FRect {
@@ -91,6 +100,14 @@ namespace Ember {
 				SDL_FRect rect;
 			};
 		};
+
+		FRect() = default;
+		~FRect() = default;
+
+		FRect(const FRect& rect) { this->rect = rect.rect; }
+		FRect(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) { }
+
+		void operator=(const FRect& rect) { this->rect = rect.rect; }
 	};
 
 	struct Color {
@@ -102,6 +119,14 @@ namespace Ember {
 				SDL_Color color;
 			};
 		};
+
+		Color() = default;
+		~Color() = default;
+
+		Color(const Color& color) { this->color = color.color; }
+		Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : r(r), g(g), b(b), a(a) { }
+
+		void operator=(const Color& color) { this->color = color.color; }
 	};
 
 	SDL_DisplayMode GetDisplay();

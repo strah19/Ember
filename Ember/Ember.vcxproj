@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -88,7 +88,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -112,7 +112,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
@@ -120,7 +120,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\Dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,20 +136,21 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependencies\SDl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\CinderFileSystem\CFSFile.h" />
     <ClInclude Include="src\CinderFileSystem\CinderFileSys.h" />
     <ClInclude Include="src\CinderFileSystem\CinderStructure.h" />
-    <ClInclude Include="src\Ember\Animation\Animation.h" />
-    <ClInclude Include="src\Ember\Animation\Spritesheet.h" />
-    <ClInclude Include="src\Ember\Animation\SpritesheetDividerParser.h" />
+    <ClInclude Include="src\Ember\Components\Animation\Animation.h" />
+    <ClInclude Include="src\Ember\Components\Animation\Spritesheet.h" />
+    <ClInclude Include="src\Ember\Components\Animation\SpritesheetDividerParser.h" />
     <ClInclude Include="src\Ember\Assets\Assets.h" />
     <ClInclude Include="src\Ember\Assets\Audio.h" />
     <ClInclude Include="src\Ember\Assets\Font.h" />
     <ClInclude Include="src\Ember\Assets\Texture.h" />
+    <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
     <ClInclude Include="src\Ember\Core\Application.h" />
     <ClInclude Include="src\Ember\Core\Cursor.h" />
     <ClInclude Include="src\Ember\Core\EventHandler.h" />
@@ -159,48 +160,51 @@
     <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h" />
     <ClInclude Include="src\Ember\Core\Events\MouseEvents.h" />
     <ClInclude Include="src\Ember\Core\Events\WindowEvents.h" />
+    <ClInclude Include="src\Ember\Core\Layer.h" />
     <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
+    <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
     <ClInclude Include="src\Ember\Core\Renderer.h" />
     <ClInclude Include="src\Ember\Core\Timer.h" />
+    <ClInclude Include="src\Ember\Core\Vector.h" />
+    <ClInclude Include="src\Ember\Core\VersionControl.h" />
     <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h" />
     <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h" />
-    <ClInclude Include="src\Ember\Core\Windows\VulkanWindow.h" />
     <ClInclude Include="src\Ember\Core\Windows\Window.h" />
     <ClInclude Include="src\Ember\Ember.h" />
-    <ClInclude Include="src\Ember\Gui\Button.h" />
-    <ClInclude Include="src\Ember\Gui\Camera.h" />
-    <ClInclude Include="src\Ember\Layer.h" />
-    <ClInclude Include="src\Ember\TileSystems\Grid.h" />
-    <ClInclude Include="src\Ember\TileSystems\TileMap.h" />
-    <ClInclude Include="src\Ember\Vector.h" />
+    <ClInclude Include="src\Ember\Components\Button.h" />
+    <ClInclude Include="src\Ember\Components\Camera.h" />
+    <ClInclude Include="src\Ember\Components\TileSystems\Grid.h" />
+    <ClInclude Include="src\Ember\Components\TileSystems\TileMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp" />
     <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp" />
-    <ClCompile Include="src\Ember\Animation\Animation.cpp" />
-    <ClCompile Include="src\Ember\Animation\Spritesheet.cpp" />
-    <ClCompile Include="src\Ember\Animation\SpritesheetDividerParser.cpp" />
+    <ClCompile Include="src\Ember\Components\Animation\Animation.cpp" />
+    <ClCompile Include="src\Ember\Components\Animation\Spritesheet.cpp" />
+    <ClCompile Include="src\Ember\Components\Animation\SpritesheetDividerParser.cpp" />
     <ClCompile Include="src\Ember\Assets\Assets.cpp" />
     <ClCompile Include="src\Ember\Assets\Audio.cpp" />
     <ClCompile Include="src\Ember\Assets\Font.cpp" />
     <ClCompile Include="src\Ember\Assets\Texture.cpp" />
+    <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="src\Ember\Core\Application.cpp" />
     <ClCompile Include="src\Ember\Core\Cursor.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\Core\Layer.cpp" />
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
+    <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
     <ClCompile Include="src\Ember\Core\Renderer.cpp" />
     <ClCompile Include="src\Ember\Core\Timer.cpp" />
+    <ClCompile Include="src\Ember\Core\Vector.cpp" />
+    <ClCompile Include="src\Ember\Core\VersionControl.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\VulkanWindow.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\Window.cpp" />
     <ClCompile Include="src\Ember\Ember.cpp" />
-    <ClCompile Include="src\Ember\Gui\Button.cpp" />
-    <ClCompile Include="src\Ember\Gui\Camera.cpp" />
-    <ClCompile Include="src\Ember\Layer.cpp" />
-    <ClCompile Include="src\Ember\TileSystems\Grid.cpp" />
-    <ClCompile Include="src\Ember\TileSystems\TileMap.cpp" />
-    <ClCompile Include="src\Ember\Vector.cpp" />
+    <ClCompile Include="src\Ember\Components\Button.cpp" />
+    <ClCompile Include="src\Ember\Components\Camera.cpp" />
+    <ClCompile Include="src\Ember\Components\TileSystems\Grid.cpp" />
+    <ClCompile Include="src\Ember\Components\TileSystems\TileMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
