@@ -50,4 +50,10 @@ int main(int argc, char** argv) {
 
 ```
 
-Simply call this class in main with it's initialize and run function and thats it!
+Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Components/Camera.h` and enjoy.
+
+# Support
+To support this project, become a developer and help contribute to the project.
+
+# Build
+To build this project, run the `Window-Gen.bat` file in Windows or run premake5 on your own in `premake5.lua`.
