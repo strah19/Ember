@@ -166,7 +166,6 @@
     <ClInclude Include="src\Ember\Core\Renderer.h" />
     <ClInclude Include="src\Ember\Core\Timer.h" />
     <ClInclude Include="src\Ember\Core\Vector.h" />
-    <ClInclude Include="src\Ember\Core\VersionControl.h" />
     <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h" />
     <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h" />
     <ClInclude Include="src\Ember\Core\Windows\Window.h" />
@@ -196,7 +195,6 @@
     <ClCompile Include="src\Ember\Core\Renderer.cpp" />
     <ClCompile Include="src\Ember\Core\Timer.cpp" />
     <ClCompile Include="src\Ember\Core\Vector.cpp" />
-    <ClCompile Include="src\Ember\Core\VersionControl.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp" />
     <ClCompile Include="src\Ember\Core\Windows\Window.cpp" />

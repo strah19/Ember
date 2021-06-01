@@ -8,7 +8,7 @@ Example code:
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { }
+	void OnCreate() { 	}
 
 	virtual ~Sandbox() { }
 
@@ -20,17 +20,8 @@ public:
 		renderer->Show();
 	}
 
-	bool Keyboard(Ember::KeyboardEvents& keyboard) {
-		if (keyboard.scancode == Ember::EmberKeyCode::Escape) {
-			window->Quit();
-			return true;
-		}
-		return false;
-	}
-
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
-		dispatch.Dispatch<Ember::KeyboardEvents>(EMBER_BIND_FUNC(Keyboard));
 	}
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
@@ -44,7 +35,6 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
-
 */
 
 #include <functional>
@@ -63,7 +53,7 @@ int main(int argc, char** argv) {
 #include <SDL_mixer.h>
 
 #define EMBER_BIND_FUNC(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
-#define EMBER_VERSION 1.0
+#define EMBER_VERSION 1.01
 
 namespace Ember {
 	struct Rect {

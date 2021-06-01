@@ -126,7 +126,6 @@
     <ClInclude Include="src\Ember\Components\TileSystems\TileMap.h">
       <Filter>Ember\TileSystems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Core\VersionControl.h" />
     <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
     <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
   </ItemGroup>
@@ -207,7 +206,6 @@
       <Filter>Ember\TileSystems</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
-    <ClCompile Include="src\Ember\Core\VersionControl.cpp" />
     <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
   </ItemGroup>
 </Project>
