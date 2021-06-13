@@ -2,9 +2,9 @@
 #define GRID_H
 
 #include "Ember.h"
-#include "Core/Renderer.h"
-#include "Core/EventHandler.h"
-#include "Components/Button.h"
+#include "Renderer.h"
+#include "EventHandler.h"
+#include "Button.h"
 
 namespace Ember {
 	struct GridComponents {

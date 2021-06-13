@@ -1,4 +1,4 @@
-#include "Assets/Assets.h"
+#include "Assets.h"
 #include "Ember.h"
 
 namespace Ember {

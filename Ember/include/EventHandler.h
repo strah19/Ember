@@ -1,13 +1,13 @@
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
-#include "Core/Events/Events.h"
-#include "Core/Events/MouseEvents.h"
-#include "Core/Events/WindowEvents.h"
-#include "Core/Events/KeyBoardEvents.h"
-#include "Core/Events/JoystickEvents.h"
+#include "Events.h"
+#include "MouseEvents.h"
+#include "WindowEvents.h"
+#include "KeyBoardEvents.h"
+#include "JoystickEvents.h"
 
-#include "Core/Windows/Window.h"
+#include "Window.h"
 
 namespace Ember {
 	using Callback = std::function<void(Event&)>;

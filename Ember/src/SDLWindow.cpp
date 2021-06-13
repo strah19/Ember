@@ -1,6 +1,6 @@
 #include "SDLWindow.h"
-#include "Assets/Assets.h"
-#include "Assets/Texture.h"
+#include "Assets.h"
+#include "Texture.h"
 
 namespace Ember {
 	SDLWindow::SDLWindow(WindowProperties* properties)

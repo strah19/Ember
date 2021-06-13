@@ -2,10 +2,10 @@
 #define TILE_MAP_H
 
 #include "Ember.h"
-#include "Components/TileSystems/Grid.h"
-#include "../CinderFileSystem/CinderFileSys.h"
-#include "Components/Animation/Spritesheet.h"
-#include "Core/Events/KeyboardCodes.h"
+#include "Grid.h"
+#include "CinderFileSys.h"
+#include "Spritesheet.h"
+#include "KeyboardCodes.h"
 
 namespace Ember {
 	struct TileInfo {

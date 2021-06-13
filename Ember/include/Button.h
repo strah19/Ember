@@ -1,7 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "Core/EventHandler.h"
+#include "EventHandler.h"
 #include "Ember.h"
 
 namespace Ember {

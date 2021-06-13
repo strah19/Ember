@@ -1,7 +1,7 @@
 #ifndef OSDEP_H
 #define OSDEP_H
 
-#include "Core/Windows/Window.h"
+#include "Window.h"
 #include "EventHandler.h"
 
 #if !defined(__cplusplus)
@@ -12,11 +12,11 @@
 #define PLATFORM_NAME "windows" // Windows
 #include <Windows.h>
 namespace Ember {
-	HWND GetNativeWindowHandler(Ember::Window* window);
+	HWND GetNativeWindowHandler(Window* window);
 
-	UINT GetNativeMsg(Ember::EventHandler* handler);
-	WPARAM GetWParam(Ember::EventHandler* handler);
-	LPARAM GetLParam(Ember::EventHandler* handler);
+	UINT GetNativeMsg(EventHandler* handler);
+	WPARAM GetWParam(EventHandler* handler);
+	LPARAM GetLParam(EventHandler* handler);
 }
 
 #elif defined(__CYGWIN__) && !defined(_WIN32)

@@ -1,5 +1,5 @@
 #include "OpenGLWindow.h"
-#include "Core/Logger.h"
+#include "Logger.h"
 
 #ifdef EMBER_OPENGL_ACTIVATED
 #include <glad/glad.h>

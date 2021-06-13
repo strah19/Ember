@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#include "Core/Vector.h" 
+#include "Vector.h" 
 
 #define EMBER_BIND_FUNC(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 

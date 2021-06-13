@@ -2,7 +2,7 @@
 #define LAYER_H
 
 #include <string>
-#include "Core/Events/Events.h"
+#include "Events.h"
 
 namespace Ember {
 	class Layer {

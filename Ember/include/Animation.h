@@ -1,8 +1,8 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include "Components/Animation/Spritesheet.h"
-#include "Components/Animation/SpritesheetDividerParser.h"
+#include "Spritesheet.h"
+#include "SpritesheetDividerParser.h"
 
 namespace Ember {
 	class AnimationSource {

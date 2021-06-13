@@ -1,4 +1,4 @@
-#include "Core/Application.h"
+#include "Application.h"
 
 class Sandbox : public Ember::Application {
 public:

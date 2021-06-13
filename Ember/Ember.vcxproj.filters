@@ -30,186 +30,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CinderFileSystem\CFSFile.h">
-      <Filter>CinderFileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CinderFileSystem\CinderFileSys.h">
-      <Filter>CinderFileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CinderFileSystem\CinderStructure.h">
-      <Filter>CinderFileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\Animation\Animation.h">
-      <Filter>Ember\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\Animation\Spritesheet.h">
-      <Filter>Ember\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\Animation\SpritesheetDividerParser.h">
-      <Filter>Ember\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Assets.h">
-      <Filter>Ember\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Audio.h">
-      <Filter>Ember\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Font.h">
-      <Filter>Ember\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Assets\Texture.h">
-      <Filter>Ember\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Application.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Cursor.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\EventHandler.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\Events.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
-      <Filter>Ember\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\EventStack.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\OSDepStructures.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Renderer.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Timer.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Vector.h">
-      <Filter>Ember\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\Windows\Window.h">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Ember.h">
-      <Filter>Ember</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\Button.h">
-      <Filter>Ember\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\Camera.h">
-      <Filter>Ember\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\TileSystems\Grid.h">
-      <Filter>Ember\TileSystems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Components\TileSystems\TileMap.h">
-      <Filter>Ember\TileSystems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
-    <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
-    <ClInclude Include="src\Ember\Core\Logger.h" />
-    <ClInclude Include="src\Ember\Core\Layer.h" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Assets.cpp" />
+    <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\CFSFile.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CinderStructure.cpp" />
+    <ClCompile Include="src\Cursor.cpp" />
+    <ClCompile Include="src\Ember.cpp" />
+    <ClCompile Include="src\EventHandler.cpp" />
+    <ClCompile Include="src\EventStack.cpp" />
+    <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\OSDepStructures.cpp" />
+    <ClCompile Include="src\OpenGLWindow.cpp" />
+    <ClCompile Include="src\RandomNumberGenerator.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\SDLWindow.cpp" />
+    <ClCompile Include="src\Spritesheet.cpp" />
+    <ClCompile Include="src\SpritesheetDividerParser.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
-      <Filter>CinderFileSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp">
-      <Filter>CinderFileSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\Animation\Animation.cpp">
-      <Filter>Ember\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\Animation\Spritesheet.cpp">
-      <Filter>Ember\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\Animation\SpritesheetDividerParser.cpp">
-      <Filter>Ember\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Assets.cpp">
-      <Filter>Ember\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Audio.cpp">
-      <Filter>Ember\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Font.cpp">
-      <Filter>Ember\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Assets\Texture.cpp">
-      <Filter>Ember\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Application.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Cursor.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\EventHandler.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\EventStack.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\OSDepStructures.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Renderer.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Timer.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Vector.cpp">
-      <Filter>Ember\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\Windows\Window.cpp">
-      <Filter>Ember\Core\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Ember.cpp">
-      <Filter>Ember</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\Button.cpp">
-      <Filter>Ember\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\Camera.cpp">
-      <Filter>Ember\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\TileSystems\Grid.cpp">
-      <Filter>Ember\TileSystems</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Components\TileSystems\TileMap.cpp">
-      <Filter>Ember\TileSystems</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
-    <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
-    <ClCompile Include="src\Ember\Core\Logger.cpp" />
-    <ClCompile Include="src\Ember\Core\Layer.cpp" />
+    <ClInclude Include="include\Animation.h" />
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Assets.h" />
+    <ClInclude Include="include\Audio.h" />
+    <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\CFSFile.h" />
+    <ClInclude Include="include\CinderFileSys.h" />
+    <ClInclude Include="include\CinderStructure.h" />
+    <ClInclude Include="include\Cursor.h" />
+    <ClInclude Include="include\Ember.h" />
+    <ClInclude Include="include\EventHandler.h" />
+    <ClInclude Include="include\Events.h" />
+    <ClInclude Include="include\EventStack.h" />
+    <ClInclude Include="include\Font.h" />
+    <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\JoystickEvents.h" />
+    <ClInclude Include="include\KeyboardCodes.h" />
+    <ClInclude Include="include\KeyboardEvents.h" />
+    <ClInclude Include="include\Layer.h" />
+    <ClInclude Include="include\Logger.h" />
+    <ClInclude Include="include\MouseEvents.h" />
+    <ClInclude Include="include\OpenGLWindow.h" />
+    <ClInclude Include="include\OSDepStructures.h" />
+    <ClInclude Include="include\RandomNumberGenerator.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\SDLWindow.h" />
+    <ClInclude Include="include\Spritesheet.h" />
+    <ClInclude Include="include\SpritesheetDividerParser.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\TileMap.h" />
+    <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\Window.h" />
+    <ClInclude Include="include\WindowEvents.h" />
   </ItemGroup>
 </Project>

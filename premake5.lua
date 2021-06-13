@@ -29,8 +29,7 @@ project "Sandbox"
 	}
 
 	includedirs {
-		"Ember/src/Ember",
-		"Ember/src/CinderFileSystem",
+		"Ember/include",
 		"%{IncludeDir.SDL2}",
 	}
 
@@ -73,8 +72,7 @@ project "Ember"
 	}
 
 	includedirs {
-		"Ember/src/Ember",
-		"Ember/src/CinderFileSystem",
+		"Ember/include",
 		"%{IncludeDir.SDL2}",
 	}
 

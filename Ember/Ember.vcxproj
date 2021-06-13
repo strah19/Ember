@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -120,7 +120,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Ember;src\CinderFileSystem;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -140,73 +140,71 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\CinderFileSystem\CFSFile.h" />
-    <ClInclude Include="src\CinderFileSystem\CinderFileSys.h" />
-    <ClInclude Include="src\CinderFileSystem\CinderStructure.h" />
-    <ClInclude Include="src\Ember\Components\Animation\Animation.h" />
-    <ClInclude Include="src\Ember\Components\Animation\Spritesheet.h" />
-    <ClInclude Include="src\Ember\Components\Animation\SpritesheetDividerParser.h" />
-    <ClInclude Include="src\Ember\Assets\Assets.h" />
-    <ClInclude Include="src\Ember\Assets\Audio.h" />
-    <ClInclude Include="src\Ember\Assets\Font.h" />
-    <ClInclude Include="src\Ember\Assets\Texture.h" />
-    <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
-    <ClInclude Include="src\Ember\Core\Application.h" />
-    <ClInclude Include="src\Ember\Core\Cursor.h" />
-    <ClInclude Include="src\Ember\Core\EventHandler.h" />
-    <ClInclude Include="src\Ember\Core\Events\Events.h" />
-    <ClInclude Include="src\Ember\Core\Events\JoystickEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\KeyboardCodes.h" />
-    <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\MouseEvents.h" />
-    <ClInclude Include="src\Ember\Core\Events\WindowEvents.h" />
-    <ClInclude Include="src\Ember\Core\EventStack.h" />
-    <ClInclude Include="src\Ember\Core\Layer.h" />
-    <ClInclude Include="src\Ember\Core\Logger.h" />
-    <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
-    <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
-    <ClInclude Include="src\Ember\Core\Renderer.h" />
-    <ClInclude Include="src\Ember\Core\Timer.h" />
-    <ClInclude Include="src\Ember\Core\Vector.h" />
-    <ClInclude Include="src\Ember\Core\Windows\OpenGLWindow.h" />
-    <ClInclude Include="src\Ember\Core\Windows\SDLWindow.h" />
-    <ClInclude Include="src\Ember\Core\Windows\Window.h" />
-    <ClInclude Include="src\Ember\Ember.h" />
-    <ClInclude Include="src\Ember\Components\Button.h" />
-    <ClInclude Include="src\Ember\Components\Camera.h" />
-    <ClInclude Include="src\Ember\Components\TileSystems\Grid.h" />
-    <ClInclude Include="src\Ember\Components\TileSystems\TileMap.h" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Assets.cpp" />
+    <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\CFSFile.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CinderStructure.cpp" />
+    <ClCompile Include="src\Cursor.cpp" />
+    <ClCompile Include="src\Ember.cpp" />
+    <ClCompile Include="src\EventHandler.cpp" />
+    <ClCompile Include="src\EventStack.cpp" />
+    <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\OSDepStructures.cpp" />
+    <ClCompile Include="src\OpenGLWindow.cpp" />
+    <ClCompile Include="src\RandomNumberGenerator.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\SDLWindow.cpp" />
+    <ClCompile Include="src\Spritesheet.cpp" />
+    <ClCompile Include="src\SpritesheetDividerParser.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CinderFileSystem\CFSFile.cpp" />
-    <ClCompile Include="src\CinderFileSystem\CinderStructure.cpp" />
-    <ClCompile Include="src\Ember\Components\Animation\Animation.cpp" />
-    <ClCompile Include="src\Ember\Components\Animation\Spritesheet.cpp" />
-    <ClCompile Include="src\Ember\Components\Animation\SpritesheetDividerParser.cpp" />
-    <ClCompile Include="src\Ember\Assets\Assets.cpp" />
-    <ClCompile Include="src\Ember\Assets\Audio.cpp" />
-    <ClCompile Include="src\Ember\Assets\Font.cpp" />
-    <ClCompile Include="src\Ember\Assets\Texture.cpp" />
-    <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
-    <ClCompile Include="src\Ember\Core\Application.cpp" />
-    <ClCompile Include="src\Ember\Core\Cursor.cpp" />
-    <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
-    <ClCompile Include="src\Ember\Core\EventStack.cpp" />
-    <ClCompile Include="src\Ember\Core\Layer.cpp" />
-    <ClCompile Include="src\Ember\Core\Logger.cpp" />
-    <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
-    <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
-    <ClCompile Include="src\Ember\Core\Renderer.cpp" />
-    <ClCompile Include="src\Ember\Core\Timer.cpp" />
-    <ClCompile Include="src\Ember\Core\Vector.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\OpenGLWindow.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\SDLWindow.cpp" />
-    <ClCompile Include="src\Ember\Core\Windows\Window.cpp" />
-    <ClCompile Include="src\Ember\Ember.cpp" />
-    <ClCompile Include="src\Ember\Components\Button.cpp" />
-    <ClCompile Include="src\Ember\Components\Camera.cpp" />
-    <ClCompile Include="src\Ember\Components\TileSystems\Grid.cpp" />
-    <ClCompile Include="src\Ember\Components\TileSystems\TileMap.cpp" />
+    <ClInclude Include="include\Animation.h" />
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Assets.h" />
+    <ClInclude Include="include\Audio.h" />
+    <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\CFSFile.h" />
+    <ClInclude Include="include\CinderFileSys.h" />
+    <ClInclude Include="include\CinderStructure.h" />
+    <ClInclude Include="include\Cursor.h" />
+    <ClInclude Include="include\Ember.h" />
+    <ClInclude Include="include\EventHandler.h" />
+    <ClInclude Include="include\Events.h" />
+    <ClInclude Include="include\EventStack.h" />
+    <ClInclude Include="include\Font.h" />
+    <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\JoystickEvents.h" />
+    <ClInclude Include="include\KeyboardCodes.h" />
+    <ClInclude Include="include\KeyboardEvents.h" />
+    <ClInclude Include="include\Layer.h" />
+    <ClInclude Include="include\Logger.h" />
+    <ClInclude Include="include\MouseEvents.h" />
+    <ClInclude Include="include\OpenGLWindow.h" />
+    <ClInclude Include="include\OSDepStructures.h" />
+    <ClInclude Include="include\RandomNumberGenerator.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\SDLWindow.h" />
+    <ClInclude Include="include\Spritesheet.h" />
+    <ClInclude Include="include\SpritesheetDividerParser.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\TileMap.h" />
+    <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\Window.h" />
+    <ClInclude Include="include\WindowEvents.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

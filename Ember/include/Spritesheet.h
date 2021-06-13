@@ -1,7 +1,7 @@
 #ifndef SPRITE_SHEET_H
 #define SPRITE_SHEET_H
 
-#include "Assets/Texture.h"
+#include "Texture.h"
 
 namespace Ember {
 	class SpriteSheet {
