@@ -7,11 +7,11 @@ Solely created by strah19, Ember holds a wide ranges of tools including event ha
 Sample code:
 ```c++
 
-#include "Core/Application.h"
+#include "Application.h"
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { }
+	void OnCreate() { 	}
 
 	virtual ~Sandbox() { }
 
@@ -19,21 +19,12 @@ public:
 		window->Update();
 
 		renderer->Clear(background_color);
-
+		
 		renderer->Show();
-	}
-
-	bool Keyboard(Ember::KeyboardEvents& keyboard) {
-		if (keyboard.scancode == Ember::EmberKeyCode::Escape) {
-			window->Quit();
-			return true;
-		}
-		return false;
 	}
 
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
-		dispatch.Dispatch<Ember::KeyboardEvents>(EMBER_BIND_FUNC(Keyboard));
 	}
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
@@ -51,9 +42,6 @@ int main(int argc, char** argv) {
 ```
 
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Components/Camera.h` and enjoy.
-
-# Support
-To support this project, become a developer and help contribute to the project.
 
 # Build
 To build this project, run the `Window-Gen.bat` file in Windows or run premake5 on your own in `premake5.lua`.
