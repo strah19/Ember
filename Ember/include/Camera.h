@@ -1,8 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "Core/EventHandler.h"
-#include "Core/Events/MouseEvents.h"
+#include "EventHandler.h"
+#include "MouseEvents.h"
 
 namespace Ember {
 	class Camera {
