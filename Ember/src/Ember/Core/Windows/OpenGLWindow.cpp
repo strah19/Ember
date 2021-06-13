@@ -1,13 +1,24 @@
 #include "OpenGLWindow.h"
+#include "Core/Logger.h"
+
+#ifdef EMBER_OPENGL_ACTIVATED
+#include <glad/glad.h>
+#endif
 
 namespace Ember {
 	OpenGLWindow::OpenGLWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl) {
+#ifndef EMBER_OPENGL_ACTIVATED
+		EMBER_LOG_ERROR("To use OpenGLWindow, you must first load glad.");
+#endif
+
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major_opengl);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor_opengl);
 
-		is_running = Initializer(properties);
+		SDL_GL_LoadLibrary(NULL);
 		AddWindowFlag(SDL_WINDOW_OPENGL);
+
+		is_running = Initializer(properties);
 		if (is_running) {
 			this->properties = properties;
 			if (!AssertProperties())
@@ -17,6 +28,12 @@ namespace Ember {
 			Destroy();
 
 		glcontext = SDL_GL_CreateContext(native_window);
+
+#ifdef EMBER_OPENGL_ACTIVATED
+		gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
+#endif
+
+		SDL_GL_SetSwapInterval(1);
 	}
 
 	OpenGLWindow::~OpenGLWindow() {

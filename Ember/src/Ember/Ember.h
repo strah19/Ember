@@ -45,15 +45,14 @@ int main(int argc, char** argv) {
 #include <memory>
 #include <sstream>
 
-#include "Core/Vector.h" 
-
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+#include "Core/Vector.h" 
+
 #define EMBER_BIND_FUNC(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
-#define EMBER_VERSION 1.01
 
 namespace Ember {
 	struct Rect {

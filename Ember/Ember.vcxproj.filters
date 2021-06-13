@@ -87,7 +87,7 @@
     <ClInclude Include="src\Ember\Core\Events\WindowEvents.h">
       <Filter>Ember\Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ember\Core\Layer.h">
+    <ClInclude Include="src\Ember\Core\EventStack.h">
       <Filter>Ember\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ember\Core\OSDepStructures.h">
@@ -128,6 +128,8 @@
     </ClInclude>
     <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
     <ClInclude Include="src\Ember\Components\ECS\EntityComponentSystem.h" />
+    <ClInclude Include="src\Ember\Core\Logger.h" />
+    <ClInclude Include="src\Ember\Core\Layer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CinderFileSystem\CFSFile.cpp">
@@ -166,7 +168,7 @@
     <ClCompile Include="src\Ember\Core\EventHandler.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ember\Core\Layer.cpp">
+    <ClCompile Include="src\Ember\Core\EventStack.cpp">
       <Filter>Ember\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp">
@@ -207,5 +209,7 @@
     </ClCompile>
     <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
     <ClCompile Include="src\Ember\Components\ECS\EntityComponentSystem.cpp" />
+    <ClCompile Include="src\Ember\Core\Logger.cpp" />
+    <ClCompile Include="src\Ember\Core\Layer.cpp" />
   </ItemGroup>
 </Project>

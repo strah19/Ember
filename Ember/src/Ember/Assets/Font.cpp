@@ -9,6 +9,8 @@ namespace Ember {
 		current_text_being_draw(" ") { }
 
 	Font::~Font() {
+		SDL_FreeSurface(font_surface);
+		SDL_DestroyTexture(font_texture);
 		TTF_CloseFont(font);
 	}
 
@@ -54,14 +56,14 @@ namespace Ember {
 		}
 	}
 
-	void Font::Translate(const Ember::IVec2& translation) {
+	void Font::Translate(const IVec2& translation) {
 		if (!font_is_locked) {
 			font_position.x = font_position.x + translation.x;
 			font_position.y = font_position.y + translation.y;
 		}
 	}
 
-	Ember::IVec2 Font::GetSize() {
+	IVec2 Font::GetSize() {
 		int* w = &font_position.w;
 		int* h = &font_position.h;
 		TTF_SizeText(font, current_text_being_draw.c_str(), w, h);
@@ -69,7 +71,7 @@ namespace Ember {
 		return { *w, *h };
 	}
 
-	Ember::IVec2 Font::GetSizeFromText(const std::string& text) {
+	IVec2 Font::GetSizeFromText(const std::string& text) {
 		int* w = &font_position.w;
 		int* h = &font_position.h;
 		TTF_SizeText(font, text.c_str(), w, h);
@@ -79,8 +81,7 @@ namespace Ember {
 
 	void Font::UpdateFont() {
 		if (!font_is_locked && current_text_being_draw != "") {
-			SDL_DestroyTexture(font_texture);
-			SDL_Surface* font_surface = TTF_RenderText_Blended(font, current_text_being_draw.c_str(), font_color.color);
+			font_surface = TTF_RenderText_Blended(font, current_text_being_draw.c_str(), font_color.color);
 			font_width = font_surface->w;
 			font_height = font_surface->h;
 
@@ -88,8 +89,6 @@ namespace Ember {
 			font_position.h = font_height;
 
 			font_texture = SDL_CreateTextureFromSurface(renderer->Renderer(), font_surface);
-
-			SDL_FreeSurface(font_surface);
 		}
 	}
 

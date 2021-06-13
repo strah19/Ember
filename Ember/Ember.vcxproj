@@ -160,7 +160,9 @@
     <ClInclude Include="src\Ember\Core\Events\KeyboardEvents.h" />
     <ClInclude Include="src\Ember\Core\Events\MouseEvents.h" />
     <ClInclude Include="src\Ember\Core\Events\WindowEvents.h" />
+    <ClInclude Include="src\Ember\Core\EventStack.h" />
     <ClInclude Include="src\Ember\Core\Layer.h" />
+    <ClInclude Include="src\Ember\Core\Logger.h" />
     <ClInclude Include="src\Ember\Core\OSDepStructures.h" />
     <ClInclude Include="src\Ember\Core\RandomNumberGenerator.h" />
     <ClInclude Include="src\Ember\Core\Renderer.h" />
@@ -189,7 +191,9 @@
     <ClCompile Include="src\Ember\Core\Application.cpp" />
     <ClCompile Include="src\Ember\Core\Cursor.cpp" />
     <ClCompile Include="src\Ember\Core\EventHandler.cpp" />
+    <ClCompile Include="src\Ember\Core\EventStack.cpp" />
     <ClCompile Include="src\Ember\Core\Layer.cpp" />
+    <ClCompile Include="src\Ember\Core\Logger.cpp" />
     <ClCompile Include="src\Ember\Core\OSDepStructures.cpp" />
     <ClCompile Include="src\Ember\Core\RandomNumberGenerator.cpp" />
     <ClCompile Include="src\Ember\Core\Renderer.cpp" />

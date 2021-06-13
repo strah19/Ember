@@ -2,7 +2,6 @@
 #define EVENTS_H
 
 #include "Ember.h"
-#include "Vector.h"
 
 #include <string>
 #include <functional>
@@ -11,7 +10,7 @@ namespace Ember {
 	struct Event {
 	public:
 		Event(const std::string& name)
-			: active(true), Handled(false), name(name) {
+			: active(true), name(name) {
 			SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
 		}
 
@@ -19,8 +18,6 @@ namespace Ember {
 
 		bool ActivityCheck() const { return active; }
 		void Active(bool active) { this->active = active; }
-
-		bool Handled;
 
 		virtual std::string GetName() const { return ""; }
 	protected:
@@ -39,9 +36,9 @@ namespace Ember {
 		}
 
 		template<typename T>
-		bool Dispatch(const std::function<bool(T&)> func) {
+		bool Dispatch(const std::function<void(T&)> func) {
 			if (event->ActivityCheck() && dynamic_cast<T*>(event)) {
-				event->Handled = func(static_cast<T&>(*event));
+				func(static_cast<T&>(*event));
 				return true;
 			}
 			return false;

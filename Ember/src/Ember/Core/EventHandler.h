@@ -14,31 +14,26 @@ namespace Ember {
 
 	class Events {
 	public:
-		Events()
-			: mouse_event(false, 0, 0, false), keyboard_event(false, 0, EmberKeyCode::Null), mouse_pos({ 0, 0 }, { 0, 0 }), input(" "), wheel(0) { }
+		static bool Down();
+		static IVec2 MousePosition();
+		static ButtonIds ButtonId();
+		static bool Clicked();
 
-		bool Down() const { return mouse_event.down; }
-		IVec2 MousePosition() const { return mouse_pos.position; }
-		ButtonIds ButtonId() const { return mouse_event.button_id; }
-		EmberKeyCode KeyCode() const { return keyboard_event.scancode; }
-		bool KeyDown() const { return keyboard_event.pressed; }
-		IVec2 MouseMotion() const { return mouse_pos.motion; }
-		std::string UserInput() const { return input.input_text; }
-		int MouseWheelDirection() const { return wheel.direction; }
-		void ResetWheel() { wheel.direction = 0; }
-		bool Clicked() { return mouse_event.clicked; }
+		static EmberKeyCode KeyCode();
+		static bool KeyDown();
+
+		static IVec2 MouseMotion();
+		static int MouseWheelDirection();
+		static void ResetWheel();
+
+		static std::string UserInput();
 	private:
-		MouseButtonEvents mouse_event;
-		KeyboardEvents keyboard_event;
-		MouseButtonPositionEvents mouse_pos;
-		KeyboardTextInputEvents input;
-		MouseWheelEvents wheel;
 		friend class EventHandler;
 	};
 
 	class EventHandler {
 	public:
-		EventHandler(Window* window, Events* events);
+		EventHandler(Window* window);
 
 		void Update();
 		void SetEventCallback(const Callback& callback) { this->callback = callback; }
@@ -48,7 +43,6 @@ namespace Ember {
 		Window* window;
 		SDL_Event native_event_handler;
 		Callback callback;
-		Events* events;
 
 		void Quit();
 		void KeyEvent();

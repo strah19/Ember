@@ -22,17 +22,15 @@ namespace Ember {
 		virtual void OnCreate() { }
 
 		Window* GetWindow() { return window; }
-		Events* GetEvents() { return events; }
 		rRenderer* GetRenderer() { return renderer; }
 	protected:
 		Window* window = nullptr;
 		EventHandler* event_handler = nullptr;
-		Events* events = nullptr;
 		rRenderer* renderer = nullptr;
 		WindowProperties* properties = nullptr;
 	private:
-		bool OnClose(const QuitEvent& event);
-		bool OnResize(const ResizeEvent& event);
+		void OnClose(const QuitEvent& event);
+		void OnResize(const ResizeEvent& event);
 		void OnEvent(Event& event);
 	};
 }

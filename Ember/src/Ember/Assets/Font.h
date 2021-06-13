@@ -27,9 +27,9 @@ namespace Ember {
 		void Render();
 		void SetPosition(int x, int y);
 		inline void SetSize(int w, int h) { font_width = w; font_height = h; }
-		void Translate(const Ember::IVec2& translation);
-		Ember::IVec2 GetSize();
-		Ember::IVec2 GetSizeFromText(const std::string& text);
+		void Translate(const IVec2& translation);
+		IVec2 GetSize();
+		IVec2 GetSizeFromText(const std::string& text);
 
 		enum Styles {
 			Bold = TTF_STYLE_BOLD,
@@ -44,12 +44,14 @@ namespace Ember {
 
 		const char* GetPath() { return file_path; }
 		template <typename T>
-		static void Draw(const T& data, const Color& color, const Ember::IVec2& position, Font* font) {
+		static void Draw(const T& data, const Color& color, const IVec2& position, Font* font) {
 			font->UpdateText(data);
 			font->SetPosition(position);
 			font->UpdateColor(color);
 			font->Render();
 		}
+
+		SDL_Surface* GetTextureData() { return font_surface; }
 	private:
 		const char* file_path;
 		void UpdateFont();
@@ -58,6 +60,7 @@ namespace Ember {
 		TTF_Font* font;
 		SDL_Rect font_position;
 		SDL_Texture* font_texture;
+		SDL_Surface* font_surface;
 		Color font_color;
 		bool font_is_locked;
 		rRenderer* renderer;

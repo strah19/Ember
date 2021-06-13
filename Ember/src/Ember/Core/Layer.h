@@ -2,36 +2,49 @@
 #define LAYER_H
 
 #include <string>
-#include <vector>
-#include <functional>
+#include "Core/Events/Events.h"
 
 namespace Ember {
 	class Layer {
 	public:
-		Layer(const std::string& name) : layer_name(name) { }
-		std::string Name() { return layer_name; }
-	private:
-		std::string layer_name;
+		Layer(const std::string& name)
+			: name(name) { }
+		virtual ~Layer() = default;
+
+		virtual void OnAttach() {}
+		virtual void OnDetach() {}
+		virtual void OnUpdate(float delta) {}
+		virtual void UserDefEvent(Event& event) {}
+		virtual void UpdateGui() { }
+
+		inline std::string GetName() const { return name; }
+	protected:
+		std::string name;
 	};
 
-	class EventStack {
+	class LayerStack
+	{
 	public:
-		enum class EventStackError {
-			LayerNameCouldNotBeFound, LayerDeletionFailed, DuplicitLayerFound, Null
-		};
+		LayerStack() = default;
+		~LayerStack();
 
-		EventStack(const std::string& first_name);
-		EventStackError SetCurrentLayer(const std::string& name);
-		EventStackError AddLayer(const std::string& name);
-		EventStackError DeleteLayer(const std::string& name);
-		EventStackError DrawEventToLayer(const std::function<void()>& event_func, const std::string& name);
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
+		void PopLayer(Layer* layer);
+		void PopOverlay(Layer* overlay);
 
-		std::string GetLayer() { return event_layers[current_layer].Name(); }
+		inline std::vector<Layer*>::iterator begin() { return layers.begin(); }
+		inline std::vector<Layer*>::iterator end() { return layers.end(); }
+		inline std::vector<Layer*>::reverse_iterator rbegin() { return layers.rbegin(); }
+		inline std::vector<Layer*>::reverse_iterator rend() { return layers.rend(); }
+
+		inline std::vector<Layer*>::const_iterator begin() const { return layers.begin(); }
+		inline std::vector<Layer*>::const_iterator end() const { return layers.end(); }
+		inline std::vector<Layer*>::const_reverse_iterator rbegin() const { return layers.rbegin(); }
+		inline std::vector<Layer*>::const_reverse_iterator rend() const { return layers.rend(); }
 	private:
-		size_t IndexLayers(const std::string& name);
-
-		size_t current_layer;
-		std::vector<Layer> event_layers;
+		std::vector<Layer*> layers;
+		unsigned int insert_index = 0;
 	};
 }
 

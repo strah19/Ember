@@ -4,9 +4,8 @@ namespace Ember {
 	void Application::Initialize(const std::string& name, bool full_screen, uint32_t width, uint32_t height) {
 		properties = new WindowProperties(name, width, height);
 		properties->full_screen = full_screen;
-		window = Window::CreateEmberWindow(properties);
-		events = new Events();
-		event_handler = new EventHandler(window, events);
+		window = Window::CreateEmberWindow(properties, 4, 5);
+		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
 
 		renderer = new rRenderer(window);
@@ -17,7 +16,6 @@ namespace Ember {
 	Application::~Application() {
 		delete properties;
 		delete window;
-		delete events;
 		delete event_handler;
 		delete renderer;
 	}
@@ -37,14 +35,12 @@ namespace Ember {
 		dispatcher.Dispatch<ResizeEvent>(EMBER_BIND_FUNC(OnResize));
 	}
 
-	bool Application::OnClose(const QuitEvent& event) {
+	void Application::OnClose(const QuitEvent& event) {
 		window->Quit();
-		return true;
 	}
 
-	bool Application::OnResize(const ResizeEvent& event) {
+	void Application::OnResize(const ResizeEvent& event) {
 		window->Properties()->width = event.w;
 		window->Properties()->height = event.h;
-		return true;
 	}
 }
