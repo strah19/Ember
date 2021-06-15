@@ -3,6 +3,10 @@
 
 #include "SDLWindow.h"
 
+#ifdef EMBER_OPENGL_ACTIVATED
+#include <glad/glad.h>
+#endif
+
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 

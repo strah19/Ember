@@ -1,4 +1,7 @@
 #include "Renderer.h"
+#include "Logger.h"
+
+#include <assert.h>
 
 constexpr int RenderingIndex = -1;
 
@@ -37,6 +40,12 @@ namespace Ember {
 	}
 
 	void rRenderer::Clear(const Color& color) {
+#ifdef EMBER_OPENGL_ACTIVATED
+		if (!this)
+			EMBER_LOG_ERROR("Trying to use SDL2 renderer in OpenGL mode!");
+#endif // EMBER_OPENGL_ACTIVATED	
+		assert(renderer != nullptr);
+
 		SetColor(color);
 		SDL_RenderClear(renderer);
 	}

@@ -38,7 +38,7 @@ namespace Ember {
 		}
 	}
 
-	void SpriteSheetDividerToAnimation::Initialize(UserDividedSpritesheet& sheet, Ember::Texture& texture) {
+	void SpriteSheetDividerToAnimation::Initialize(UserDividedSpritesheet& sheet, Ember::SDLTexture& texture) {
 		spritesheet = sheet;
 		MAX_FRAMES = spritesheet.GetMaxSize();
 		this->texture = texture;
@@ -49,7 +49,7 @@ namespace Ember {
 		texture.Draw(dest, spritesheet.ReturnSourceRect(), flip, angle);
 	}
 
-	void IndividualFramesToAnimation::Initialize(const std::initializer_list<Texture>& textures) {
+	void IndividualFramesToAnimation::Initialize(const std::initializer_list<SDLTexture>& textures) {
 		this->textures = textures;
 	}
 

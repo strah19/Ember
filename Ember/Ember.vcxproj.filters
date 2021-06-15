@@ -1,99 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="CinderFileSystem">
-      <UniqueIdentifier>{FF0FDEC8-EB08-FD1A-143B-E29F0093DC26}</UniqueIdentifier>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Ember">
-      <UniqueIdentifier>{900E1D0D-FC22-45BE-C5A4-E81D317841EF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Animation">
-      <UniqueIdentifier>{7F3B4159-EBC6-AE1D-F4D7-311260E20A1E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Assets">
-      <UniqueIdentifier>{72531BCB-5EB6-AA6F-073C-E325F37D76F2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Core">
-      <UniqueIdentifier>{E8CCD5C2-D484-1710-3D8C-F06B2963B200}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Core\Events">
-      <UniqueIdentifier>{CCE3F6FD-38FA-F493-8171-80B5EDC6C51B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Core\Windows">
-      <UniqueIdentifier>{22DFB508-0EC3-765E-7723-71B1632661E0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\Gui">
-      <UniqueIdentifier>{E4D93C5B-5044-F1D1-9982-A277052CCF26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ember\TileSystems">
-      <UniqueIdentifier>{25754352-918B-41E8-DA02-CD0946581270}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Animation.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Assets.cpp" />
-    <ClCompile Include="src\Audio.cpp" />
-    <ClCompile Include="src\Button.cpp" />
-    <ClCompile Include="src\CFSFile.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\CinderStructure.cpp" />
-    <ClCompile Include="src\Cursor.cpp" />
-    <ClCompile Include="src\Ember.cpp" />
-    <ClCompile Include="src\EventHandler.cpp" />
-    <ClCompile Include="src\EventStack.cpp" />
-    <ClCompile Include="src\Font.cpp" />
-    <ClCompile Include="src\Grid.cpp" />
-    <ClCompile Include="src\Layer.cpp" />
-    <ClCompile Include="src\Logger.cpp" />
-    <ClCompile Include="src\OSDepStructures.cpp" />
-    <ClCompile Include="src\OpenGLWindow.cpp" />
-    <ClCompile Include="src\RandomNumberGenerator.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\SDLWindow.cpp" />
-    <ClCompile Include="src\Spritesheet.cpp" />
-    <ClCompile Include="src\SpritesheetDividerParser.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\TileMap.cpp" />
-    <ClCompile Include="src\Timer.cpp" />
-    <ClCompile Include="src\Vector.cpp" />
-    <ClCompile Include="src\Window.cpp" />
+    <ClInclude Include="include\Animation.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Assets.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Button.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFSFile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera2D.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CinderFileSys.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CinderStructure.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Cursor.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Ember.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EventHandler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EventStack.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Events.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Font.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Grid.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JoystickEvents.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyboardCodes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyboardEvents.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Layer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Logger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MouseEvents.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OSDepStructures.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OpenGLWindow.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RandomNumberGenerator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SDLWindow.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Spritesheet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpritesheetDividerParser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SDLTexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TileMap.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowEvents.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Buffer.h" />
+    <ClInclude Include="include\FrameBuffer.h" />
+    <ClInclude Include="include\ImGuiLayer.h" />
+    <ClInclude Include="include\Light.h" />
+    <ClInclude Include="include\Material.h" />
+    <ClInclude Include="include\OpenRenderer.h" />
+    <ClInclude Include="include\OrthoCamera.h" />
+    <ClInclude Include="include\OrthoCameraController.h" />
+    <ClInclude Include="include\PerspectiveCamera.h" />
+    <ClInclude Include="include\PerspectiveCameraController.h" />
+    <ClInclude Include="include\RendererAPI.h" />
+    <ClInclude Include="include\RendererCommands.h" />
+    <ClInclude Include="include\ResourceManagers.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\VertexArray.h" />
+    <ClInclude Include="include\OpenGLCamera.h" />
+    <ClInclude Include="include\OpenGLTexture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Animation.h" />
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Assets.h" />
-    <ClInclude Include="include\Audio.h" />
-    <ClInclude Include="include\Button.h" />
-    <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\CFSFile.h" />
-    <ClInclude Include="include\CinderFileSys.h" />
-    <ClInclude Include="include\CinderStructure.h" />
-    <ClInclude Include="include\Cursor.h" />
-    <ClInclude Include="include\Ember.h" />
-    <ClInclude Include="include\EventHandler.h" />
-    <ClInclude Include="include\Events.h" />
-    <ClInclude Include="include\EventStack.h" />
-    <ClInclude Include="include\Font.h" />
-    <ClInclude Include="include\Grid.h" />
-    <ClInclude Include="include\JoystickEvents.h" />
-    <ClInclude Include="include\KeyboardCodes.h" />
-    <ClInclude Include="include\KeyboardEvents.h" />
-    <ClInclude Include="include\Layer.h" />
-    <ClInclude Include="include\Logger.h" />
-    <ClInclude Include="include\MouseEvents.h" />
-    <ClInclude Include="include\OpenGLWindow.h" />
-    <ClInclude Include="include\OSDepStructures.h" />
-    <ClInclude Include="include\RandomNumberGenerator.h" />
-    <ClInclude Include="include\Renderer.h" />
-    <ClInclude Include="include\SDLWindow.h" />
-    <ClInclude Include="include\Spritesheet.h" />
-    <ClInclude Include="include\SpritesheetDividerParser.h" />
-    <ClInclude Include="include\Texture.h" />
-    <ClInclude Include="include\TileMap.h" />
-    <ClInclude Include="include\Timer.h" />
-    <ClInclude Include="include\Vector.h" />
-    <ClInclude Include="include\Window.h" />
-    <ClInclude Include="include\WindowEvents.h" />
+    <ClCompile Include="src\Animation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFSFile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CinderStructure.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cursor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ember.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EventHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EventStack.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grid.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Layer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OSDepStructures.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGLWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RandomNumberGenerator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SDLWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Spritesheet.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpritesheetDividerParser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SDLTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileMap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Buffer.cpp" />
+    <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\ImGuiBuild.cpp" />
+    <ClCompile Include="src\ImGuiLayer.cpp" />
+    <ClCompile Include="src\OpenRenderer.cpp" />
+    <ClCompile Include="src\OrthoCamera.cpp" />
+    <ClCompile Include="src\OrthoCameraController.cpp" />
+    <ClCompile Include="src\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\PerspectiveCameraController.cpp" />
+    <ClCompile Include="src\RendererAPI.cpp" />
+    <ClCompile Include="src\RendererCommands.cpp" />
+    <ClCompile Include="src\ResoucreManagers.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
+    <ClCompile Include="src\OpenGLCamera.cpp" />
+    <ClCompile Include="src\OpenGLTexture.cpp" />
   </ItemGroup>
 </Project>

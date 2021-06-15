@@ -7,11 +7,18 @@
 #include "EventHandler.h"
 #include "Renderer.h"
 #include "Window.h"
+#include "Logger.h"
 
 namespace Ember {
+	enum AppFlags {
+		NONE = 0x01,
+		FULL_SCREEN = 0x02,
+		OPENGL = 0x04
+	};
+
 	class Application {
 	public:
-		void Initialize(const std::string& name = "EmberApp", bool full_screen = false, uint32_t width = 1280, uint32_t height = 720);
+		void Initialize(const std::string& name = "EmberApp", uint32_t width = 1280, uint32_t height = 720, AppFlags flags = AppFlags::NONE);
 
 		virtual ~Application();
 

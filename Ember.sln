@@ -5,6 +5,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ember", "Ember\Ember.vcxproj", "{900E1D0D-FC22-45BE-C5A4-E81D317841EF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLAD", "libs\GLAD\GLAD.vcxproj", "{5D4A857C-4981-860D-F26D-6C10DE83020F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "libs\imgui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,6 +28,18 @@ Global
 		{900E1D0D-FC22-45BE-C5A4-E81D317841EF}.Dist|Win32.Build.0 = Dist|Win32
 		{900E1D0D-FC22-45BE-C5A4-E81D317841EF}.Release|Win32.ActiveCfg = Release|Win32
 		{900E1D0D-FC22-45BE-C5A4-E81D317841EF}.Release|Win32.Build.0 = Release|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Debug|Win32.Build.0 = Debug|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Dist|Win32.ActiveCfg = Dist|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Dist|Win32.Build.0 = Dist|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Release|Win32.ActiveCfg = Release|Win32
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Release|Win32.Build.0 = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.Build.0 = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|Win32.ActiveCfg = Dist|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|Win32.Build.0 = Dist|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.ActiveCfg = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,8 @@
 #include "Spritesheet.h"
 #include "SpritesheetDividerParser.h"
 
+#include <vector>
+
 namespace Ember {
 	class AnimationSource {
 	public:
@@ -34,19 +36,19 @@ namespace Ember {
 
 	class SpriteSheetDividerToAnimation : public AnimationSource {
 	public:
-		void Initialize(UserDividedSpritesheet& sheet, Ember::Texture& texture);
+		void Initialize(UserDividedSpritesheet& sheet, Ember::SDLTexture& texture);
 		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
 	private:
-		Ember::Texture texture;
+		Ember::SDLTexture texture;
 		UserDividedSpritesheet spritesheet;
 	};
 
 	class IndividualFramesToAnimation : public AnimationSource {
 	public:
-		void Initialize(const std::initializer_list<Texture>& textures);
+		void Initialize(const std::initializer_list<SDLTexture>& textures);
 		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
 	private: 
-		std::vector<Texture> textures;
+		std::vector<SDLTexture> textures;
 	};
 
 	class Animation {

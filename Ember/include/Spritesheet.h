@@ -1,39 +1,39 @@
 #ifndef SPRITE_SHEET_H
 #define SPRITE_SHEET_H
 
-#include "Texture.h"
+#include "SDLTexture.h"
 
 namespace Ember {
 	class SpriteSheet {
 	public:
-		SpriteSheet(Texture& texture, int rows, int cols);
+		SpriteSheet(SDLTexture& texture, int rows, int cols);
 		SpriteSheet();
 
-		void Initialize(Texture& texture, int rows, int cols);
+		void Initialize(SDLTexture& texture, int rows, int cols);
 
 		void SelectSprite(int x, int y);
 		Rect ReturnSourceRect();
 
 		IVec2 Size() { return { col, row }; }
-		Texture* GetTexture() { return &texture; }
+		SDLTexture* GetTexture() { return &texture; }
 	private:
 		Rect clip;
-		Texture texture;
+		SDLTexture texture;
 		int row, col;
 
 	};
 
 	class RandomAccessSpriteSheet {
 	public:
-		RandomAccessSpriteSheet(Texture& texture, const std::initializer_list<Rect>& rects);
+		RandomAccessSpriteSheet(SDLTexture& texture, const std::initializer_list<Rect>& rects);
 		RandomAccessSpriteSheet();
 
-		void Initialize(Texture& texture, const std::initializer_list<Rect>& rects);
+		void Initialize(SDLTexture& texture, const std::initializer_list<Rect>& rects);
 		Rect ReturnSourceRect();
 		void SelectSprite(size_t list_index);
-		Texture GetTexture() { return texture; }
+		SDLTexture GetTexture() { return texture; }
 	private:
-		Texture texture;
+		SDLTexture texture;
 		size_t current_index = 0;
 		std::vector<Rect> list_clips;
 	};

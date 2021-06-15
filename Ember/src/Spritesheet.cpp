@@ -1,13 +1,13 @@
 #include "Spritesheet.h"
 
 namespace Ember {
-	SpriteSheet::SpriteSheet(Texture& texture, int rows, int cols) : clip({ 0, 0, 0, 0 }) {
+	SpriteSheet::SpriteSheet(SDLTexture& texture, int rows, int cols) : clip({ 0, 0, 0, 0 }) {
 		Initialize(texture, rows, cols);
 	}
 
 	SpriteSheet::SpriteSheet() : row(0), col(0), clip({0, 0, 0, 0 }) { }
 
-	void SpriteSheet::Initialize(Texture& texture, int rows, int cols) {
+	void SpriteSheet::Initialize(SDLTexture& texture, int rows, int cols) {
 		this->texture = texture;
 		row = rows;
 		col = cols;
@@ -27,13 +27,13 @@ namespace Ember {
 		return clip;
 	}
 
-	RandomAccessSpriteSheet::RandomAccessSpriteSheet(Texture& texture, const std::initializer_list<Rect>& rects) {
+	RandomAccessSpriteSheet::RandomAccessSpriteSheet(SDLTexture& texture, const std::initializer_list<Rect>& rects) {
 		Initialize(texture, rects);
 	}
 
 	RandomAccessSpriteSheet::RandomAccessSpriteSheet() { }
 
-	void RandomAccessSpriteSheet::Initialize(Texture& texture, const std::initializer_list<Rect>& rects) {
+	void RandomAccessSpriteSheet::Initialize(SDLTexture& texture, const std::initializer_list<Rect>& rects) {
 		this->texture = texture;
 
 		list_clips = rects;

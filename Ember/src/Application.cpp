@@ -1,14 +1,17 @@
 #include "Application.h"
 
 namespace Ember {
-	void Application::Initialize(const std::string& name, bool full_screen, uint32_t width, uint32_t height) {
+	void Application::Initialize(const std::string& name, uint32_t width, uint32_t height, AppFlags flags) {
+		Ember::LogImpl::Init();
 		properties = new WindowProperties(name, width, height);
-		properties->full_screen = full_screen;
-		window = Window::CreateEmberWindow(properties, 4, 5);
+
+		properties->full_screen = (flags & AppFlags::FULL_SCREEN) ? true : false;
+		window = (flags & AppFlags::OPENGL) ? Window::CreateEmberWindow(properties, 4, 5) : Window::CreateEmberWindow(properties);
+
 		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
 
-		renderer = new rRenderer(window);
+		renderer = (flags & AppFlags::OPENGL) ?  nullptr : new rRenderer(window);
 
 		OnCreate();
 	}

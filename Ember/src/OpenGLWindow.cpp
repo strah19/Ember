@@ -1,14 +1,10 @@
 #include "OpenGLWindow.h"
 #include "Logger.h"
 
-#ifdef EMBER_OPENGL_ACTIVATED
-#include <glad/glad.h>
-#endif
-
 namespace Ember {
 	OpenGLWindow::OpenGLWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl) {
 #ifndef EMBER_OPENGL_ACTIVATED
-		EMBER_LOG_ERROR("To use OpenGLWindow, you must first load glad.");
+		EMBER_LOG_ERROR("To use OpenGLWindow, you must first load glad. This class will still work but OpenGL will not.");
 #endif
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
