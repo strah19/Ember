@@ -181,16 +181,16 @@ namespace Ember {
     void LogImpl::Init() {
         InitializeLoggingSystem();
 
-        error_format.Init("{cR}[{ts}]::{s}::{s}::{l}\n", "Ember", "ERROR");
+        error_format.Init("{cR}[{ts}]::{s}::{s}::{l}{cDef}\n", "Ember", "ERROR");
         error_log.SetLogFormat(&error_format);
 
-        warning_format.Init("{cY}[{ts}]::{s}::{s}::{l}\n", "Ember", "WARNING");
+        warning_format.Init("{cY}[{ts}]::{s}::{s}::{l}{cDef}\n", "Ember", "WARNING");
         warning_log.SetLogFormat(&warning_format);
 
-        def_format.Init("{cDef}[{ts}]::{s}::{l}\n", "Ember");
+        def_format.Init("{cDef}[{ts}]::{s}::{l}{cDef}\n", "Ember");
         def_log.SetLogFormat(&def_format);
 
-        def_format_good.Init("{cG}[{ts}]::{s}::{l}\n", "Ember");
+        def_format_good.Init("{cG}[{ts}]::{s}::{l}{cDef}\n", "Ember");
         def_log_good.SetLogFormat(&def_format_good);
     }
 

@@ -1,9 +1,9 @@
 #ifndef OPENGL_VERTEX_ARRAY_H
 #define OPENGL_VERTEX_ARRAY_H
 
-#include "Buffer.h"
+#include "OpenGLBuffers.h"
 
-namespace Ember {
+namespace EmberGL {
 	enum class VertexBufferFormat {
 		VNCVNCVNC,
 		VVVCCCNNN
@@ -20,7 +20,7 @@ namespace Ember {
 		std::vector<std::shared_ptr<VertexBuffer>> GetVertexBuffers() { return vertex_buffers; };
 		uint32_t GetIndexBufferSize() const { return index_size; }
 
-		void AddVertexBuffer(std::shared_ptr<VertexBuffer>& vertex_buf, VertexBufferFormat format);
+		void AddVertexBuffer(VertexBuffer* vertex_buf, VertexBufferFormat format);
 		void SetIndexBufferSize(uint32_t index_buf) { index_size = index_buf; }
 
 		void EnableVertexAttrib(uint32_t index);

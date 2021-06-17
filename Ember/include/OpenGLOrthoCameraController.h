@@ -1,16 +1,18 @@
 #ifndef ORTHO_CAMERA_CONTROLLER_H
 #define ORTHO_CAMERA_CONTROLLER_H
 
-#include "OrthoCamera.h"
+#include "OpenGLOrthoCamera.h"
 #include "WindowEvents.h"
 #include "Events.h"
 #include "MouseEvents.h"
 
-namespace Ember {
+namespace EmberGL {
+	using namespace Ember;
+
 	class OrthoCameraController {
 	public:
 		OrthoCameraController() = default;
-		OrthoCameraController(glm::vec2& window_size);
+		OrthoCameraController(const glm::vec2& window_size);
 
 		OrthoCamera& GetCamera() { return camera; }
 		void OnEvent(Event& event);

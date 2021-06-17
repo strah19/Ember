@@ -1,6 +1,6 @@
-#include "OrthoCamera.h"
+#include "OpenGLOrthoCamera.h"
 
-namespace Ember {
+namespace EmberGL {
 	OrthoCamera::OrthoCamera(float left, float right, float bottom, float top) {
 		SetProjection(left, right, bottom, top);
 	}

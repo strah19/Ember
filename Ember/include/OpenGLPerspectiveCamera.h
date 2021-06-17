@@ -3,7 +3,7 @@
 
 #include "OpenGLCamera.h"
 
-namespace Ember {
+namespace EmberGL {
 	class PerspectiveCamera : public Camera {
 	public:
 		PerspectiveCamera(float fov, float aspect_ratio);

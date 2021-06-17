@@ -1,7 +1,7 @@
-#include "Buffer.h"
+#include "OpenGLBuffers.h"
 #include <glad/glad.h>
 
-namespace Ember {
+namespace EmberGL {
 	static uint32_t current_index_buffer_id = 0;
 	static uint32_t current_vertex_buffer_id = 0;
 	static uint32_t current_uniform_buffer_id = 0;

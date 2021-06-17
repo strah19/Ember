@@ -5,7 +5,7 @@
 #include <memory>
 #include <glm.hpp>
 
-namespace Ember {
+namespace EmberGL {
 	struct ShaderSources {
 		std::string vertex;
 		std::string fragment;
@@ -14,6 +14,8 @@ namespace Ember {
 	class Shader {
 	public:
 		Shader(const std::string& file_path);
+		Shader() = default;
+
 		virtual ~Shader();
 
 		void Bind();

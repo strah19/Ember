@@ -1,27 +1,28 @@
-#include "OpenRenderer.h"
-#include "RendererCommands.h"
+#include "OpenGLRenderer.h"
+#include "OpenGLRendererCommands.h"
 #include <gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 
-namespace Ember {
+namespace EmberGL {
 	glm::vec3 CalculateVertexNormals(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
 		glm::vec3 norm = glm::cross((b - a), (c - a));
 		return glm::normalize(norm);
 	}
 
 	struct RendererData {
-		std::shared_ptr<VertexArray> vertex_array;
-		std::shared_ptr<VertexBuffer> vertex_buffer;
-		std::shared_ptr<IndexBuffer> index_buffer;
-		std::shared_ptr<IndirectDrawBuffer> indirect_draw_buffer;
+		VertexArray* vertex_array;
+		VertexBuffer* vertex_buffer;
+		IndexBuffer* index_buffer;
+		IndirectDrawBuffer* indirect_draw_buffer;
 
-		ShaderInfo* current_shader;
-		ShaderInfo default_shader;
+		Shader* current_shader;
+		Shader default_shader;
+		std::shared_ptr<ShaderStorageBuffer> ssbo;
 
 		uint32_t index_offset = 0;
 
 		uint32_t texture_slot_index = 0;
-		std::shared_ptr<Texture>* textures[MAX_TEXTURE_SLOTS];
+		uint32_t textures[MAX_TEXTURE_SLOTS];
 		glm::mat4 proj_view = glm::mat4(1.0f);
 		Camera* camera;
 
@@ -44,9 +45,9 @@ namespace Ember {
 
 	static RendererData renderer_data;
 
-	void OpenGLRenderer::Init() {
-		renderer_data.vertex_buffer = std::make_shared<VertexBuffer>(sizeof(Vertex) * MAX_VERTEX_COUNT);
-		renderer_data.vertex_array = std::make_shared<VertexArray>();
+	void Renderer::Init() {
+		renderer_data.vertex_buffer = new VertexBuffer(sizeof(Vertex) * MAX_VERTEX_COUNT);
+		renderer_data.vertex_array = new VertexArray();
 
 		VertexBufferLayout layout;
 		layout.AddToBuffer(VertexBufferElement(3, false, VertexShaderType::Float));
@@ -60,23 +61,27 @@ namespace Ember {
 		renderer_data.vertices_base = new Vertex[MAX_VERTEX_COUNT];
 		renderer_data.index_base = new uint32_t[MAX_INDEX_COUNT];
 
-		renderer_data.index_buffer = std::make_shared<IndexBuffer>(MAX_INDEX_COUNT * sizeof(uint32_t));
+		renderer_data.index_buffer = new IndexBuffer(MAX_INDEX_COUNT * sizeof(uint32_t));
 		renderer_data.vertex_array->SetIndexBufferSize(renderer_data.index_buffer->GetCount());
 		renderer_data.vertex_array->AddVertexBuffer(renderer_data.vertex_buffer, VertexBufferFormat::VNCVNCVNC);
 
-		renderer_data.indirect_draw_buffer = std::make_shared<IndirectDrawBuffer>(sizeof(renderer_data.draw_commands));
+		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
 
-		renderer_data.default_shader.Init("shaders/default_shader.glsl");
-
-		renderer_data.default_shader.AddSSBOReference("GlobalMatrices", sizeof(glm::mat4));
+		renderer_data.default_shader = Shader("shaders/default_shader.glsl");
+		renderer_data.ssbo = std::make_shared<ShaderStorageBuffer>(sizeof(glm::mat4));
 	}
 
-	void OpenGLRenderer::Destroy() {
+	void Renderer::Destroy() {
+		delete renderer_data.vertex_array;
+		delete renderer_data.vertex_buffer;
+		delete renderer_data.index_buffer;
+		delete renderer_data.indirect_draw_buffer;
+
 		delete[] renderer_data.vertices_base;
 		delete[] renderer_data.index_base;
 	}
 
-	void OpenGLRenderer::InitRendererShader(Shader* shader) {
+	void Renderer::InitRendererShader(Shader* shader) {
 		shader->Bind();
 		int sampler[MAX_TEXTURE_SLOTS];
 		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++) {
@@ -85,9 +90,8 @@ namespace Ember {
 		shader->SetIntArray("textures", sampler);
 	}
 
-	void OpenGLRenderer::BeginScene(Camera& camera, RenderFlags flags) {
+	void Renderer::BeginScene(Camera& camera, RenderFlags flags) {
 		renderer_data.flags = flags;
-		SSBOManager::GetSSBOManager()->QueueForNewFrame();
 		renderer_data.proj_view = camera.GetProjection() * camera.GetView();
 
 		renderer_data.camera = &camera;
@@ -96,15 +100,15 @@ namespace Ember {
 		StartBatch();
 	}
 
-	void OpenGLRenderer::EndScene() {
+	void Renderer::EndScene() {
 		Render();
 	}
 
-	uint32_t OpenGLRenderer::GetShaderId() {
-		return renderer_data.current_shader->GetShader()->get()->GetId();
+	uint32_t Renderer::GetShaderId() {
+		return renderer_data.current_shader->GetId();
 	}
 
-	void OpenGLRenderer::StartBatch() {
+	void Renderer::StartBatch() {
 		renderer_data.texture_slot_index = 0;
 		renderer_data.num_of_vertices_in_batch = 0;
 		renderer_data.index_offset = 0;
@@ -117,7 +121,7 @@ namespace Ember {
 		renderer_data.index_ptr = renderer_data.index_base;
 	}
 
-	void OpenGLRenderer::Render() {
+	void Renderer::Render() {
 		renderer_data.vertex_array->Bind();
 		renderer_data.index_buffer->Bind();
 		renderer_data.vertex_buffer->Bind();
@@ -125,17 +129,14 @@ namespace Ember {
 		renderer_data.indirect_draw_buffer->Bind();
 		renderer_data.indirect_draw_buffer->SetData(renderer_data.draw_commands, sizeof(renderer_data.draw_commands), 0);
 
-		std::shared_ptr<Shader>* shader = renderer_data.current_shader->GetShader();
-		shader->get()->Bind();
+		renderer_data.current_shader->Bind();
 
-		SSBOData* ssbo = renderer_data.default_shader.GetBufferPointer("GlobalMatrices");
-		ssbo->ssbo->Bind();
-		renderer_data.current_shader->UpdateSSBO(ssbo, 0, (void*)&renderer_data.proj_view, sizeof(glm::mat4));
-		renderer_data.current_shader->SSBOUploadFinised(ssbo);
-		ssbo->ssbo->BindToBindPoint();
+		renderer_data.ssbo->Bind();
+		renderer_data.ssbo->SetData((void*)&renderer_data.proj_view, sizeof(glm::mat4), 0);
+		renderer_data.ssbo->BindToBindPoint();
 
 		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			renderer_data.textures[i]->get()->Bind(i);
+			glBindTextureUnit(i, renderer_data.textures[i]);
 
 		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)renderer_data.vertices_ptr - (uint8_t*)renderer_data.vertices_base);
 		uint32_t index_buf_size = (uint32_t)((uint8_t*)renderer_data.index_ptr - (uint8_t*)renderer_data.index_base);
@@ -148,12 +149,12 @@ namespace Ember {
 		RendererCommand::DrawMultiIndirect(nullptr, renderer_data.draw_count + 1, 0);
 	}
 
-	void OpenGLRenderer::NewBatch() {
+	void Renderer::NewBatch() {
 		Render();
 		StartBatch();
 	}
 
-	void OpenGLRenderer::Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader) {
+	void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader) {
 		shader->Bind();
 		vertex_array->Bind();
 		index_buffer->Bind();
@@ -161,7 +162,7 @@ namespace Ember {
 		RendererCommand::DrawVertexArray(vertex_array);
 	}
 
-	void OpenGLRenderer::DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
+	void Renderer::DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
 		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
 			NewBatch();
 
@@ -187,7 +188,7 @@ namespace Ember {
 		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void OpenGLRenderer::CalculateSquareIndices() {
+	void Renderer::CalculateSquareIndices() {
 		*renderer_data.index_ptr = renderer_data.index_offset;
 		renderer_data.index_ptr++;
 		*renderer_data.index_ptr = 1 + renderer_data.index_offset;
@@ -204,13 +205,13 @@ namespace Ember {
 		renderer_data.index_offset += 4;
 	}
 
-	void OpenGLRenderer::GoToNextDrawCommand() {
+	void Renderer::GoToNextDrawCommand() {
 		renderer_data.draw_count++;
 		renderer_data.base_vert += renderer_data.num_of_vertices_in_batch;
 		renderer_data.current_draw_command_vertex_size = 0;
 	}
 
-	void OpenGLRenderer::MakeCommand() {
+	void Renderer::MakeCommand() {
 		renderer_data.draw_commands[renderer_data.draw_count].vertex_count = renderer_data.current_draw_command_vertex_size;
 		renderer_data.draw_commands[renderer_data.draw_count].instance_count = 1;
 		renderer_data.draw_commands[renderer_data.draw_count].first_index = 0;
@@ -218,15 +219,15 @@ namespace Ember {
 		renderer_data.draw_commands[renderer_data.draw_count].base_instance = renderer_data.draw_count;
 	}
 
-	void OpenGLRenderer::SetShader(std::shared_ptr<Shader>* shader) {
-		renderer_data.current_shader->SetShader(shader);
+	void Renderer::SetShader(Shader* shader) {
+		renderer_data.current_shader = shader;
 	}
 
-	void OpenGLRenderer::SetShaderToDefualt() {
+	void Renderer::SetShaderToDefualt() {
 		renderer_data.current_shader = &renderer_data.default_shader;
 	}
 
-	void OpenGLRenderer::SetMaterialId(uint32_t material_id) {
+	void Renderer::SetMaterialId(uint32_t material_id) {
 		renderer_data.current_material_id = material_id;
 	}
 
@@ -236,62 +237,62 @@ namespace Ember {
 			glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 	}
 
-	void OpenGLRenderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 
 		DrawQuad(model, color, -1.0f, TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		DrawQuad(model, color, -1.0f, tex_coords);
 	}
 
-	void OpenGLRenderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
 	}
 
-	void OpenGLRenderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
 		DrawQuad(model, color, -1.0f, TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec4& color) {
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
 		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
 		DrawQuad(model, color, -1.0f, tex_coords);
 	}
 
-	void OpenGLRenderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], std::shared_ptr<Texture>& texture, const glm::vec4& color) {
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], Texture* texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
 		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
 	}
 
-	void OpenGLRenderer::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
+	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 		DrawCube(model, color, -1.0f, TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawCube(const glm::vec3& position, const glm::vec3& size, std::shared_ptr<Texture>& texture, const glm::vec4& color) {
+	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, Texture* texture, const glm::vec4& color) {
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 		DrawCube(model, color, CalculateTextureIndex(texture), TEX_COORDS);
 	}
 
-	void OpenGLRenderer::DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
+	void Renderer::DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
 		if (renderer_data.num_of_vertices_in_batch + CUBE_VERTEX_COUNT > MAX_VERTEX_COUNT)
 			NewBatch();
 
@@ -329,15 +330,15 @@ namespace Ember {
 		renderer_data.current_draw_command_vertex_size += 36;
 	}
 
-	float OpenGLRenderer::CalculateTextureIndex(std::shared_ptr<Texture>& texture) {
+	float Renderer::CalculateTextureIndex(Texture* texture) {
 		float texture_id = -1.0f;
 
 		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			if (*renderer_data.textures[i] == texture)
+			if (renderer_data.textures[i] == texture->GetTextureId())
 				texture_id = (float)i;
 
 		if (texture_id == -1.0f) {
-			renderer_data.textures[renderer_data.texture_slot_index] = &texture;
+			renderer_data.textures[renderer_data.texture_slot_index] = texture->GetTextureId();
 			texture_id = (float)renderer_data.texture_slot_index;
 			renderer_data.texture_slot_index++;
 

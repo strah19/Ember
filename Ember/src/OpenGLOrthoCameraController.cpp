@@ -1,17 +1,18 @@
-#include "OrthoCameraController.h"
+#include "OpenGLOrthoCameraController.h"
 #include "KeyboardCodes.h"
 #include "EventHandler.h"
 
-namespace Ember {
+namespace EmberGL {
+	using namespace Ember;
+
 	constexpr float ZOOM_SPEED = 3.0f;
-	OrthoCameraController::OrthoCameraController(glm::vec2& window_size) {
+	OrthoCameraController::OrthoCameraController(const glm::vec2& window_size) {
 		aspect_ratio = (float) window_size.x / (float) window_size.y;
 		camera = OrthoCamera(aspect_ratio * zoom, -aspect_ratio * zoom, zoom, -zoom);
 	}
 
 	void OrthoCameraController::Update() {
 		if (!freeze) {
-
 			camera.SetPosition(camera_pos);
 			if (KeyboardEvents::GetKeyboardState(EmberKeyCode::D))
 				camera_pos.x += camera_speed.x;

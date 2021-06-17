@@ -1,7 +1,7 @@
-#include "VertexArray.h"
+#include "OpenGLVertexArray.h"
 #include <glad/glad.h>
 
-namespace Ember {
+namespace EmberGL {
 	static uint32_t current_vertex_array_id = 0;
 
 	static GLenum VertexShaderTypeToOpenGL(VertexShaderType type) {
@@ -33,7 +33,7 @@ namespace Ember {
 		current_vertex_array_id = 0;
 	}
 
-	void VertexArray::AddVertexBuffer(std::shared_ptr<VertexBuffer>& vertex_buf, VertexBufferFormat format) {
+	void VertexArray::AddVertexBuffer(VertexBuffer* vertex_buf, VertexBufferFormat format) {
 		uint32_t stride = vertex_buf->GetLayout()->Calculate();
 
 		vertex_buf->Bind();

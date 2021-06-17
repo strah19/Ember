@@ -2,9 +2,9 @@
 #define RENDERER_COMMANDS_H
 
 #include <memory>
-#include "RendererAPI.h"
+#include "OpenGLRendererAPI.h"
 
-namespace Ember {
+namespace EmberGL {
 	class RendererCommand {
 	public:
 		static void Init();

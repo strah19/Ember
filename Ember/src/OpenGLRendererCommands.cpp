@@ -1,6 +1,6 @@
-#include "RendererCommands.h"
+#include "OpenGLRendererCommands.h"
 
-namespace Ember {
+namespace EmberGL {
 	static std::shared_ptr<RendererAPI> renderer_api;
 
 	void RendererCommand::Init() {

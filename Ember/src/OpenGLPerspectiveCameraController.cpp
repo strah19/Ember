@@ -1,8 +1,9 @@
-#include "PerspectiveCameraController.h"
+#include "OpenGLPerspectiveCameraController.h"
 #include "EventHandler.h"
 #include "KeyboardCodes.h"
 
-namespace Ember {
+namespace EmberGL {
+	using namespace Ember;
 	constexpr float SMALLEST_ZOOM = 1.0f;
 	constexpr float HIGHEST_ZOOM = 60.0f;
 

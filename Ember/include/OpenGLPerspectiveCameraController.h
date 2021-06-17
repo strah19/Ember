@@ -1,14 +1,16 @@
 #ifndef PERSPECTIVE_CAMERA_CONTROLLER_H
 #define PERSPECTIVE_CAMERA_CONTROLLER_H
 
-#include "PerspectiveCamera.h"
+#include "OpenGLPerspectiveCamera.h"
 #include "Events.h"
 #include "MouseEvents.h"
 #include "WindowEvents.h"
 #include "KeyboardEvents.h"
 #include "Cursor.h"
 
-namespace Ember {
+namespace EmberGL {
+	using namespace Ember;
+	
 	class PerspectiveCameraController {
 	public:
 		PerspectiveCameraController() = default;

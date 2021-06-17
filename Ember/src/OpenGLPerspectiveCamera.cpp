@@ -1,6 +1,6 @@
-#include "PerspectiveCamera.h"
+#include "OpenGLPerspectiveCamera.h"
 
-namespace Ember {
+namespace EmberGL {
 	PerspectiveCamera::PerspectiveCamera(float fov, float aspect_ratio) {
 		SetProjection(fov, aspect_ratio);
 	}

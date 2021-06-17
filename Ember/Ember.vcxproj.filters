@@ -114,21 +114,20 @@
     <ClInclude Include="include\WindowEvents.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Buffer.h" />
-    <ClInclude Include="include\FrameBuffer.h" />
+    <ClInclude Include="include\OpenGLBuffers.h" />
+    <ClInclude Include="include\OpenGLFrameBuffer.h" />
     <ClInclude Include="include\ImGuiLayer.h" />
-    <ClInclude Include="include\Light.h" />
-    <ClInclude Include="include\Material.h" />
-    <ClInclude Include="include\OpenRenderer.h" />
-    <ClInclude Include="include\OrthoCamera.h" />
-    <ClInclude Include="include\OrthoCameraController.h" />
-    <ClInclude Include="include\PerspectiveCamera.h" />
-    <ClInclude Include="include\PerspectiveCameraController.h" />
-    <ClInclude Include="include\RendererAPI.h" />
-    <ClInclude Include="include\RendererCommands.h" />
-    <ClInclude Include="include\ResourceManagers.h" />
-    <ClInclude Include="include\Shader.h" />
-    <ClInclude Include="include\VertexArray.h" />
+    <ClInclude Include="include\OpenGLLight.h" />
+    <ClInclude Include="include\OpenGLMaterial.h" />
+    <ClInclude Include="include\OpenGLRenderer.h" />
+    <ClInclude Include="include\OpenGLOrthoCamera.h" />
+    <ClInclude Include="include\OpenGLOrthoCameraController.h" />
+    <ClInclude Include="include\OpenGLPerspectiveCamera.h" />
+    <ClInclude Include="include\OpenGLPerspectiveCameraController.h" />
+    <ClInclude Include="include\OpenGLRendererAPI.h" />
+    <ClInclude Include="include\OpenGLRendererCommands.h" />
+    <ClInclude Include="include\OpenGLShader.h" />
+    <ClInclude Include="include\OpenGLVertexArray.h" />
     <ClInclude Include="include\OpenGLCamera.h" />
     <ClInclude Include="include\OpenGLTexture.h" />
   </ItemGroup>
@@ -217,20 +216,19 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buffer.cpp" />
-    <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\OpenGLBuffers.cpp" />
+    <ClCompile Include="src\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGuiLayer.cpp" />
-    <ClCompile Include="src\OpenRenderer.cpp" />
-    <ClCompile Include="src\OrthoCamera.cpp" />
-    <ClCompile Include="src\OrthoCameraController.cpp" />
-    <ClCompile Include="src\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\PerspectiveCameraController.cpp" />
-    <ClCompile Include="src\RendererAPI.cpp" />
-    <ClCompile Include="src\RendererCommands.cpp" />
-    <ClCompile Include="src\ResoucreManagers.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\VertexArray.cpp" />
+    <ClCompile Include="src\OpenGLRenderer.cpp" />
+    <ClCompile Include="src\OpenGLOrthoCamera.cpp" />
+    <ClCompile Include="src\OpenGLOrthoCameraController.cpp" />
+    <ClCompile Include="src\OpenGLPerspectiveCamera.cpp" />
+    <ClCompile Include="src\OpenGLPerspectiveCameraController.cpp" />
+    <ClCompile Include="src\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\OpenGLRendererCommands.cpp" />
+    <ClCompile Include="src\OpenGLShader.cpp" />
+    <ClCompile Include="src\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\OpenGLCamera.cpp" />
     <ClCompile Include="src\OpenGLTexture.cpp" />
   </ItemGroup>

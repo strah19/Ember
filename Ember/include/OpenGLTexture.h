@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-namespace Ember {
+namespace EmberGL {
 	class Texture {
 	public:
 		Texture(const char* file_path);

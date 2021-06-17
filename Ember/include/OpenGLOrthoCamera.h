@@ -3,7 +3,7 @@
 
 #include "OpenGLCamera.h"
 
-namespace Ember {
+namespace EmberGL {
 	class OrthoCamera : public Camera {
 	public:
 		OrthoCamera(float left, float right, float bottom, float top);

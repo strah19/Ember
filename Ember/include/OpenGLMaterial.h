@@ -4,9 +4,9 @@
 #include <stdint.h>
 #include <glm.hpp>
 #include "OpenGLTexture.h"
-#include "Light.h"
+#include "OpenGLLight.h"
 
-namespace Ember {
+namespace EmberGL {
 	struct TextureMaterial {
 		std::shared_ptr<Texture>* diffuse;
 		std::shared_ptr<Texture>* specular;

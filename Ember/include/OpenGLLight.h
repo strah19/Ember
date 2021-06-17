@@ -2,9 +2,9 @@
 #define LIGHT_H
 
 #include <glm.hpp>
-#include "Shader.h"
+#include "OpenGLShader.h"
 
-namespace Ember {
+namespace EmberGL {
 	struct LightSource {
 		union PosDir {
 			glm::vec4 position;

@@ -1,9 +1,11 @@
 #include "OpenGLTexture.h"
+#include "Logger.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include <stb_image.h>
 
-namespace Ember {
+namespace EmberGL {
 	static uint32_t current_texture_id = 0;
 
 	Texture::Texture(const char* file_path) {
@@ -33,10 +35,12 @@ namespace Ember {
 			glTextureParameteri(texture_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 			glTextureSubImage2D(texture_id, 0, 0, 0, width, height, data_format, GL_UNSIGNED_BYTE, data);
+
+			EMBER_LOG_GOOD("Asset texture '%s' loaded.", file_path);
 		}
 		else
-			std::cout << "FAILED_TEXTURE_LOAD::" << file_path << std::endl;
-		
+			EMBER_LOG_ERROR("Asset texture '%s' failed loaded.", file_path);
+
 		stbi_image_free(data);
 	}
 

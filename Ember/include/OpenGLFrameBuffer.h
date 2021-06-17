@@ -3,7 +3,7 @@
 
 #include <memory>
 
-namespace Ember {
+namespace EmberGL {
 	class FrameBuffer {
 	public:
 		FrameBuffer(uint32_t width, uint32_t height);

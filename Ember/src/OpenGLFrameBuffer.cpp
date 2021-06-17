@@ -1,9 +1,9 @@
-#include "FrameBuffer.h"
+#include "OpenGLFrameBuffer.h"
 
 #include <iostream>
 #include <glad/glad.h>
 
-namespace Ember {
+namespace EmberGL {
 	FrameBuffer::FrameBuffer(uint32_t width, uint32_t height) {
 		glGenFramebuffers(1, &frame_buffer_id);
 		Bind();

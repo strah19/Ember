@@ -4,7 +4,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 
-namespace Ember {
+namespace EmberGL {
 	class Camera {
 	public:
 		inline glm::mat4 GetProjection() const { return projection_matrix; }

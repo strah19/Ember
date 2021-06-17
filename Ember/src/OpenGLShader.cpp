@@ -1,5 +1,6 @@
-#include "Shader.h"
-#include "RendererAPI.h"
+#include "OpenGLShader.h"
+#include "OpenGLRendererAPI.h"
+#include "Logger.h"
 
 #include <glad/glad.h>
 #include <gtc/type_ptr.hpp>
@@ -7,7 +8,7 @@
 #include <sstream>
 #include <iostream>
 
-namespace Ember {
+namespace EmberGL {
 	static uint32_t current_shader_binded = 0;
 
 	Shader::Shader(const std::string& file_path) {
@@ -50,7 +51,8 @@ namespace Ember {
 			char* message = (char*)malloc(length * sizeof(char));
 			glGetShaderInfoLog(id, length, &length, message);
 			const char* type_c = (type == GL_VERTEX_SHADER) ? "VERTEX" : "FRAGMENT";
-			std::cout << "SHADER::" << message << "::FAILED::" << type_c << std::endl;
+			EMBER_LOG_ERROR("Shader '%s' failed to load: %s", type_c, message);
+
 			glDeleteShader(id);
 			return 0;
 		}
@@ -70,11 +72,11 @@ namespace Ember {
 		std::stringstream ss[2];
 
 		if (!stream.is_open()) {
-			std::cout << "SHADER_LOAD_FAILED::" << file_path.c_str() << std::endl;
+			EMBER_LOG_ERROR("Failed to load asset shader '%s'.", file_path.c_str());
 			return { ss[0].str(), ss[1].str() };
 		}
 		else
-			std::cout << "LOADED_SHADER::" << file_path.c_str() << std::endl;
+			EMBER_LOG_GOOD("Asset shader '%s' loaded.", file_path.c_str());
 
 		while (getline(stream, line)) {
 			if (line.find("#shader") != std::string::npos) {

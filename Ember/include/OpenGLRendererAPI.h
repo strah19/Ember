@@ -2,9 +2,9 @@
 #define OPENGL_RENDERER_COMMANDS_H
 
 #include <memory>
-#include "VertexArray.h"
+#include "OpenGLVertexArray.h"
 
-namespace Ember {
+namespace EmberGL {
 	class RendererAPI {
 	public:
 		void Init();

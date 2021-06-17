@@ -1,11 +1,11 @@
-#ifndef OPENGL_BUFFER_H
-#define OPENGL_BUFFER_H
+#ifndef OPENGL_BUFFERS_H
+#define OPENGL_BUFFERS_H
 
 #include <memory>
 #include <vector>
 #include <string>
 
-namespace Ember {
+namespace EmberGL {
 	enum class VertexShaderType {
 		None, Float, Int
 	};
@@ -161,4 +161,4 @@ namespace Ember {
 	};
 }
 
-#endif // !OPENGL_BUFFER_H
+#endif // !OPENGL_BUFFERS_H

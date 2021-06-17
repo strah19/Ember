@@ -1,14 +1,13 @@
 #ifndef OPEN_RENDERER_H
 #define OPEN_RENDERER_H
 
-#include "Shader.h"
-#include "VertexArray.h"
+#include "OpenGLShader.h"
+#include "OpenGLVertexArray.h"
 #include "OpenGLTexture.h"
 #include "OpenGLCamera.h"
-#include "Material.h"
-#include "ResourceManagers.h"
+#include "OpenGLMaterial.h"
 
-namespace Ember {
+namespace EmberGL {
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec4 color;
@@ -30,10 +29,10 @@ namespace Ember {
 	constexpr size_t MAX_LIGHT_COUNT = 64;
 	constexpr glm::vec2 TEX_COORDS[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 	constexpr glm::vec4 QUAD_POSITIONS[QUAD_VERTEX_COUNT] = {
-		{ -0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.5f,  0.5f, 0.0f, 1.0f },
-		{ -0.5f,  0.5f, 0.0f, 1.0f }
+		{ -2.f, -1.f, 0.0f, 1.0f },
+		{ 2.f, -1.f, 0.0f, 1.0f },
+		{ 2.f,  1.f, 0.0f, 1.0f },
+		{ -2.f,  1.f, 0.0f, 1.0f }
 	};
 
 	constexpr size_t CUBE_VERTEX_COUNT = 24;
@@ -50,14 +49,14 @@ namespace Ember {
 		None = 0x01, TopLeftCornerPos = 0x02
 	};
 
-	class OpenGLRenderer {
+	class Renderer {
 	public:
 		static void Init();
 		static void Destroy();
 
 		static void SetShaderToDefualt();
 		static void InitRendererShader(Shader* shader);
-		static void SetShader(std::shared_ptr<Shader>* shader);
+		static void SetShader(Shader* shader);
 		static void SetMaterialId(uint32_t material_id);
 
 		static uint32_t GetShaderId();
@@ -69,17 +68,17 @@ namespace Ember {
 		static void Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader);
 
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 
 		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, std::shared_ptr<Texture>& texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], std::shared_ptr<Texture>& texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 
 		static void DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, std::shared_ptr<Texture>& texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawCube(const glm::vec3& position, const glm::vec3& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
 
 		static void DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
@@ -90,7 +89,7 @@ namespace Ember {
 		static void StartBatch();
 		static void Render();
 
-		static float CalculateTextureIndex(std::shared_ptr<Texture>& texture);
+		static float CalculateTextureIndex(Texture*);
 		static void CalculateSquareIndices();
 	};
 
