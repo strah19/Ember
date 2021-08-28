@@ -11,13 +11,6 @@ namespace Ember {
 		return true;
 	}
 
-	bool InitializeFontLoader() {
-		if (TTF_Init() == -1)
-			return false;
-
-		return true;
-	}
-
 	bool InitializeSoundLoader() {
 		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
@@ -25,12 +18,11 @@ namespace Ember {
 	}
 
 	bool InitializeAssets() {
-		return (InitializeImageLoader() && InitializeFontLoader() && InitializeSoundLoader());
+		return (InitializeImageLoader() && InitializeSoundLoader());
 	}
 
 	void AssetCleanUp() {
 		IMG_Quit();
-		TTF_Quit();
 		Mix_Quit();
 	}
 }

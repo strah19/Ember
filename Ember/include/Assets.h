@@ -3,7 +3,6 @@
 
 namespace Ember {
 	bool InitializeImageLoader();
-	bool InitializeFontLoader();
 	bool InitializeSoundLoader();
 	bool InitializeAssets();
 

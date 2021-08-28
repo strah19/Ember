@@ -5,7 +5,6 @@
 
 #include "Ember.h"
 #include "EventHandler.h"
-#include "Renderer.h"
 #include "Window.h"
 #include "Logger.h"
 
@@ -29,11 +28,9 @@ namespace Ember {
 		virtual void OnCreate() { }
 
 		Window* GetWindow() { return window; }
-		rRenderer* GetRenderer() { return renderer; }
 	protected:
 		Window* window = nullptr;
 		EventHandler* event_handler = nullptr;
-		rRenderer* renderer = nullptr;
 		WindowProperties* properties = nullptr;
 	private:
 		void OnClose(const QuitEvent& event);

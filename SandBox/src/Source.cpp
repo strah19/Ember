@@ -1,36 +1,40 @@
 #include "Application.h"
-#include "OpenGLRenderer.h"
-#include "OpenGLRendererCommands.h"
-#include "OpenGLOrthoCamera.h"
-#include "OpenGLOrthoCameraController.h"
-#include "OpenGLPerspectiveCameraController.h"
+#include "Renderer.h"
+#include "RendererCommands.h"
+#include "OrthoCamera.h"
+#include "OrthoCameraController.h"
+#include "PerspectiveCameraController.h"
+#include "Texture.h"
 #include "OpenGLWindow.h"
 
 class Sandbox : public Ember::Application {
 public:
 	void OnCreate() { 	
-		EmberGL::RendererCommand::Init();
-		EmberGL::Renderer::Init();
-		EmberGL::RendererCommand::SetViewport(0, 0, 1280, 720);
+		Ember::RendererCommand::Init();
+		Ember::Renderer::Init();
+		Ember::RendererCommand::SetViewport(0, 0, 1280, 720);
 
-		cam = EmberGL::PerspectiveCameraController(glm::vec2(1280, 720));
+		cam = Ember::PerspectiveCameraController(glm::vec2(1280, 720));
+		window->SetWindowIcon("tex.png");
+
+		t = new Ember::Texture("tex2.png");
 	}
 
 	virtual ~Sandbox() {
-		EmberGL::Renderer::Destroy();
+		Ember::Renderer::Destroy();
 	}
 
 	void OnUserUpdate() {
-		EmberGL::RendererCommand::Clear();
-		EmberGL::RendererCommand::SetClearColor(1.0, 0.0, 0.0, 1.0);
+		Ember::RendererCommand::Clear();
+		Ember::RendererCommand::SetClearColor(1.0, 0.0, 0.0, 1.0);
 
 		cam.Update();
-		EmberGL::Renderer::BeginScene(cam.GetCamera());
-		EmberGL::Renderer::SetShaderToDefualt();
+		Ember::Renderer::BeginScene(cam.GetCamera());
+		Ember::Renderer::SetShaderToDefualt();
 
-		EmberGL::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, { 1, 1, 0, 1 });
+		Ember::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, t);
 
-		EmberGL::Renderer::EndScene();
+		Ember::Renderer::EndScene();
 
 		window->Update();
 	}
@@ -42,7 +46,8 @@ public:
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
 
-	EmberGL::PerspectiveCameraController cam;
+	Ember::PerspectiveCameraController cam;
+	Ember::Texture* t;
 };
 
 int main(int argc, char** argv) {

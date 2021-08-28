@@ -1,7 +1,7 @@
 #ifndef SPRITESHEET_PARSER_H
 #define SPRITESHEET_PARSER_H
 
-#include "CinderFileSys.h"
+#include "File.h"
 #include <Ember.h>
 
 class SpritesheetParser {
@@ -9,7 +9,7 @@ public:
 	std::vector<Ember::Rect> Read(const std::string& file_path);
 	void Save(const std::string& file_path, std::vector<Ember::Rect>& dividers, const Ember::IVec2& texture_pos);
 private:
-	Cinder::CFSFile file;
+	Ember::File file;
 };
 
 class UserDividedSpritesheet {

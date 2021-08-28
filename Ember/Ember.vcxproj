@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\stb_image;..\libs\glm;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\stb_image;..\libs\glm;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -111,7 +111,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -120,7 +120,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\stb_image;..\libs\glm;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -135,27 +135,21 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\Assets.h" />
     <ClInclude Include="include\Audio.h" />
-    <ClInclude Include="include\Button.h" />
-    <ClInclude Include="include\CFSFile.h" />
-    <ClInclude Include="include\Camera2D.h" />
-    <ClInclude Include="include\CinderFileSys.h" />
     <ClInclude Include="include\CinderStructure.h" />
     <ClInclude Include="include\Cursor.h" />
     <ClInclude Include="include\Ember.h" />
     <ClInclude Include="include\EventHandler.h" />
     <ClInclude Include="include\EventStack.h" />
     <ClInclude Include="include\Events.h" />
-    <ClInclude Include="include\Font.h" />
-    <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\File.h" />
     <ClInclude Include="include\JoystickEvents.h" />
     <ClInclude Include="include\KeyboardCodes.h" />
     <ClInclude Include="include\KeyboardEvents.h" />
@@ -163,73 +157,61 @@
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\MouseEvents.h" />
     <ClInclude Include="include\OSDepStructures.h" />
-    <ClInclude Include="include\OpenGLBuffers.h" />
-    <ClInclude Include="include\OpenGLCamera.h" />
-    <ClInclude Include="include\OpenGLFrameBuffer.h" />
-    <ClInclude Include="include\OpenGLLight.h" />
-    <ClInclude Include="include\OpenGLMaterial.h" />
-    <ClInclude Include="include\OpenGLOrthoCamera.h" />
-    <ClInclude Include="include\OpenGLOrthoCameraController.h" />
-    <ClInclude Include="include\OpenGLPerspectiveCamera.h" />
-    <ClInclude Include="include\OpenGLPerspectiveCameraController.h" />
-    <ClInclude Include="include\OpenGLRenderer.h" />
-    <ClInclude Include="include\OpenGLRendererAPI.h" />
-    <ClInclude Include="include\OpenGLRendererCommands.h" />
-    <ClInclude Include="include\OpenGLShader.h" />
-    <ClInclude Include="include\OpenGLTexture.h" />
-    <ClInclude Include="include\OpenGLVertexArray.h" />
+    <ClInclude Include="include\Buffers.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\FrameBuffer.h" />
+    <ClInclude Include="include\Light.h" />
+    <ClInclude Include="include\Material.h" />
+    <ClInclude Include="include\OrthoCamera.h" />
+    <ClInclude Include="include\OrthoCameraController.h" />
+    <ClInclude Include="include\PerspectiveCamera.h" />
+    <ClInclude Include="include\PerspectiveCameraController.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\RendererAPI.h" />
+    <ClInclude Include="include\RendererCommands.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\VertexArray.h" />
     <ClInclude Include="include\OpenGLWindow.h" />
     <ClInclude Include="include\RandomNumberGenerator.h" />
-    <ClInclude Include="include\Renderer.h" />
-    <ClInclude Include="include\SDLTexture.h" />
     <ClInclude Include="include\SDLWindow.h" />
-    <ClInclude Include="include\Spritesheet.h" />
     <ClInclude Include="include\SpritesheetDividerParser.h" />
-    <ClInclude Include="include\TileMap.h" />
+    <ClInclude Include="include\TextureLoader.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="include\WindowEvents.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Assets.cpp" />
     <ClCompile Include="src\Audio.cpp" />
-    <ClCompile Include="src\Button.cpp" />
-    <ClCompile Include="src\CFSFile.cpp" />
-    <ClCompile Include="src\Camera2D.cpp" />
-    <ClCompile Include="src\CinderStructure.cpp" />
     <ClCompile Include="src\Cursor.cpp" />
     <ClCompile Include="src\Ember.cpp" />
     <ClCompile Include="src\EventHandler.cpp" />
     <ClCompile Include="src\EventStack.cpp" />
-    <ClCompile Include="src\Font.cpp" />
-    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\File.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\OSDepStructures.cpp" />
-    <ClCompile Include="src\OpenGLBuffers.cpp" />
-    <ClCompile Include="src\OpenGLCamera.cpp" />
-    <ClCompile Include="src\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\OpenGLOrthoCamera.cpp" />
-    <ClCompile Include="src\OpenGLOrthoCameraController.cpp" />
-    <ClCompile Include="src\OpenGLPerspectiveCamera.cpp" />
-    <ClCompile Include="src\OpenGLPerspectiveCameraController.cpp" />
-    <ClCompile Include="src\OpenGLRenderer.cpp" />
-    <ClCompile Include="src\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\OpenGLRendererCommands.cpp" />
-    <ClCompile Include="src\OpenGLShader.cpp" />
-    <ClCompile Include="src\OpenGLTexture.cpp" />
-    <ClCompile Include="src\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Buffers.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\OrthoCamera.cpp" />
+    <ClCompile Include="src\OrthoCameraController.cpp" />
+    <ClCompile Include="src\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\PerspectiveCameraController.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\RendererAPI.cpp" />
+    <ClCompile Include="src\RendererCommands.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
     <ClCompile Include="src\RandomNumberGenerator.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\SDLTexture.cpp" />
     <ClCompile Include="src\SDLWindow.cpp" />
-    <ClCompile Include="src\Spritesheet.cpp" />
     <ClCompile Include="src\SpritesheetDividerParser.cpp" />
-    <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\TextureLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Vector.cpp" />
     <ClCompile Include="src\Window.cpp" />
@@ -237,9 +219,6 @@
   <ItemGroup>
     <ProjectReference Include="..\libs\GLAD\GLAD.vcxproj">
       <Project>{5D4A857C-4981-860D-F26D-6C10DE83020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libs\imgui\ImGui.vcxproj">
-      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
 #include "SDLWindow.h"
 #include "Assets.h"
-#include "SDLTexture.h"
+#include "TextureLoader.h"
 
 namespace Ember {
 	SDLWindow::SDLWindow(WindowProperties* properties)
@@ -58,9 +58,9 @@ namespace Ember {
 	}
 
 	void SDLWindow::SetWindowIcon(const char* file_path) {
-		SDL_Surface* icon = SDLTexture::LoadSurface(file_path);
+		SDL_Surface* icon = TextureLoader::Load(file_path);
 		SDL_SetWindowIcon(native_window, icon);
-		SDL_FreeSurface(icon);
+		TextureLoader::Free(icon);
 	}
 
 	bool SDLWindow::AssertProperties() {

@@ -13,12 +13,9 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["SDL2"] = "libs/SDL2/include"
 IncludeDir["GLAD"] = "libs/GLAD/include"
-IncludeDir["stb"] = "libs/stb_image"
 IncludeDir["glm"] = "libs/glm"
-IncludeDir["imgui"] = "libs/imgui"
 
 include "libs/GLAD"
-include "libs/imgui"
 
 project "Sandbox"
 	location "Sandbox"
@@ -40,7 +37,6 @@ project "Sandbox"
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
 	}
 
 	links
@@ -85,9 +81,7 @@ project "Ember"
 		"Ember/include",
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.stb}",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.glm}"
 	}
 
 	defines {
@@ -104,10 +98,8 @@ project "Ember"
 		"SDL2.lib",
 		"SDL2main.lib",
 		"SDL2_image.lib",
-		"SDL2_ttf.lib",
 		"SDL2_mixer.lib",
-		"GLAD",
-		"ImGui"
+		"GLAD"
 	}
 
 	filter "system:windows"

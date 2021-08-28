@@ -11,8 +11,6 @@ namespace Ember {
 		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
 
-		renderer = (flags & AppFlags::OPENGL) ?  nullptr : new rRenderer(window);
-
 		OnCreate();
 	}
 
@@ -20,7 +18,6 @@ namespace Ember {
 		delete properties;
 		delete window;
 		delete event_handler;
-		delete renderer;
 	}
 
 	void Application::Run() {

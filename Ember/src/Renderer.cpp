@@ -1,161 +1,353 @@
 #include "Renderer.h"
-#include "Logger.h"
-
-#include <assert.h>
-
-constexpr int RenderingIndex = -1;
+#include "RendererCommands.h"
+#include <gtc/matrix_transform.hpp>
+#include <glad/glad.h>
 
 namespace Ember {
-	rRenderer::rRenderer(Window* window)
-		: renderer(nullptr), window(nullptr) {
-		if (window != nullptr) {
-			this->window = window;
-			if (!Initializer())
-				Destroy();
+	glm::vec3 CalculateVertexNormals(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
+		glm::vec3 norm = glm::cross((b - a), (c - a));
+		return glm::normalize(norm);
+	}
+
+	struct RendererData {
+		VertexArray* vertex_array;
+		VertexBuffer* vertex_buffer;
+		IndexBuffer* index_buffer;
+		IndirectDrawBuffer* indirect_draw_buffer;
+
+		Shader** current_shader;
+		Shader* default_shader;
+		std::shared_ptr<ShaderStorageBuffer> ssbo;
+
+		uint32_t index_offset = 0;
+
+		uint32_t texture_slot_index = 0;
+		uint32_t textures[MAX_TEXTURE_SLOTS];
+		glm::mat4 proj_view = glm::mat4(1.0f);
+		Camera* camera;
+
+		uint32_t num_of_vertices_in_batch = 0;
+
+		DrawElementsCommand draw_commands[MAX_DRAW_COMMANDS];
+		uint32_t base_vert = 0;
+		uint32_t draw_count = 0;
+		uint32_t current_draw_command_vertex_size = 0;
+
+		Vertex* vertices_base = nullptr;
+		Vertex* vertices_ptr = nullptr;
+
+		uint32_t* index_base = nullptr;
+		uint32_t* index_ptr = nullptr;
+		uint32_t current_material_id = -1;
+
+		RenderFlags flags;
+	};
+
+	static RendererData renderer_data;
+
+	void Renderer::Init() {
+		renderer_data.vertex_buffer = new VertexBuffer(sizeof(Vertex) * MAX_VERTEX_COUNT);
+		renderer_data.vertex_array = new VertexArray();
+
+		VertexBufferLayout layout;
+		layout.AddToBuffer(VertexBufferElement(3, false, VertexShaderType::Float));
+		layout.AddToBuffer(VertexBufferElement(4, false, VertexShaderType::Float));
+		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
+		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
+		layout.AddToBuffer(VertexBufferElement(3, false, VertexShaderType::Float));
+
+		renderer_data.vertex_buffer->SetLayout(layout);
+
+		renderer_data.vertices_base = new Vertex[MAX_VERTEX_COUNT];
+		renderer_data.index_base = new uint32_t[MAX_INDEX_COUNT];
+
+		renderer_data.index_buffer = new IndexBuffer(MAX_INDEX_COUNT * sizeof(uint32_t));
+		renderer_data.vertex_array->SetIndexBufferSize(renderer_data.index_buffer->GetCount());
+		renderer_data.vertex_array->AddVertexBuffer(renderer_data.vertex_buffer, VertexBufferFormat::VNCVNCVNC);
+
+		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
+
+		renderer_data.default_shader = new Shader("shaders/default_shader.glsl");
+		renderer_data.ssbo = std::make_shared<ShaderStorageBuffer>(sizeof(glm::mat4));
+	}
+
+	void Renderer::Destroy() {
+		delete renderer_data.vertex_array;
+		delete renderer_data.vertex_buffer;
+		delete renderer_data.index_buffer;
+		delete renderer_data.indirect_draw_buffer;
+		delete renderer_data.default_shader;
+
+		delete[] renderer_data.vertices_base;
+		delete[] renderer_data.index_base;
+	}
+
+	void Renderer::InitRendererShader(Shader* shader) {
+		shader->Bind();
+		int sampler[MAX_TEXTURE_SLOTS];
+		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++) {
+			sampler[i] = i;
 		}
+		shader->SetIntArray("textures", sampler);
 	}
 
-	rRenderer::~rRenderer() {
-		Destroy();
+	void Renderer::BeginScene(Camera& camera, RenderFlags flags) {
+		renderer_data.flags = flags;
+		renderer_data.proj_view = camera.GetProjection() * camera.GetView();
+
+		renderer_data.camera = &camera;
+		renderer_data.current_shader = &renderer_data.default_shader;
+		renderer_data.current_material_id = -1;
+		StartBatch();
 	}
 
-	SDL_Renderer* rRenderer::Renderer() {
-		return renderer;
+	void Renderer::EndScene() {
+		MakeCommand();
+		Render();
 	}
 
-	bool rRenderer::Initializer() {
-		renderer = SDL_CreateRenderer(static_cast<SDL_Window*>(window->GetNativeWindow()), RenderingIndex,
-			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	
-		return (renderer != nullptr);
+	uint32_t Renderer::GetShaderId() {
+		return (*renderer_data.current_shader)->GetId();
 	}
 
-	void rRenderer::Destroy() {
-		SDL_DestroyRenderer(renderer);
+	void Renderer::StartBatch() {
+		renderer_data.texture_slot_index = 0;
+		renderer_data.num_of_vertices_in_batch = 0;
+		renderer_data.index_offset = 0;
+
+		renderer_data.base_vert = 0;
+		renderer_data.draw_count = 0;
+		renderer_data.current_draw_command_vertex_size = 0;
+
+		renderer_data.vertices_ptr = renderer_data.vertices_base;
+		renderer_data.index_ptr = renderer_data.index_base;
 	}
 
-	void rRenderer::SetViewport(int x, int y, int w, int h) {
-		SDL_Rect view_port = { x, y, w, h };
-		SDL_RenderSetViewport(renderer, &view_port);
+	void Renderer::Render() {
+		renderer_data.vertex_array->Bind();
+		renderer_data.index_buffer->Bind();
+		renderer_data.vertex_buffer->Bind();
+
+		renderer_data.indirect_draw_buffer->Bind();
+		renderer_data.indirect_draw_buffer->SetData(renderer_data.draw_commands, sizeof(renderer_data.draw_commands), 0);
+
+		(*renderer_data.current_shader)->Bind();
+
+		renderer_data.ssbo->Bind();
+		renderer_data.ssbo->SetData((void*)&renderer_data.proj_view, sizeof(glm::mat4), 0);
+		renderer_data.ssbo->BindToBindPoint();
+
+		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
+			glBindTextureUnit(i, renderer_data.textures[i]);
+
+		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)renderer_data.vertices_ptr - (uint8_t*)renderer_data.vertices_base);
+		uint32_t index_buf_size = (uint32_t)((uint8_t*)renderer_data.index_ptr - (uint8_t*)renderer_data.index_base);
+
+		renderer_data.vertex_buffer->SetData(renderer_data.vertices_base, vertex_buf_size);
+		renderer_data.index_buffer->SetData(renderer_data.index_base, index_buf_size);
+
+		renderer_data.vertex_array->SetIndexBufferSize(renderer_data.index_buffer->GetCount());
+
+		RendererCommand::DrawMultiIndirect(nullptr, renderer_data.draw_count + 1, 0);
 	}
 
-	void rRenderer::Clear(const Color& color) {
-#ifdef EMBER_OPENGL_ACTIVATED
-		if (!this)
-			EMBER_LOG_ERROR("Trying to use SDL2 renderer in OpenGL mode!");
-#endif // EMBER_OPENGL_ACTIVATED	
-		assert(renderer != nullptr);
-
-		SetColor(color);
-		SDL_RenderClear(renderer);
+	void Renderer::NewBatch() {
+		Render();
+		StartBatch();
 	}
 
-	void rRenderer::SetColor(const Color& color) {
-		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader) {
+		shader->Bind();
+		vertex_array->Bind();
+		index_buffer->Bind();
+
+		RendererCommand::DrawVertexArray(vertex_array);
 	}
 
-	void rRenderer::Show() {
-		SDL_RenderPresent(renderer);
+	void Renderer::DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
+		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
+			NewBatch();
+
+		CalculateSquareIndices();
+
+		glm::vec3 norm = CalculateVertexNormals(translation * QUAD_POSITIONS[0], translation * QUAD_POSITIONS[1], translation * QUAD_POSITIONS[2]);
+
+		for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {    
+			Vertex vertex;
+			vertex.position = translation * QUAD_POSITIONS[i];
+			vertex.color = color;
+			vertex.texture_coordinates = tex_coords[i];
+			vertex.texture_id = texture_id;
+			vertex.material_id = (float)renderer_data.current_material_id;
+			vertex.normals = norm;
+
+			*renderer_data.vertices_ptr = vertex;
+			renderer_data.vertices_ptr++;
+
+			renderer_data.num_of_vertices_in_batch++;
+		}
+
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void rRenderer::Rectangle(const Rect& rect, const Color& color) {
-		SetColor(color);
-		SDL_RenderFillRect(renderer, &rect.rect);
+	void Renderer::CalculateSquareIndices() {
+		*renderer_data.index_ptr = renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 1 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 3 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = renderer_data.index_offset;
+		renderer_data.index_ptr++;
+
+		renderer_data.index_offset += 4;
 	}
 
-	void rRenderer::Border(const Rect& rect, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawRect(renderer, &rect.rect);
+	void Renderer::GoToNextDrawCommand() {
+		renderer_data.draw_count++;
+		renderer_data.base_vert += renderer_data.num_of_vertices_in_batch;
+		renderer_data.current_draw_command_vertex_size = 0;
 	}
 
-	void rRenderer::Line(const IVec2& point1, const IVec2& point2, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawLine(renderer, point1.x, point1.y, point2.x, point2.y);
+	void Renderer::MakeCommand() {
+		renderer_data.draw_commands[renderer_data.draw_count].vertex_count = renderer_data.current_draw_command_vertex_size;
+		renderer_data.draw_commands[renderer_data.draw_count].instance_count = 1;
+		renderer_data.draw_commands[renderer_data.draw_count].first_index = 0;
+		renderer_data.draw_commands[renderer_data.draw_count].base_vertex = renderer_data.base_vert;
+		renderer_data.draw_commands[renderer_data.draw_count].base_instance = renderer_data.draw_count;
 	}
 
-	void rRenderer::Point(const IVec2& point, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawPoint(renderer, point.x, point.y);
+	void Renderer::SetShader(Shader* shader) {
+		renderer_data.current_shader = &shader;
 	}
 
-	void rRenderer::RectangleF(const FRect& rect, const Color& color) {
-		SetColor(color);
-		SDL_RenderFillRectF(renderer, &rect.rect);
+	void Renderer::SetShaderToDefualt() {
+		renderer_data.current_shader = &renderer_data.default_shader;
 	}
 
-	void rRenderer::BorderF(const FRect& rect, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawRectF(renderer, &rect.rect);
+	void Renderer::SetMaterialId(uint32_t material_id) {
+		renderer_data.current_material_id = material_id;
 	}
 
-	void rRenderer::LineF(const Vec2& point1, const Vec2& point2, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawLineF(renderer, point1.x, point1.y, point2.x, point2.y);
+	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size) {
+		return (renderer_data.flags & RenderFlags::TopLeftCornerPos) ?
+			glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }) :
+			glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 	}
 
-	void rRenderer::PointF(const Vec2& point, const Color& color) {
-		SetColor(color);
-		SDL_RenderDrawPointF(renderer, point.x, point.y);
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+
+		DrawQuad(model, color, -1.0f, TEX_COORDS);
 	}
 
-	void rRenderer::DrawCircle(const IVec2& position, int radius, const Color& color) {
-		const int diameter = (radius * 2);
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+	}
 
-		int x = (radius - 1);
-		int y = 0;
-		int tx = 1;
-		int ty = 1;
-		int error = (tx - diameter);
-		SetColor(color);
-		while (x >= y) {
-			SDL_RenderDrawPoint(renderer, position.x + x, position.y - y);
-			SDL_RenderDrawPoint(renderer, position.x + x, position.y + y);
-			SDL_RenderDrawPoint(renderer, position.x - x, position.y - y);
-			SDL_RenderDrawPoint(renderer, position.x - x, position.y + y);
-			SDL_RenderDrawPoint(renderer, position.x + y, position.y - x);
-			SDL_RenderDrawPoint(renderer, position.x + y, position.y + x);
-			SDL_RenderDrawPoint(renderer, position.x - y, position.y - x);
-			SDL_RenderDrawPoint(renderer, position.x - y, position.y + x);
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		DrawQuad(model, color, -1.0f, tex_coords);
+	}
 
-			if (error <= 0) {
-				++y;
-				error += ty;
-				ty += 2;
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
+	}
+
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
+		DrawQuad(model, color, -1.0f, TEX_COORDS);
+	}
+
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
+		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+	}
+
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
+		DrawQuad(model, color, -1.0f, tex_coords);
+	}
+
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], Texture* texture, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
+		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
+	}
+
+	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+		DrawCube(model, color, -1.0f, TEX_COORDS);
+	}
+
+	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, Texture* texture, const glm::vec4& color) {
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+		DrawCube(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+	}
+
+	void Renderer::DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
+		if (renderer_data.num_of_vertices_in_batch + CUBE_VERTEX_COUNT > MAX_VERTEX_COUNT)
+			NewBatch();
+
+		for (uint32_t i = 0; i < CUBE_FACES; i++)
+			CalculateSquareIndices();
+
+		Vertex* start_base = renderer_data.vertices_ptr;
+		uint32_t face = -4;
+		for (size_t i = 0; i < CUBE_VERTEX_COUNT; i++) {
+			if (i % 4 == 0) {
+				face += 4;
+				Vertex* face_base_ptr = &start_base[face];
+
+				glm::vec3 norm = CalculateVertexNormals(face_base_ptr[0].position, face_base_ptr[1].position, face_base_ptr[2].position);
+				face_base_ptr[0].normals = norm;
+				face_base_ptr[1].normals = norm;
+				face_base_ptr[2].normals = norm;
+				face_base_ptr[3].normals = norm;
+
 			}
 
-			if (error > 0) {
-				--x;
-				tx += 2;
-				error += (tx - diameter);
-			}
+			Vertex vertex;
+			vertex.position = translation * glm::vec4(CUBE_POSITIONS[i].x, CUBE_POSITIONS[i].y, CUBE_POSITIONS[i].z, 1.0f);
+			vertex.color = color;
+			vertex.texture_coordinates = tex_coords[i % 4];
+			vertex.texture_id = texture_id;
+			vertex.material_id = (float)renderer_data.current_material_id;
+
+			*renderer_data.vertices_ptr = vertex;
+			renderer_data.vertices_ptr++;
+
+			renderer_data.num_of_vertices_in_batch++;
 		}
+
+		renderer_data.current_draw_command_vertex_size += 36;
 	}
 
-	void rRenderer::FillCircle(const IVec2& position, int radius, const Color& color) {
-		SetColor(color);
+	float Renderer::CalculateTextureIndex(Texture* texture) {
+		float texture_id = -1.0f;
 
-		for (double dy = 1; dy <= radius; dy += 1.0) {
-			double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
-			int x = position.x - (int)dx;
-			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y + (int)dy - radius, position.x + (int)dx, position.y + (int)dy - radius);
-			SDL_RenderDrawLine(renderer, position.x - (int)dx, position.y - (int)dy + radius, position.x + (int)dx, position.y - (int)dy + radius);
-		}
-	}
+		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
+			if (renderer_data.textures[i] == texture->GetTextureId())
+				texture_id = (float)i;
 
-	void rRenderer::Curve(IVec2 pos[], const Color& color) {
-		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
-			float px = ((1 - t) * (1 - t)) * pos[0].x + 2 * (1 - t) * t * pos[1].x + (t * t) * pos[2].x;
-			float py = ((1 - t) * (1 - t)) * pos[0].y + 2 * (1 - t) * t * pos[1].y + (t * t) * pos[2].y;
-			PointF({ px, py }, color);
-		}
-	}
+		if (texture_id == -1.0f) {
+			renderer_data.textures[renderer_data.texture_slot_index] = texture->GetTextureId();
+			texture_id = (float)renderer_data.texture_slot_index;
+			renderer_data.texture_slot_index++;
 
-	void rRenderer::AdvCurve(IVec2 pos[], const Color& color) {
-		for (float t = 0.0f; t <= 1.0f; t += 0.001f) {
-			float px = ((1 - t) * (1 - t) * (1 - t)) * pos[0].x + 3 * ((1 - t) * (1 - t)) * t * pos[1].x + 3 * (1 - t) * (t * t) * pos[2].x + (t * t * t) * pos[3].x;
-			float py = ((1 - t) * (1 - t) * (1 - t)) * pos[0].y + 3 * ((1 - t) * (1 - t)) * t * pos[1].y + 3 * (1 - t) * (t * t) * pos[2].y + (t * t * t) * pos[3].y;
-			PointF({ px, py }, color);
+			if (renderer_data.texture_slot_index == MAX_TEXTURE_SLOTS)
+				NewBatch();
 		}
+
+		return texture_id;
 	}
 }

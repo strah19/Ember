@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Animation.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Application.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -19,18 +16,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Button.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CFSFile.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Camera2D.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CinderFileSys.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\CinderStructure.h">
@@ -51,10 +36,7 @@
     <ClInclude Include="include\Events.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Font.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Grid.h">
+    <ClInclude Include="include\File.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\JoystickEvents.h">
@@ -78,49 +60,49 @@
     <ClInclude Include="include\OSDepStructures.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLBuffers.h">
+    <ClInclude Include="include\Buffers.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLCamera.h">
+    <ClInclude Include="include\Camera.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLFrameBuffer.h">
+    <ClInclude Include="include\FrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLLight.h">
+    <ClInclude Include="include\Light.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLMaterial.h">
+    <ClInclude Include="include\Material.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLOrthoCamera.h">
+    <ClInclude Include="include\OrthoCamera.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLOrthoCameraController.h">
+    <ClInclude Include="include\OrthoCameraController.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLPerspectiveCamera.h">
+    <ClInclude Include="include\PerspectiveCamera.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLPerspectiveCameraController.h">
+    <ClInclude Include="include\PerspectiveCameraController.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLRenderer.h">
+    <ClInclude Include="include\Renderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLRendererAPI.h">
+    <ClInclude Include="include\RendererAPI.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLRendererCommands.h">
+    <ClInclude Include="include\RendererCommands.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLShader.h">
+    <ClInclude Include="include\Shader.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLTexture.h">
+    <ClInclude Include="include\Texture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\OpenGLVertexArray.h">
+    <ClInclude Include="include\VertexArray.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\OpenGLWindow.h">
@@ -129,22 +111,13 @@
     <ClInclude Include="include\RandomNumberGenerator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Renderer.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SDLTexture.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\SDLWindow.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Spritesheet.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\SpritesheetDividerParser.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\TileMap.h">
+    <ClInclude Include="include\TextureLoader.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Timer.h">
@@ -161,9 +134,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Animation.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -171,18 +141,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Audio.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Button.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFSFile.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Camera2D.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CinderStructure.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Cursor.cpp">
@@ -197,10 +155,7 @@
     <ClCompile Include="src\EventStack.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Font.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Grid.cpp">
+    <ClCompile Include="src\File.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">
@@ -212,43 +167,43 @@
     <ClCompile Include="src\OSDepStructures.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLBuffers.cpp">
+    <ClCompile Include="src\Buffers.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLCamera.cpp">
+    <ClCompile Include="src\Camera.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLFrameBuffer.cpp">
+    <ClCompile Include="src\FrameBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLOrthoCamera.cpp">
+    <ClCompile Include="src\OrthoCamera.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLOrthoCameraController.cpp">
+    <ClCompile Include="src\OrthoCameraController.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLPerspectiveCamera.cpp">
+    <ClCompile Include="src\PerspectiveCamera.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLPerspectiveCameraController.cpp">
+    <ClCompile Include="src\PerspectiveCameraController.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLRenderer.cpp">
+    <ClCompile Include="src\Renderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLRendererAPI.cpp">
+    <ClCompile Include="src\RendererAPI.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLRendererCommands.cpp">
+    <ClCompile Include="src\RendererCommands.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLShader.cpp">
+    <ClCompile Include="src\Shader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLTexture.cpp">
+    <ClCompile Include="src\Texture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLVertexArray.cpp">
+    <ClCompile Include="src\VertexArray.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGLWindow.cpp">
@@ -257,22 +212,13 @@
     <ClCompile Include="src\RandomNumberGenerator.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SDLTexture.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\SDLWindow.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Spritesheet.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\SpritesheetDividerParser.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\TileMap.cpp">
+    <ClCompile Include="src\TextureLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Timer.cpp">
