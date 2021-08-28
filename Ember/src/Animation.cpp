@@ -60,6 +60,14 @@ namespace Ember {
 		textures[start + current_frame].Draw(dest, angle, flip);
 	}
 
+	void OpenGLSpriteSheetAnimation::Initialize() {
+
+	}
+
+	void OpenGLSpriteSheetAnimation::DrawCurrentFrame(int& current_frame, const Rect& dest, float angle, const SDL_RendererFlip& flip) {
+
+	}
+
 	int Animation::Update(AnimationSource& source, const int frame_speed) {
 		if (!freeze) {
 			if ((int)SDL_GetTicks() - current_point >= frame_speed) {

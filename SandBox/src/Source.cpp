@@ -3,7 +3,8 @@
 #include "OpenGLRendererCommands.h"
 #include "OpenGLOrthoCamera.h"
 #include "OpenGLOrthoCameraController.h"
-#include "ImGuiLayer.h"
+#include "OpenGLPerspectiveCameraController.h"
+#include "OpenGLWindow.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -12,12 +13,10 @@ public:
 		EmberGL::Renderer::Init();
 		EmberGL::RendererCommand::SetViewport(0, 0, 1280, 720);
 
-		cam = EmberGL::OrthoCameraController(glm::ivec2(1280, 720));
-		mandelbrot_shader = new EmberGL::Shader("shaders/mandelbrot_shader.glsl");
+		cam = EmberGL::PerspectiveCameraController(glm::vec2(1280, 720));
 	}
 
 	virtual ~Sandbox() {
-		delete mandelbrot_shader;
 		EmberGL::Renderer::Destroy();
 	}
 
@@ -27,11 +26,9 @@ public:
 
 		cam.Update();
 		EmberGL::Renderer::BeginScene(cam.GetCamera());
-		EmberGL::Renderer::SetShader(mandelbrot_shader);
+		EmberGL::Renderer::SetShaderToDefualt();
 
 		EmberGL::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, { 1, 1, 0, 1 });
-
-		EmberGL::Renderer::MakeCommand();
 
 		EmberGL::Renderer::EndScene();
 
@@ -45,8 +42,7 @@ public:
 private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
 
-	EmberGL::OrthoCameraController cam;
-	EmberGL::Shader* mandelbrot_shader;
+	EmberGL::PerspectiveCameraController cam;
 };
 
 int main(int argc, char** argv) {

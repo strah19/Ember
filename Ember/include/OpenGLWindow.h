@@ -14,6 +14,7 @@ namespace Ember {
 	class OpenGLWindow : public SDLWindow {
 	public:
 		OpenGLWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl);
+		SDL_GLContext* Context() { return &glcontext; }
 		virtual ~OpenGLWindow();
 
 		virtual void Update() override;

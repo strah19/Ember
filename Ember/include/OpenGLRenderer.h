@@ -29,10 +29,10 @@ namespace EmberGL {
 	constexpr size_t MAX_LIGHT_COUNT = 64;
 	constexpr glm::vec2 TEX_COORDS[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 	constexpr glm::vec4 QUAD_POSITIONS[QUAD_VERTEX_COUNT] = {
-		{ -2.f, -1.f, 0.0f, 1.0f },
-		{ 2.f, -1.f, 0.0f, 1.0f },
-		{ 2.f,  1.f, 0.0f, 1.0f },
-		{ -2.f,  1.f, 0.0f, 1.0f }
+		{ -0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.5f,  0.5f, 0.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.0f, 1.0f }
 	};
 
 	constexpr size_t CUBE_VERTEX_COUNT = 24;

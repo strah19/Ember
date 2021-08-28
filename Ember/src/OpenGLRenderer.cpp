@@ -15,8 +15,8 @@ namespace EmberGL {
 		IndexBuffer* index_buffer;
 		IndirectDrawBuffer* indirect_draw_buffer;
 
-		Shader* current_shader;
-		Shader default_shader;
+		Shader** current_shader;
+		Shader* default_shader;
 		std::shared_ptr<ShaderStorageBuffer> ssbo;
 
 		uint32_t index_offset = 0;
@@ -67,7 +67,7 @@ namespace EmberGL {
 
 		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
 
-		renderer_data.default_shader = Shader("shaders/default_shader.glsl");
+		renderer_data.default_shader = new Shader("shaders/default_shader.glsl");
 		renderer_data.ssbo = std::make_shared<ShaderStorageBuffer>(sizeof(glm::mat4));
 	}
 
@@ -76,6 +76,7 @@ namespace EmberGL {
 		delete renderer_data.vertex_buffer;
 		delete renderer_data.index_buffer;
 		delete renderer_data.indirect_draw_buffer;
+		delete renderer_data.default_shader;
 
 		delete[] renderer_data.vertices_base;
 		delete[] renderer_data.index_base;
@@ -101,11 +102,12 @@ namespace EmberGL {
 	}
 
 	void Renderer::EndScene() {
+		MakeCommand();
 		Render();
 	}
 
 	uint32_t Renderer::GetShaderId() {
-		return renderer_data.current_shader->GetId();
+		return (*renderer_data.current_shader)->GetId();
 	}
 
 	void Renderer::StartBatch() {
@@ -129,7 +131,7 @@ namespace EmberGL {
 		renderer_data.indirect_draw_buffer->Bind();
 		renderer_data.indirect_draw_buffer->SetData(renderer_data.draw_commands, sizeof(renderer_data.draw_commands), 0);
 
-		renderer_data.current_shader->Bind();
+		(*renderer_data.current_shader)->Bind();
 
 		renderer_data.ssbo->Bind();
 		renderer_data.ssbo->SetData((void*)&renderer_data.proj_view, sizeof(glm::mat4), 0);
@@ -170,7 +172,7 @@ namespace EmberGL {
 
 		glm::vec3 norm = CalculateVertexNormals(translation * QUAD_POSITIONS[0], translation * QUAD_POSITIONS[1], translation * QUAD_POSITIONS[2]);
 
-		for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {
+		for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {    
 			Vertex vertex;
 			vertex.position = translation * QUAD_POSITIONS[i];
 			vertex.color = color;
@@ -220,7 +222,7 @@ namespace EmberGL {
 	}
 
 	void Renderer::SetShader(Shader* shader) {
-		renderer_data.current_shader = shader;
+		renderer_data.current_shader = &shader;
 	}
 
 	void Renderer::SetShaderToDefualt() {

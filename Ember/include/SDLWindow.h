@@ -18,6 +18,7 @@ namespace Ember {
 		virtual void SetWindowIcon(const char* file_path);
 		virtual inline void SetResizeable(bool resize) override { SDL_SetWindowResizable(native_window, ConvertToSDLBool(resize)); }
 		void AddWindowFlag(uint32_t flag) { window_flags |= flag; }
+		SDL_GLContext* Context() { return nullptr;  }
 	protected:
 		SDL_Window* native_window;
 

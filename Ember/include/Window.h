@@ -28,6 +28,7 @@ namespace Ember {
 		virtual inline void SetBrightness(float brightness) = 0;
 		virtual void SetWindowIcon(const char* file_path) = 0;
 		virtual inline void SetResizeable(bool resize) = 0;
+		virtual SDL_GLContext* Context() = 0;
 
 		bool IsRunning() const { return is_running; }
 		inline void Quit() { is_running = false; }

@@ -138,9 +138,6 @@
       <Project>{900E1D0D-FC22-45BE-C5A4-E81D317841EF}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\mandelbrot_shader.glsl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

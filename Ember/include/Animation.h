@@ -51,6 +51,13 @@ namespace Ember {
 		std::vector<SDLTexture> textures;
 	};
 
+	class OpenGLSpriteSheetAnimation : public AnimationSource {
+	public:
+		void Initialize();
+		virtual void DrawCurrentFrame(int& current_frame, const Rect& dest, float angle = 0.0f, const SDL_RendererFlip& flip = SDL_FLIP_NONE) override;
+	private:
+	};
+
 	class Animation {
 	public:
 		int Update(AnimationSource& source, const int frame_speed);
