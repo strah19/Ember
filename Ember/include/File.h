@@ -62,6 +62,11 @@ namespace Ember {
         void open();
 
         /**
+        * Checks if file was successfully opened.
+        */
+        bool is_open();
+
+        /**
         * Check if the read pointer = -1.
         *
         * @return true or false for reaching -1

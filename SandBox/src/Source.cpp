@@ -6,6 +6,7 @@
 #include "PerspectiveCameraController.h"
 #include "Texture.h"
 #include "OpenGLWindow.h"
+#include "TextureAtlas.h"
 
 class Sandbox : public Ember::Application {
 public:
@@ -17,7 +18,15 @@ public:
 		cam = Ember::PerspectiveCameraController(glm::vec2(1280, 720));
 		window->SetWindowIcon("tex.png");
 
-		t = new Ember::Texture("tex2.png");
+		texture = new Ember::Texture("tex2.png");
+
+		atlas.Init(texture, 10, 10);
+
+		Ember::RandomAccessTextureAtlas ra;
+		ra.Init(texture, "data.txt");
+		//glm::vec2 data[] = { glm::vec2({0.0, 0.0}), glm::vec2({1.0, 0.0}), glm::vec2({0.0, 1.0}), glm::vec2({1.0, 1.0}) };
+		//ra.AddTile("Tree", data);
+		ra.LogEntries();
 	}
 
 	virtual ~Sandbox() {
@@ -32,7 +41,7 @@ public:
 		Ember::Renderer::BeginScene(cam.GetCamera());
 		Ember::Renderer::SetShaderToDefualt();
 
-		Ember::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, t);
+		Ember::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, texture, atlas.GetTexCoords(0, 0, glm::vec2(6, 5)));
 
 		Ember::Renderer::EndScene();
 
@@ -47,7 +56,8 @@ private:
 	Ember::Color background_color = { 0, 0, 0, 255 };
 
 	Ember::PerspectiveCameraController cam;
-	Ember::Texture* t;
+	Ember::Texture* texture;
+	Ember::TextureAtlas atlas;
 };
 
 int main(int argc, char** argv) {

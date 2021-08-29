@@ -171,11 +171,11 @@
     <ClInclude Include="include\RendererCommands.h" />
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\TextureAtlas.h" />
     <ClInclude Include="include\VertexArray.h" />
     <ClInclude Include="include\OpenGLWindow.h" />
     <ClInclude Include="include\RandomNumberGenerator.h" />
     <ClInclude Include="include\SDLWindow.h" />
-    <ClInclude Include="include\SpritesheetDividerParser.h" />
     <ClInclude Include="include\TextureLoader.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Vector.h" />
@@ -206,11 +206,11 @@
     <ClCompile Include="src\RendererCommands.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\TextureAtlas.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
     <ClCompile Include="src\RandomNumberGenerator.cpp" />
     <ClCompile Include="src\SDLWindow.cpp" />
-    <ClCompile Include="src\SpritesheetDividerParser.cpp" />
     <ClCompile Include="src\TextureLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Vector.cpp" />

@@ -59,6 +59,10 @@ namespace Ember {
             file = std::fstream(file_path, std::fstream::in | std::fstream::out | std::fstream::app);
     }
 
+    bool File::is_open() {
+        return file.is_open();
+    }
+
     bool File::eof() {
         return file.eof();
     }

@@ -114,9 +114,6 @@
     <ClInclude Include="include\SDLWindow.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\SpritesheetDividerParser.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\TextureLoader.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -132,6 +129,7 @@
     <ClInclude Include="include\WindowEvents.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\TextureAtlas.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -215,9 +213,6 @@
     <ClCompile Include="src\SDLWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpritesheetDividerParser.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\TextureLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -230,5 +225,6 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\TextureAtlas.cpp" />
   </ItemGroup>
 </Project>
