@@ -8,14 +8,14 @@ namespace Ember {
 	static MouseWheelEvents wheel = MouseWheelEvents(0);
 
 	bool Events::Down() { return mouse_event.down; }
-	IVec2 Events::MousePosition() { return mouse_pos.position; }
+	glm::ivec2 Events::MousePosition() { return mouse_pos.position; }
 	ButtonIds Events::ButtonId() { return mouse_event.button_id; }
 	bool Events::Clicked() { return mouse_event.clicked; }
 
 	EmberKeyCode Events::KeyCode() { return keyboard_event.scancode; }
 	bool Events::KeyDown() { return keyboard_event.pressed; }
 
-	IVec2 Events::MouseMotion() { return mouse_pos.motion; }
+	glm::ivec2 Events::MouseMotion() { return mouse_pos.motion; }
 	int Events::MouseWheelDirection() { return wheel.direction; }
 	void Events::ResetWheel() { wheel.direction = 0; }
 

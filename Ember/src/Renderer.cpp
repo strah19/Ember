@@ -156,7 +156,7 @@ namespace Ember {
 		StartBatch();
 	}
 
-	void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader) {
+	void Renderer::Submit(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) {
 		shader->Bind();
 		vertex_array->Bind();
 		index_buffer->Bind();

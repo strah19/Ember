@@ -23,11 +23,11 @@ namespace Ember {
 		glViewport(x, y, w, h);
 	}
 
-	void RendererAPI::DrawVertexArray(std::shared_ptr<VertexArray> vertex_array) {
+	void RendererAPI::DrawVertexArray(VertexArray* vertex_array) {
 		glDrawElements(GL_TRIANGLES, vertex_array->GetIndexBufferSize(), GL_UNSIGNED_INT, 0);
 	}
 
-	void RendererAPI::DrawVertexArrayInstanced(std::shared_ptr<VertexArray> vertex_array, uint32_t instance_count) {
+	void RendererAPI::DrawVertexArrayInstanced(VertexArray* vertex_array, uint32_t instance_count) {
 		glDrawArraysInstanced(GL_TRIANGLES, 0, vertex_array->GetIndexBufferSize(), instance_count);
 	}
 

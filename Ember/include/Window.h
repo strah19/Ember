@@ -10,7 +10,7 @@ namespace Ember {
 		int width;
 		int height;
 		bool full_screen;
-		IVec2 position;
+		glm::ivec2 position;
 		WindowProperties()
 			: name(), width(0), height(0), position(-1, -1), full_screen(false) { }
 		WindowProperties(const std::string& name, int width, int height)

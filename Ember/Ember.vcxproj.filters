@@ -18,9 +18,6 @@
     <ClInclude Include="include\Audio.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\CinderStructure.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Cursor.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -120,9 +117,6 @@
     <ClInclude Include="include\Timer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Vector.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Window.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -217,9 +211,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Timer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Vector.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Window.cpp">

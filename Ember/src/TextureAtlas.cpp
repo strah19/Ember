@@ -91,23 +91,19 @@ namespace Ember {
 				if (!(counter % 9 == 0) && counter != 0) {
 					if (point_counter % 2 == 0) {
 						temp_data[point_counter / 2].x = std::stof(word);
-						printf("POINT: %d, X: %f\n", point_counter / 2, temp_data[point_counter / 2].x);
 						point_counter++;
 					}
 					else {
 						temp_data[point_counter / 2].y = std::stof(word);
-						printf("POINT: %d, Y: %f\n", point_counter / 2, temp_data[point_counter / 2].y);
 						point_counter++;
 					}
 				}
 				if (counter % 8 == 0 && counter != 0) {
 					rai[current_entry] = temp_data;
 					point_counter = 0;
-					printf("REACHED\n");
 				}
 				if (counter % 9 == 0) {
 					current_entry = word;
-					std::cout << current_entry << std::endl;
 				}
 
 				return true;

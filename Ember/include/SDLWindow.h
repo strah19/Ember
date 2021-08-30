@@ -29,7 +29,7 @@ namespace Ember {
 		bool Create(WindowProperties* properties);
 		Uint32 IsFullScreen(WindowProperties* properties);
 		bool AssertSize(uint32_t width, uint32_t height);
-		void CalculatePosition(IVec2* position);
+		void CalculatePosition(glm::ivec2* position);
 
 		void UpdateWindowAttributes();
 	private:

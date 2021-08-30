@@ -15,14 +15,14 @@ namespace Ember {
 	class Events {
 	public:
 		static bool Down();
-		static IVec2 MousePosition();
+		static glm::ivec2 MousePosition();
 		static ButtonIds ButtonId();
 		static bool Clicked();
 
 		static EmberKeyCode KeyCode();
 		static bool KeyDown();
 
-		static IVec2 MouseMotion();
+		static glm::ivec2 MouseMotion();
 		static int MouseWheelDirection();
 		static void ResetWheel();
 

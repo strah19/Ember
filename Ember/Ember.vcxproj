@@ -143,7 +143,6 @@
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\Assets.h" />
     <ClInclude Include="include\Audio.h" />
-    <ClInclude Include="include\CinderStructure.h" />
     <ClInclude Include="include\Cursor.h" />
     <ClInclude Include="include\Ember.h" />
     <ClInclude Include="include\EventHandler.h" />
@@ -178,7 +177,6 @@
     <ClInclude Include="include\SDLWindow.h" />
     <ClInclude Include="include\TextureLoader.h" />
     <ClInclude Include="include\Timer.h" />
-    <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="include\WindowEvents.h" />
   </ItemGroup>
@@ -213,7 +211,6 @@
     <ClCompile Include="src\SDLWindow.cpp" />
     <ClCompile Include="src\TextureLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
-    <ClCompile Include="src\Vector.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -22,14 +22,14 @@ namespace Ember {
 	};
 
 	struct MouseButtonPositionEvents : public Event {
-		MouseButtonPositionEvents(const Ember::IVec2& pos, const Ember::IVec2& motion)
+		MouseButtonPositionEvents(const glm::ivec2& pos, const glm::ivec2& motion)
 			: Event("Position"), position(pos), motion(motion) { }
 		virtual ~MouseButtonPositionEvents() = default;
 
 		std::string GetName() const { return name; }
 
-		IVec2 position;
-		IVec2 motion;
+		glm::ivec2 position;
+		glm::ivec2 motion;
 	};
 
 	struct MouseWheelEvents : public Event {

@@ -88,7 +88,7 @@ namespace Ember {
 		return (width != 0 && height != 0);
 	}
 
-	void SDLWindow::CalculatePosition(IVec2* position) {
+	void SDLWindow::CalculatePosition(glm::ivec2* position) {
 		if (position->x == -1 && position->y == -1) {
 			position->x = SDL_WINDOWPOS_CENTERED;
 			position->y = SDL_WINDOWPOS_CENTERED;

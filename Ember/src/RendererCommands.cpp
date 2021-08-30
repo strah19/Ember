@@ -19,11 +19,11 @@ namespace Ember {
 		renderer_api->SetClearColor(r, g, b, a);
 	}
 
-	void RendererCommand::DrawVertexArray(std::shared_ptr<VertexArray> vertex_array) {
+	void RendererCommand::DrawVertexArray(VertexArray* vertex_array) {
 		renderer_api->DrawVertexArray(vertex_array);
 	}
 
-	void RendererCommand::DrawVertexArrayInstanced(std::shared_ptr<VertexArray> vertex_array, uint32_t instance_count) {
+	void RendererCommand::DrawVertexArrayInstanced(VertexArray* vertex_array, uint32_t instance_count) {
 		renderer_api->DrawVertexArrayInstanced(vertex_array, instance_count);
 	}
 

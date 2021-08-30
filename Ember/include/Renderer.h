@@ -65,7 +65,7 @@ namespace Ember {
 		static void EndScene();
 		static void NewBatch();
 
-		static void Submit(std::shared_ptr<VertexArray>& vertex_array, std::shared_ptr<IndexBuffer>& index_buffer, std::shared_ptr<Shader>& shader);
+		static void Submit(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader);
 
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
