@@ -11,8 +11,7 @@
 namespace Ember {
 	enum AppFlags {
 		NONE = 0x01,
-		FULL_SCREEN = 0x02,
-		OPENGL = 0x04
+		FULL_SCREEN = 0x02
 	};
 
 	class Application {

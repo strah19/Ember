@@ -35,7 +35,7 @@ public:
 
 	void OnUserUpdate() {
 		Ember::RendererCommand::Clear();
-		Ember::RendererCommand::SetClearColor(1.0, 0.0, 0.0, 1.0);
+		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
 		cam.Update();
 		Ember::Renderer::BeginScene(cam.GetCamera());
@@ -53,8 +53,6 @@ public:
 		cam.OnEvent(event);
 	}
 private:
-	Ember::Color background_color = { 0, 0, 0, 255 };
-
 	Ember::PerspectiveCameraController cam;
 	Ember::Texture* texture;
 	Ember::TextureAtlas atlas;
@@ -62,7 +60,7 @@ private:
 
 int main(int argc, char** argv) {
 	Sandbox sandbox;
-	sandbox.Initialize("EmberApp", 1280, 720, Ember::AppFlags::OPENGL);
+	sandbox.Initialize("EmberApp", 1280, 720);
 
 	sandbox.Run();
 

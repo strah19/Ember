@@ -32,8 +32,7 @@ namespace Ember {
 	}
 
 	void Shader::Init(const std::string& file_path) {
-		ShaderSources source = ParseShader(file_path);
-		shader_id = CreateShader(source.vertex, source.fragment);
+		shader_id = CreateShader(ParseShader(file_path));
 	}
 
 	uint32_t Shader::CompileShader(const std::string& source, uint32_t type) {
@@ -64,47 +63,51 @@ namespace Ember {
 		std::ifstream stream(file_path);
 
 		enum class ShaderType {
-			NONE = -1, VERTEX = 0, FRAGMENT = 1
+			NONE = -1, VERTEX = GL_VERTEX_SHADER, FRAGMENT = GL_FRAGMENT_SHADER, GEOMETRY = GL_GEOMETRY_SHADER, TESS = GL_TESS_CONTROL_SHADER
 		};
 
 		ShaderType type = ShaderType::NONE;
 		std::string line;
-		std::stringstream ss[2];
 
 		if (!stream.is_open()) {
 			EMBER_LOG_ERROR("Failed to load asset shader '%s'.", file_path.c_str());
-			return { ss[0].str(), ss[1].str() };
+			return ShaderSources();
 		}
 		else
 			EMBER_LOG_GOOD("Asset shader '%s' loaded.", file_path.c_str());
 
+		ShaderSources ss;
 		while (getline(stream, line)) {
 			if (line.find("#shader") != std::string::npos) {
 				if (line.find("vertex") != std::string::npos)
 					type = ShaderType::VERTEX;
 				else if (line.find("fragment") != std::string::npos)
 					type = ShaderType::FRAGMENT;
+				else if (line.find("geometry") != std::string::npos)
+					type = ShaderType::GEOMETRY;
+				else if (line.find("tessellation") != std::string::npos)
+					type = ShaderType::TESS;
 			}
 			else {
-				ss[(int)type] << line << '\n';
+				ss[(uint32_t)type] << line << '\n';
 			}
 		}
+
 		stream.close();
-		return { ss[0].str(), ss[1].str() };
+		return ss;
 	}
 
-	uint32_t Shader::CreateShader(const std::string& vertex_shader, const std::string& fragment_shader) {
+	uint32_t Shader::CreateShader(const ShaderSources& shader_sources) {
 		uint32_t program = glCreateProgram();
-		uint32_t vs = CompileShader(vertex_shader, GL_VERTEX_SHADER);
-		uint32_t fs = CompileShader(fragment_shader, GL_FRAGMENT_SHADER);
 
-		glAttachShader(program, vs);
-		glAttachShader(program, fs);
-		glLinkProgram(program);
+		for (auto& shader : shader_sources) {
+			uint32_t s = CompileShader(shader.second.str(), shader.first);
+			glAttachShader(program, s);
+			glDeleteShader(s);
+		}
+
+		glLinkProgram(program);  
 		glValidateProgram(program);
-
-		glDeleteShader(vs);
-		glDeleteShader(fs);
 
 		return program;
 	}

@@ -4,12 +4,10 @@
 #include <string>
 #include <memory>
 #include <glm.hpp>
+#include <unordered_map>
 
 namespace Ember {
-	struct ShaderSources {
-		std::string vertex;
-		std::string fragment;
-	};
+	using ShaderSources = std::unordered_map<uint32_t, std::stringstream>;
 
 	class Shader {
 	public:
@@ -35,7 +33,7 @@ namespace Ember {
 		uint32_t shader_id;
 		ShaderSources ParseShader(const std::string& file_path);
 		uint32_t CompileShader(const std::string& source, uint32_t type);
-		uint32_t CreateShader(const std::string& vertex_shader, const std::string& fragment_shader);
+		uint32_t CreateShader(const ShaderSources& shader_sources);
 	};
 }
 

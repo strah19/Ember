@@ -17,7 +17,7 @@ namespace Ember {
 
 		Shader** current_shader;
 		Shader* default_shader;
-		std::shared_ptr<ShaderStorageBuffer> ssbo;
+		ShaderStorageBuffer* ssbo;
 
 		uint32_t index_offset = 0;
 
@@ -68,7 +68,7 @@ namespace Ember {
 		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
 
 		renderer_data.default_shader = new Shader("shaders/default_shader.glsl");
-		renderer_data.ssbo = std::make_shared<ShaderStorageBuffer>(sizeof(glm::mat4));
+		renderer_data.ssbo = new ShaderStorageBuffer(sizeof(glm::mat4));
 	}
 
 	void Renderer::Destroy() {
