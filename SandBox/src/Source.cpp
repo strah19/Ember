@@ -27,10 +27,16 @@ public:
 		//glm::vec2 data[] = { glm::vec2({0.0, 0.0}), glm::vec2({1.0, 0.0}), glm::vec2({0.0, 1.0}), glm::vec2({1.0, 1.0}) };
 		//ra.AddTile("Tree", data);
 		ra.LogEntries();
+
+		material_test_shader.Init("shaders/material_shader.glsl");
+		ssbo = new Ember::ShaderStorageBuffer(sizeof(glm::vec4), 1);
+
 	}
 
 	virtual ~Sandbox() {
 		Ember::Renderer::Destroy();
+		delete ssbo;
+		delete texture;
 	}
 
 	void OnUserUpdate() {
@@ -39,10 +45,14 @@ public:
 
 		cam.Update();
 		Ember::Renderer::BeginScene(cam.GetCamera());
-		Ember::Renderer::SetShaderToDefualt();
+		Ember::Renderer::SetShader(&material_test_shader);
 
+		ssbo->Bind();
+		glm::vec4 color = { 0.0, 1.0, 0.0, 1.0 };
+		ssbo->SetData((void*)&color, sizeof(glm::vec4), 0);
+		ssbo->BindToBindPoint();
 		Ember::Renderer::DrawQuad({ 0, 0, 0 }, { 1, 1 }, texture, atlas.GetTexCoords(0, 0, glm::vec2(6, 5)));
-
+		
 		Ember::Renderer::EndScene();
 
 		window->Update();
@@ -56,6 +66,8 @@ private:
 	Ember::PerspectiveCameraController cam;
 	Ember::Texture* texture;
 	Ember::TextureAtlas atlas;
+	Ember::Shader material_test_shader;
+	Ember::ShaderStorageBuffer* ssbo;
 };
 
 int main(int argc, char** argv) {

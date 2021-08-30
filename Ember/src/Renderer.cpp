@@ -15,8 +15,8 @@ namespace Ember {
 		IndexBuffer* index_buffer;
 		IndirectDrawBuffer* indirect_draw_buffer;
 
-		Shader** current_shader;
-		Shader* default_shader;
+		Shader* current_shader;
+		Shader default_shader;
 		ShaderStorageBuffer* ssbo;
 
 		uint32_t index_offset = 0;
@@ -67,8 +67,8 @@ namespace Ember {
 
 		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
 
-		renderer_data.default_shader = new Shader("shaders/default_shader.glsl");
-		renderer_data.ssbo = new ShaderStorageBuffer(sizeof(glm::mat4));
+		renderer_data.default_shader.Init("shaders/default_shader.glsl");
+		renderer_data.ssbo = new ShaderStorageBuffer(sizeof(glm::mat4), 0);
 	}
 
 	void Renderer::Destroy() {
@@ -76,7 +76,6 @@ namespace Ember {
 		delete renderer_data.vertex_buffer;
 		delete renderer_data.index_buffer;
 		delete renderer_data.indirect_draw_buffer;
-		delete renderer_data.default_shader;
 
 		delete[] renderer_data.vertices_base;
 		delete[] renderer_data.index_base;
@@ -107,7 +106,7 @@ namespace Ember {
 	}
 
 	uint32_t Renderer::GetShaderId() {
-		return (*renderer_data.current_shader)->GetId();
+		return renderer_data.current_shader->GetId();
 	}
 
 	void Renderer::StartBatch() {
@@ -124,6 +123,9 @@ namespace Ember {
 	}
 
 	void Renderer::Render() {
+		if ((renderer_data.flags & RenderFlags::PolygonMode))
+			RendererCommand::PolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		renderer_data.vertex_array->Bind();
 		renderer_data.index_buffer->Bind();
 		renderer_data.vertex_buffer->Bind();
@@ -131,7 +133,7 @@ namespace Ember {
 		renderer_data.indirect_draw_buffer->Bind();
 		renderer_data.indirect_draw_buffer->SetData(renderer_data.draw_commands, sizeof(renderer_data.draw_commands), 0);
 
-		(*renderer_data.current_shader)->Bind();
+		renderer_data.current_shader->Bind();
 
 		renderer_data.ssbo->Bind();
 		renderer_data.ssbo->SetData((void*)&renderer_data.proj_view, sizeof(glm::mat4), 0);
@@ -222,7 +224,7 @@ namespace Ember {
 	}
 
 	void Renderer::SetShader(Shader* shader) {
-		renderer_data.current_shader = &shader;
+		renderer_data.current_shader = shader;
 	}
 
 	void Renderer::SetShaderToDefualt() {

@@ -49,8 +49,7 @@ namespace Ember {
 			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 			char* message = (char*)malloc(length * sizeof(char));
 			glGetShaderInfoLog(id, length, &length, message);
-			const char* type_c = (type == GL_VERTEX_SHADER) ? "VERTEX" : "FRAGMENT";
-			EMBER_LOG_ERROR("Shader '%s' failed to load: %s", type_c, message);
+			EMBER_LOG_ERROR("Shader failed to load: %s", message);
 
 			glDeleteShader(id);
 			return 0;
@@ -63,7 +62,7 @@ namespace Ember {
 		std::ifstream stream(file_path);
 
 		enum class ShaderType {
-			NONE = -1, VERTEX = GL_VERTEX_SHADER, FRAGMENT = GL_FRAGMENT_SHADER, GEOMETRY = GL_GEOMETRY_SHADER, TESS = GL_TESS_CONTROL_SHADER
+			NONE = -1, VERTEX = GL_VERTEX_SHADER, FRAGMENT = GL_FRAGMENT_SHADER, GEOMETRY = GL_GEOMETRY_SHADER, TESS_EVAL = GL_TESS_EVALUATION_SHADER, TESS_CONTROL = GL_TESS_CONTROL_SHADER
 		};
 
 		ShaderType type = ShaderType::NONE;
@@ -85,8 +84,10 @@ namespace Ember {
 					type = ShaderType::FRAGMENT;
 				else if (line.find("geometry") != std::string::npos)
 					type = ShaderType::GEOMETRY;
-				else if (line.find("tessellation") != std::string::npos)
-					type = ShaderType::TESS;
+				else if (line.find("tess-control") != std::string::npos)
+					type = ShaderType::TESS_CONTROL;
+				else if (line.find("tess-eval") != std::string::npos)
+					type = ShaderType::TESS_EVAL;
 			}
 			else {
 				ss[(uint32_t)type] << line << '\n';

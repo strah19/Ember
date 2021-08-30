@@ -46,7 +46,7 @@ namespace Ember {
 	};
 
 	enum RenderFlags {
-		None = 0x01, TopLeftCornerPos = 0x02
+		None = 0x01, TopLeftCornerPos = 0x02, PolygonMode = 0x04
 	};
 
 	class Renderer {

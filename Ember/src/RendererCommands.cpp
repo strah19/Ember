@@ -1,33 +1,39 @@
 #include "RendererCommands.h"
+#include <glad/glad.h>
 
 namespace Ember {
-	static std::shared_ptr<RendererAPI> renderer_api;
-
 	void RendererCommand::Init() {
-		renderer_api = std::make_shared<RendererAPI>();
-		renderer_api->Init();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_MULTISAMPLE);
 	}
 
 	void RendererCommand::SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) { 
-		renderer_api->SetViewport(x, y, w, h); 	
+		glViewport(x, y, w, h);
 	}
 	void RendererCommand::Clear() { 
-		renderer_api->Clear(); 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void RendererCommand::SetClearColor(float r, float g, float b, float a) { 
-		renderer_api->SetClearColor(r, g, b, a);
+		glClearColor(r, g, b, a);
 	}
 
 	void RendererCommand::DrawVertexArray(VertexArray* vertex_array) {
-		renderer_api->DrawVertexArray(vertex_array);
+		glDrawElements(GL_TRIANGLES, vertex_array->GetIndexBufferSize(), GL_UNSIGNED_INT, 0);
 	}
 
 	void RendererCommand::DrawVertexArrayInstanced(VertexArray* vertex_array, uint32_t instance_count) {
-		renderer_api->DrawVertexArrayInstanced(vertex_array, instance_count);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, vertex_array->GetIndexBufferSize(), instance_count);
 	}
 
 	void RendererCommand::DrawMultiIndirect(const void* indirect, uint32_t count, uint32_t stride) {
-		renderer_api->DrawMultiIndirect(indirect, count, stride);
+		glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, indirect, count, stride);
+	}
+
+	void RendererCommand::PolygonMode(uint32_t face, uint32_t mode) {
+		glPolygonMode(face, mode);
 	}
 }

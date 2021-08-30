@@ -1,8 +1,7 @@
 #ifndef RENDERER_COMMANDS_H
 #define RENDERER_COMMANDS_H
 
-#include <memory>
-#include "RendererAPI.h"
+#include "VertexArray.h"
 
 namespace Ember {
 	class RendererCommand {
@@ -15,6 +14,7 @@ namespace Ember {
 		static void DrawVertexArray(VertexArray* vertex_array); 
 		static void DrawVertexArrayInstanced(VertexArray* vertex_array, uint32_t instance_count);
 		static void DrawMultiIndirect(const void* indirect, uint32_t count, uint32_t stride);
+		static void PolygonMode(uint32_t face, uint32_t mode);
 	};
 
 	struct DrawElementsCommand {

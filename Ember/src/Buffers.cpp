@@ -75,10 +75,9 @@ namespace Ember {
 		current_index_buffer_id = 0;
 	}
 
-	static uint32_t uniform_buffer_point_latest = 0;
-	UniformBuffer::UniformBuffer(uint32_t size) {
+	UniformBuffer::UniformBuffer(uint32_t size, uint32_t bindpoint) {
 		glGenBuffers(1, &uniform_buffer_id);
-		uniform_buffer_point = uniform_buffer_point_latest++;
+		uniform_buffer_point = bindpoint;
 		Bind();
 		AllocateData(size);
 		size_of_buffer = size;
@@ -161,14 +160,13 @@ namespace Ember {
 		glBufferData(GL_DRAW_INDIRECT_BUFFER, size, data, GL_DYNAMIC_DRAW);
 	}
 
-	static uint32_t shader_buffer_point_latest = 0;
 	static uint32_t current_shader_storage_id = 0;
-	ShaderStorageBuffer::ShaderStorageBuffer(uint32_t size) {
+	ShaderStorageBuffer::ShaderStorageBuffer(uint32_t size, uint32_t bindpoint) {
 		glGenBuffers(1, &shader_storage_id);
 		Bind();
 		AllocateData(size, nullptr);
 		size_of_buffer = size;
-		binding_point = shader_buffer_point_latest++;
+		binding_point = bindpoint;
 	}
 
 	ShaderStorageBuffer::~ShaderStorageBuffer() {

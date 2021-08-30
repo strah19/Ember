@@ -107,7 +107,7 @@ namespace Ember {
 
 	class UniformBuffer {
 	public:
-		UniformBuffer(uint32_t size);
+		UniformBuffer(uint32_t size, uint32_t bindpoint);
 		virtual ~UniformBuffer();
 
 		uint32_t GetUniformBlockId(uint32_t shader_id, const std::string& block_name);
@@ -142,7 +142,7 @@ namespace Ember {
 
 	class ShaderStorageBuffer {
 	public:
-		ShaderStorageBuffer(uint32_t size);
+		ShaderStorageBuffer(uint32_t size, uint32_t bindpoint);
 		virtual ~ShaderStorageBuffer();
 
 		uint32_t GetUniformBlockId(uint32_t shader_id, const std::string& block_name);

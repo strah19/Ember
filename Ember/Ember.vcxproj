@@ -166,7 +166,6 @@
     <ClInclude Include="include\PerspectiveCamera.h" />
     <ClInclude Include="include\PerspectiveCameraController.h" />
     <ClInclude Include="include\Renderer.h" />
-    <ClInclude Include="include\RendererAPI.h" />
     <ClInclude Include="include\RendererCommands.h" />
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\Texture.h" />
@@ -200,7 +199,6 @@
     <ClCompile Include="src\PerspectiveCamera.cpp" />
     <ClCompile Include="src\PerspectiveCameraController.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\RendererAPI.cpp" />
     <ClCompile Include="src\RendererCommands.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />

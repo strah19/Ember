@@ -87,9 +87,6 @@
     <ClInclude Include="include\Renderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\RendererAPI.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\RendererCommands.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -181,9 +178,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RendererAPI.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\RendererCommands.cpp">
