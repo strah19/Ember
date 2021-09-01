@@ -4,6 +4,8 @@
 #include <sstream>
 #include <vector>
 
+#define MAX_INPUT_SIZE 512
+
 namespace Ember {
     void TimestampLogCommand::RunCommand(va_list& args, const char* input) {
         const std::time_t now = std::time(nullptr); 
@@ -30,27 +32,11 @@ namespace Ember {
     }
 
     void UserLogCommand::RunCommand(va_list& args, const char* input) {
-        std::string user_in;
-        bool found_new_arg = false;
-        while (*input != '\0') {
-            if (*input == '%') {
-                found_new_arg = true;
-            }
-            else if (found_new_arg) {
-                switch (*input) {
-                case 'd': user_in += std::to_string(va_arg(args, int)); break;
-                case 'f': user_in += std::to_string(va_arg(args, double)); break;
-                case 's': user_in += va_arg(args, char*); break;
-                }
-                found_new_arg = false;
-            }
-            else
-                user_in += *input;
+        char buffer[MAX_INPUT_SIZE];
+        vsnprintf(buffer, MAX_INPUT_SIZE, input, args);
+        va_end(args);
 
-
-            ++input;
-        }
-        SetCommandOutput(user_in);
+        SetCommandOutput(buffer);
     }
 
     void UserLogCommand::ProcessArgs(va_list& args) { }

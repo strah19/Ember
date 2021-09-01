@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "Material.h"
+#include "Font.h"
 
 namespace Ember {
 	struct Vertex {
@@ -83,13 +84,16 @@ namespace Ember {
 
 		static void DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
 
+		static void RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color);
+
 		static void GoToNextDrawCommand();
 		static void MakeCommand();
 	private:
 		static void StartBatch();
 		static void Render();
 
-		static float CalculateTextureIndex(Texture*);
+		static float CalculateTextureIndex(Texture* texture);
+		static float CalculateTextureIndex(uint32_t id);
 		static void CalculateSquareIndices();
 	};
 

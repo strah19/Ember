@@ -57,7 +57,7 @@ namespace Ember {
 		glDeleteTextures(1, &texture_id);
 	}
 
-	void Texture::SetData(void* data, uint32_t size) {
+	void Texture::SetData(void* data) {
 		uint32_t bpp = data_format == GL_RGBA ? 4 : 3;
 		glTextureSubImage2D(texture_id, 0, 0, 0, width, height, data_format, GL_UNSIGNED_BYTE, data);
 	}

@@ -1,5 +1,4 @@
 #include "Shader.h"
-#include "RendererAPI.h"
 #include "Logger.h"
 
 #include <glad/glad.h>

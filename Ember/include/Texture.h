@@ -15,7 +15,7 @@ namespace Ember {
 		void Bind(uint32_t slot = 0);
 		void UnBind();
 
-		void SetData(void* data, uint32_t size);
+		void SetData(void* data);
 
 		uint32_t GetWidth() const { return width; }
 		uint32_t GetHeight() const { return height; }

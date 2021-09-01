@@ -20,6 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\mandelbrot_shader.glsl" />
+    <None Include="shaders\text_shader.glsl" />
   </ItemGroup>
 </Project>

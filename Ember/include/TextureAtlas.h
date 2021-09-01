@@ -19,6 +19,7 @@ namespace Ember {
 		glm::vec2* GetTexCoords(uint32_t col, uint32_t row, const glm::vec2& override_size = glm::vec2(0, 0));
 		Texture* GetTexture() { return texture; }
 		glm::vec2 CalculateSpriteCoordinate(const glm::vec2& pixel_point);
+		static glm::vec2 CalculateSpriteCoordinate(const glm::vec2& pixel_point, uint32_t w, uint32_t h);
 	private:
 		Texture* texture;
 		uint32_t cols, rows;

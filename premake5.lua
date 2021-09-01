@@ -14,6 +14,7 @@ IncludeDir = {}
 IncludeDir["SDL2"] = "libs/SDL2/include"
 IncludeDir["GLAD"] = "libs/GLAD/include"
 IncludeDir["glm"] = "libs/glm"
+IncludeDir["freetype"] = "libs/freetype-2.10.0/include"
 
 include "libs/GLAD"
 
@@ -37,6 +38,7 @@ project "Sandbox"
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.freetype}"
 	}
 
 	links
@@ -81,7 +83,8 @@ project "Ember"
 		"Ember/include",
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.freetype}"
 	}
 
 	defines {
@@ -91,7 +94,8 @@ project "Ember"
 	}
 
 	libdirs {
-		"libs/SDL2/lib/x86"
+		"libs/SDL2/lib/x86",
+		"libs/freetype-2.10.0"
 	}
 
 	links {
@@ -99,7 +103,8 @@ project "Ember"
 		"SDL2main.lib",
 		"SDL2_image.lib",
 		"SDL2_mixer.lib",
-		"GLAD"
+		"GLAD",
+		"freetype.lib"
 	}
 
 	filter "system:windows"

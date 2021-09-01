@@ -1,5 +1,7 @@
 #include "Renderer.h"
+#include "Logger.h"
 #include "RendererCommands.h"
+#include "TextureAtlas.h"
 #include <gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 
@@ -110,6 +112,7 @@ namespace Ember {
 	}
 
 	void Renderer::StartBatch() {
+		memset(renderer_data.textures, NULL, renderer_data.texture_slot_index * sizeof(Texture));
 		renderer_data.texture_slot_index = 0;
 		renderer_data.num_of_vertices_in_batch = 0;
 		renderer_data.index_offset = 0;
@@ -140,7 +143,8 @@ namespace Ember {
 		renderer_data.ssbo->BindToBindPoint();
 
 		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			glBindTextureUnit(i, renderer_data.textures[i]);
+			if (renderer_data.textures[i])
+				glBindTextureUnit(i, renderer_data.textures[i]);
 
 		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)renderer_data.vertices_ptr - (uint8_t*)renderer_data.vertices_base);
 		uint32_t index_buf_size = (uint32_t)((uint8_t*)renderer_data.index_ptr - (uint8_t*)renderer_data.index_base);
@@ -334,15 +338,78 @@ namespace Ember {
 		renderer_data.current_draw_command_vertex_size += 36;
 	}
 
+	void Renderer::RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color) {
+		float x = pos.x;
+		float y= pos.y;
+
+		for (auto& c : text) {
+			Glyph character = font->glyphs[c];
+			float normalized_width = TextureAtlas::CalculateSpriteCoordinate({ character.size.x, 0 }, font->width, font->height).x - 0.00002f * font->size;
+
+			float xpos = x + character.bearing.x * scale.x;
+			float ypos = y - (character.size.y - character.bearing.y) * scale.y;
+
+			float w = character.size.x * scale.x;
+			float h = character.size.y * scale.y;
+
+			float clean = 0.00001f * font->size;
+
+			glm::vec2 coords[] = {
+				{ character.offset + clean, 1.0f },
+				{ character.offset + normalized_width + clean, 1.0f },
+				{ character.offset + normalized_width + clean, 0.0f },
+				{ character.offset + clean, 0.0f }
+			};
+
+			if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
+				NewBatch();
+
+			CalculateSquareIndices();
+			float tex_id = CalculateTextureIndex(font->texture);
+
+			glm::vec4 pos[] = {
+				{ xpos, ypos, 0.0f, 1.0f },
+				{ xpos + w,  ypos, 0.0f, 1.0f },
+				{ xpos + w,  ypos + h, 0.0f, 1.0f },
+				{ xpos, ypos + h, 0.0f, 1.0f },
+
+			};
+
+			for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {
+				Vertex vertex;
+				vertex.position = pos[i];
+				vertex.color = color;
+				vertex.texture_coordinates = coords[i];
+				vertex.texture_id = tex_id;
+				vertex.material_id = (float)renderer_data.current_material_id;
+				vertex.normals = { 0, 0, 0 };
+
+				*renderer_data.vertices_ptr = vertex;
+				renderer_data.vertices_ptr++;
+				 
+				renderer_data.num_of_vertices_in_batch++;
+			}
+
+			renderer_data.current_draw_command_vertex_size += 6;
+
+
+			x += (character.advance.x >> 6) * scale.x;
+		}
+	}
+
 	float Renderer::CalculateTextureIndex(Texture* texture) {
+		return CalculateTextureIndex(texture->GetTextureId());
+	}
+
+	float Renderer::CalculateTextureIndex(uint32_t id) {
 		float texture_id = -1.0f;
 
 		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			if (renderer_data.textures[i] == texture->GetTextureId())
+			if (renderer_data.textures[i] == id)
 				texture_id = (float)i;
 
 		if (texture_id == -1.0f) {
-			renderer_data.textures[renderer_data.texture_slot_index] = texture->GetTextureId();
+			renderer_data.textures[renderer_data.texture_slot_index] = id;
 			texture_id = (float)renderer_data.texture_slot_index;
 			renderer_data.texture_slot_index++;
 

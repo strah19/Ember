@@ -25,6 +25,10 @@ namespace Ember {
 		return ((!texture || pixel_point.x > texture->GetWidth() || pixel_point.y > texture->GetHeight()) ? glm::vec2({ -1, -1 }) : (pixel_point / glm::vec2(texture->GetWidth(), texture->GetHeight())));
 	}
 
+	glm::vec2 TextureAtlas::CalculateSpriteCoordinate(const glm::vec2& pixel_point, uint32_t w, uint32_t h) {
+		return ((pixel_point.x > w || pixel_point.y > h) ? glm::vec2({ -1, -1 }) : (pixel_point / glm::vec2(w, h)));
+	}
+
 	glm::vec2* TextureAtlas::GetTexCoords(uint32_t col, uint32_t row, const glm::vec2& override_size) {
 		glm::vec2 start_point = { col * sprite_size.x, row * sprite_size.y };
 		glm::vec2 size = sprite_size;
