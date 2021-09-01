@@ -12,14 +12,17 @@ Sample code:
 #include "RendererCommands.h"
 #include "PerspectiveCameraController.h"
 
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
+
 class Sandbox : public Ember::Application {
 public:
 	void OnCreate() { 	
 		Ember::RendererCommand::Init();
 		Ember::Renderer::Init();
-		Ember::RendererCommand::SetViewport(0, 0, 1280, 720);
+		Ember::RendererCommand::SetViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		camera = Ember::PerspectiveCameraController(glm::vec2(1280, 720));
+		camera = Ember::PerspectiveCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
 	}
 
 	virtual ~Sandbox() {
@@ -48,7 +51,7 @@ private:
 
 int main(int argc, char** argv) {
 	Sandbox sandbox;
-	sandbox.Initialize("EmberApp", 1280, 720);
+	sandbox.Initialize("EmberApp", WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	sandbox.Run();
 
