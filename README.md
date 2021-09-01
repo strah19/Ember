@@ -8,31 +8,47 @@ Sample code:
 ```c++
 
 #include "Application.h"
+#include "Renderer.h"
+#include "RendererCommands.h"
+#include "PerspectiveCameraController.h"
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { 	}
+	void OnCreate() { 	
+		Ember::RendererCommand::Init();
+		Ember::Renderer::Init();
+		Ember::RendererCommand::SetViewport(0, 0, 1280, 720);
 
-	virtual ~Sandbox() { }
+		camera = Ember::PerspectiveCameraController(glm::vec2(1280, 720));
+	}
+
+	virtual ~Sandbox() {
+		Ember::Renderer::Destroy();
+	}
 
 	void OnUserUpdate() {
-		window->Update();
+		Ember::RendererCommand::Clear();
+		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
-		renderer->Clear(background_color);
-		
-		renderer->Show();
+		cam.Update();
+		Ember::Renderer::BeginScene(camera.GetCamera());
+
+		Ember::Renderer::EndScene();
+
+		window->Update();
 	}
 
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
+		cam.OnEvent(event);
 	}
 private:
-	Ember::Color background_color = { 0, 0, 0, 255 };
+	Ember::PerspectiveCameraController camera;
 };
 
 int main(int argc, char** argv) {
 	Sandbox sandbox;
-	sandbox.Initialize();
+	sandbox.Initialize("EmberApp", 1280, 720);
 
 	sandbox.Run();
 
@@ -41,7 +57,7 @@ int main(int argc, char** argv) {
 
 ```
 
-Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Components/Camera.h` and enjoy.
+Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
 # Build
-To build this project, run the `Window-Gen.bat` file in Windows or run premake5 on your own in `premake5.lua`.
+To build this project, run the `Window-Gen.bat` file in Windows (wrapper for the premake5 command) or run premake yourself if you are on a different OS.
