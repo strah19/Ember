@@ -1,5 +1,6 @@
 #include "OpenGLWindow.h"
 #include "Logger.h"
+#include "Config.h"
 
 namespace Ember {
 	OpenGLWindow::OpenGLWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl) {
@@ -8,9 +9,10 @@ namespace Ember {
 #endif
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major_opengl);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor_opengl);
-
+		if (major_opengl && minor_opengl) {
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major_opengl);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor_opengl);
+		}
 		SDL_GL_LoadLibrary(NULL);
 		AddWindowFlag(SDL_WINDOW_OPENGL);
 

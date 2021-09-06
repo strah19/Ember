@@ -74,7 +74,6 @@ int main(int argc, char** argv) {
 namespace Ember {
 	SDL_DisplayMode GetDisplay();
 	SDL_bool ConvertToSDLBool(bool value);
-	void CheckVersion();
 }
 
 #endif // !EMBER_H

@@ -145,6 +145,7 @@
     <ClInclude Include="include\Audio.h" />
     <ClInclude Include="include\Buffers.h" />
     <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Cursor.h" />
     <ClInclude Include="include\Ember.h" />
     <ClInclude Include="include\EventHandler.h" />
@@ -160,7 +161,6 @@
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material.h" />
-    <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\MouseEvents.h" />
     <ClInclude Include="include\OSDepStructures.h" />
     <ClInclude Include="include\OpenGLWindow.h" />
@@ -187,6 +187,7 @@
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\Buffers.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Cursor.cpp" />
     <ClCompile Include="src\Ember.cpp" />
     <ClCompile Include="src\EventHandler.cpp" />
@@ -196,7 +197,6 @@
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\Logger.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\OSDepStructures.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
     <ClCompile Include="src\OrthoCamera.cpp" />

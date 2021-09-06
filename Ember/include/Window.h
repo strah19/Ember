@@ -35,7 +35,7 @@ namespace Ember {
 
 		WindowProperties* Properties() { return properties; }
 		static Window* CreateEmberWindow(WindowProperties* properties);
-		static Window* CreateEmberWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl);
+		static Window* CreateOpenGLWindow(WindowProperties* properties, uint32_t major_opengl = 0, uint32_t minor_opengl = 0);
 	protected:
 		WindowProperties* properties;
 

@@ -7,7 +7,7 @@ namespace Ember {
 		return new SDLWindow(properties);
 	}
 
-	Window* Window::CreateEmberWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl) {
+	Window* Window::CreateOpenGLWindow(WindowProperties* properties, uint32_t major_opengl, uint32_t minor_opengl) {
 		return new OpenGLWindow(properties, major_opengl, minor_opengl);
 	}
 

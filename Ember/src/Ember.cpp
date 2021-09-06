@@ -1,16 +1,6 @@
 #include "Ember.h"
 
 namespace Ember {
-	void CheckVersion() {
-		SDL_version compiled;
-		SDL_version linked;
-
-		SDL_VERSION(&compiled);
-		SDL_GetVersion(&linked);
-		std::cout << "We compiled against SDL version: " << compiled.major << compiled.minor << compiled.patch << std::endl;
-		std::cout << "But we are linking against SDL version: " << linked.major << linked.minor << linked.patch << std::endl;
-	}
-
 	SDL_DisplayMode GetDisplay() {
 		SDL_DisplayMode display_mode;
 

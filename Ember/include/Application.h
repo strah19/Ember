@@ -11,7 +11,8 @@
 namespace Ember {
 	enum AppFlags {
 		NONE = 0x01,
-		FULL_SCREEN = 0x02
+		FULL_SCREEN = 0x02,
+		OPENGL_CUSTOM_VERSION = 0x04
 	};
 
 	class Application {
@@ -31,6 +32,9 @@ namespace Ember {
 		Window* window = nullptr;
 		EventHandler* event_handler = nullptr;
 		WindowProperties* properties = nullptr;
+
+		uint32_t opengl_minor_version = 0;
+		uint32_t opengl_major_version = 0;
 	private:
 		void OnClose(const QuitEvent& event);
 		void OnResize(const ResizeEvent& event);

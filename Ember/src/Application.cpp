@@ -6,7 +6,7 @@ namespace Ember {
 		properties = new WindowProperties(name, width, height);
 
 		properties->full_screen = (flags & AppFlags::FULL_SCREEN) ? true : false;
-		window = Window::CreateEmberWindow(properties, 4, 5);
+		window = Window::CreateOpenGLWindow(properties, (flags & OPENGL_CUSTOM_VERSION) ? opengl_major_version : 0, (flags & OPENGL_CUSTOM_VERSION) ? opengl_minor_version : 0);
 
 		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
