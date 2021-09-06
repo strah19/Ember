@@ -148,8 +148,8 @@ namespace Ember {
 		glUniform3f(GetUniformLocation(name), vec3.x, vec3.y, vec3.z);
 	}
 
-	void Shader::SetIntArray(const std::string& name, int* array) {
-		glUniform1iv(GetUniformLocation(name), sizeof(array) / sizeof(int), array);
+	void Shader::SetIntArray(const std::string& name, int* array, uint32_t size) {
+		glUniform1iv(GetUniformLocation(name), size, array);
 	}
 
 	std::vector<std::string> GetUniformNames(uint32_t id) {

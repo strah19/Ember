@@ -6,8 +6,6 @@
 #include <glad/glad.h>
 
 namespace Ember {
-	static uint32_t current_texture_id = 0;
-
 	Texture::Texture(const char* file_path) {
 		path = file_path;
 		SDL_Surface* s = Ember::TextureLoader::Load(file_path);
@@ -63,15 +61,11 @@ namespace Ember {
 	}
 
 	void Texture::Bind(uint32_t slot) {
-		if (current_texture_id != texture_id) {
-			glBindTextureUnit(slot, texture_id);
-			current_texture_id = texture_id;
-		}
+		glBindTextureUnit(slot, texture_id);
 	}
 
 	void Texture::UnBind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
-		current_texture_id = 0;
 	}
 }
 

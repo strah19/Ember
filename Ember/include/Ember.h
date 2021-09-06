@@ -4,32 +4,51 @@
 /*
 Example code:
 
-#include "Core/Application.h"
+#include "Application.h"
+#include "Renderer.h"
+#include "RendererCommands.h"
+#include "PerspectiveCameraController.h"
+
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { 	}
+	void OnCreate() {
+		Ember::RendererCommand::Init();
+		Ember::Renderer::Init();
+		Ember::RendererCommand::SetViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	virtual ~Sandbox() { }
+		camera = Ember::PerspectiveCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
+	}
+
+	virtual ~Sandbox() {
+		Ember::Renderer::Destroy();
+	}
 
 	void OnUserUpdate() {
+		Ember::RendererCommand::Clear();
+		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
+
+		cam.Update();
+		Ember::Renderer::BeginScene(camera.GetCamera());
+
+		Ember::Renderer::EndScene();
+
 		window->Update();
-
-		renderer->Clear(background_color);
-
-		renderer->Show();
 	}
 
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
+		cam.OnEvent(event);
 	}
 private:
-	Ember::Color background_color = { 0, 0, 0, 255 };
+	Ember::PerspectiveCameraController camera;
 };
 
 int main(int argc, char** argv) {
 	Sandbox sandbox;
-	sandbox.Initialize();
+	sandbox.Initialize("EmberApp", WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	sandbox.Run();
 

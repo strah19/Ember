@@ -18,6 +18,7 @@ namespace Ember {
 			this->rows = rows;
 			this->cols = cols;
 			sprite_size = { texture->GetWidth() / this->cols, texture->GetHeight() / this->rows };
+			EMBER_LOG("Size of sprite: %d, %d", sprite_size.x, sprite_size.y);
 		}
 	}
 

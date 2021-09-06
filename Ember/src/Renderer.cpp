@@ -70,6 +70,8 @@ namespace Ember {
 		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
 
 		renderer_data.default_shader.Init("shaders/default_shader.glsl");
+		InitRendererShader(&renderer_data.default_shader);
+
 		renderer_data.ssbo = new ShaderStorageBuffer(sizeof(glm::mat4), 0);
 	}
 
@@ -89,7 +91,7 @@ namespace Ember {
 		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++) {
 			sampler[i] = i;
 		}
-		shader->SetIntArray("textures", sampler);
+		shader->SetIntArray("textures", sampler, MAX_TEXTURE_SLOTS);
 	}
 
 	void Renderer::BeginScene(Camera& camera, RenderFlags flags) {
@@ -104,6 +106,7 @@ namespace Ember {
 
 	void Renderer::EndScene() {
 		MakeCommand();
+		GoToNextDrawCommand();
 		Render();
 	}
 
@@ -143,9 +146,8 @@ namespace Ember {
 		renderer_data.ssbo->BindToBindPoint();
 
 		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			if (renderer_data.textures[i])
+			if (renderer_data.textures[i]) 
 				glBindTextureUnit(i, renderer_data.textures[i]);
-
 		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)renderer_data.vertices_ptr - (uint8_t*)renderer_data.vertices_base);
 		uint32_t index_buf_size = (uint32_t)((uint8_t*)renderer_data.index_ptr - (uint8_t*)renderer_data.index_base);
 

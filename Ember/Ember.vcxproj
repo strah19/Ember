@@ -160,6 +160,7 @@
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material.h" />
+    <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\MouseEvents.h" />
     <ClInclude Include="include\OSDepStructures.h" />
     <ClInclude Include="include\OpenGLWindow.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\OSDepStructures.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
     <ClCompile Include="src\OrthoCamera.cpp" />
