@@ -11,6 +11,8 @@ namespace Ember {
 		return glm::normalize(norm);
 	}
 
+	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size);
+
 	struct RendererData {
 		VertexArray* vertex_array;
 		VertexBuffer* vertex_buffer;
@@ -42,7 +44,7 @@ namespace Ember {
 		uint32_t* index_ptr = nullptr;
 		uint32_t current_material_id = -1;
 
-		RenderFlags flags;
+		int flags;
 	};
 
 	static RendererData renderer_data;
@@ -94,7 +96,7 @@ namespace Ember {
 		shader->SetIntArray("textures", sampler, MAX_TEXTURE_SLOTS);
 	}
 
-	void Renderer::BeginScene(Camera& camera, RenderFlags flags) {
+	void Renderer::BeginScene(Camera& camera, int flags) {
 		renderer_data.flags = flags;
 		renderer_data.proj_view = camera.GetProjection() * camera.GetView();
 
@@ -131,6 +133,7 @@ namespace Ember {
 	void Renderer::Render() {
 		if ((renderer_data.flags & RenderFlags::PolygonMode))
 			RendererCommand::PolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glLineWidth(3);
 
 		renderer_data.vertex_array->Bind();
 		renderer_data.index_buffer->Bind();
@@ -215,6 +218,44 @@ namespace Ember {
 		renderer_data.index_offset += 4;
 	}
 
+	void Renderer::CalculateTriangleIndices() {
+		*renderer_data.index_ptr = renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 1 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
+		renderer_data.index_ptr++;
+
+		renderer_data.index_offset += 3;
+	}
+
+	void Renderer::DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
+			NewBatch();
+
+		CalculateTriangleIndices();
+		glm::mat4 translation = GetModelMatrix(position, size);
+
+		glm::vec3 norm = CalculateVertexNormals(translation * TRIANGLE_POSITIONS[0], translation * TRIANGLE_POSITIONS[1], translation * TRIANGLE_POSITIONS[2]);
+
+		for (size_t i = 0; i < TRIANGLE_VERTEX_COUNT; i++) {
+			Vertex vertex;
+			vertex.position = translation * TRIANGLE_POSITIONS[i];
+			vertex.color = color;
+			vertex.texture_coordinates = { 0, 0 };
+			vertex.texture_id = -1.0f;
+			vertex.material_id = (float)renderer_data.current_material_id;
+			vertex.normals = norm;
+
+			*renderer_data.vertices_ptr = vertex;
+			renderer_data.vertices_ptr++;
+
+			renderer_data.num_of_vertices_in_batch++;
+		}
+
+		renderer_data.current_draw_command_vertex_size += 3;
+	}
+
 	void Renderer::GoToNextDrawCommand() {
 		renderer_data.draw_count++;
 		renderer_data.base_vert += renderer_data.num_of_vertices_in_batch;
@@ -254,6 +295,11 @@ namespace Ember {
 	}
 
 	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+	}
+
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
 		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
 	}

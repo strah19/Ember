@@ -36,6 +36,13 @@ namespace Ember {
 		{ -0.5f,  0.5f, 0.0f, 1.0f }
 	};
 
+	constexpr size_t TRIANGLE_VERTEX_COUNT = 3;
+	constexpr glm::vec4 TRIANGLE_POSITIONS[TRIANGLE_VERTEX_COUNT] = {
+		{ -0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.0f,  0.5f, 0.0f, 1.0f }
+	};
+
 	constexpr size_t CUBE_VERTEX_COUNT = 24;
 	constexpr glm::vec3 CUBE_POSITIONS[CUBE_VERTEX_COUNT] = {
 		{ -0.5f, -0.5f, 0.0f }, { 0.5f, -0.5f, 0.0f },{ 0.5f,  0.5f, 0.0f }, { -0.5f,  0.5f, 0.0f },
@@ -62,7 +69,7 @@ namespace Ember {
 
 		static uint32_t GetShaderId();
 
-		static void BeginScene(Camera& camera, RenderFlags flags = RenderFlags::None);
+		static void BeginScene(Camera& camera, int flags = RenderFlags::None);
 		static void EndScene();
 		static void NewBatch();
 
@@ -70,6 +77,7 @@ namespace Ember {
 
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 
@@ -83,6 +91,7 @@ namespace Ember {
 		static void DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
 
 		static void DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
+		static void DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 
 		static void RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color);
 
@@ -95,6 +104,7 @@ namespace Ember {
 		static float CalculateTextureIndex(Texture* texture);
 		static float CalculateTextureIndex(uint32_t id);
 		static void CalculateSquareIndices();
+		static void CalculateTriangleIndices();
 	};
 
 	glm::vec3 CalculateVertexNormals(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);

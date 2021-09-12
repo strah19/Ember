@@ -139,7 +139,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\fb_shader.glsl" />
     <None Include="shaders\text_shader.glsl" />
+    <None Include="shaders\wrap_shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

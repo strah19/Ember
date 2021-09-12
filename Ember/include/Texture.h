@@ -3,12 +3,17 @@
 
 #include <memory>
 #include <string>
+#include <glm.hpp>
 
 namespace Ember {
 	class Texture {
 	public:
-		Texture(const char* file_path);
+		Texture(const char* file_path, bool flip = true);
 		Texture(uint32_t width, uint32_t height);
+		Texture() = default;
+
+		void Init(const char* file_path, bool flip = true);
+		void Init(uint32_t width, uint32_t height);
 
 		virtual ~Texture();
 
@@ -28,6 +33,16 @@ namespace Ember {
 		uint32_t internal_format = 0, data_format = 0;
 		std::string path;
 	};
+
+	struct Pixel {
+		unsigned char r = 0;
+		unsigned char g = 0;
+		unsigned char b = 0;
+	};
+
+	void BindTexture(uint32_t id);
+	void SetPixels(const glm::ivec2& position, void* pixels, const glm::ivec2& size = { 1, 1 });
+	void GetPixels(const glm::ivec2& position, void* pixels, const glm::ivec2& size = { 1, 1 });
 }
 
 #endif // !OPENGL_TEXTURE_H

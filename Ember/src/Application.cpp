@@ -21,9 +21,18 @@ namespace Ember {
 	}
 
 	void Application::Run() {
+		uint64_t now = SDL_GetPerformanceCounter();
+		uint64_t last = 0;
+		float delta = 0;
+
 		while (window->IsRunning()) {
 			event_handler->Update();
-			OnUserUpdate();
+
+			last = now;
+			now = SDL_GetPerformanceCounter();
+
+			delta = (float)((now - last) * 1000 / (float)SDL_GetPerformanceFrequency());
+			OnUserUpdate(delta);
 		}
 	}
 

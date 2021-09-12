@@ -24,7 +24,7 @@ namespace Ember {
 		void Run();
 
 		virtual void UserDefEvent(Event& event) { }
-		virtual void OnUserUpdate() { }
+		virtual void OnUserUpdate(float delta) { }
 		virtual void OnCreate() { }
 
 		Window* GetWindow() { return window; }

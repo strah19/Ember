@@ -5,11 +5,24 @@
 #include <iostream>
 #include <glad/glad.h>
 
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+
 namespace Ember {
-	Texture::Texture(const char* file_path) {
+	Texture::Texture(const char* file_path, bool flip) {
+		Init(file_path, flip);
+	}
+
+	Texture::Texture(uint32_t width, uint32_t height) {
+		Init(width, height);
+	}
+
+	void Texture::Init(const char* file_path, bool flip) {
 		path = file_path;
 		SDL_Surface* s = Ember::TextureLoader::Load(file_path);
-		Ember::TextureLoader::FlipVertically(s);
+		if (flip)
+			Ember::TextureLoader::FlipVertically(s);
 		width = s->w;
 		height = s->h;
 		if (s->format->BytesPerPixel == 4) {
@@ -37,7 +50,7 @@ namespace Ember {
 		Ember::TextureLoader::Free(s);
 	}
 
-	Texture::Texture(uint32_t width, uint32_t height) {
+	void Texture::Init(uint32_t width, uint32_t height) {
 		internal_format = GL_RGBA8;
 		data_format = GL_RGBA;
 
@@ -66,6 +79,18 @@ namespace Ember {
 
 	void Texture::UnBind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void BindTexture(uint32_t id) {
+		glBindTexture(GL_TEXTURE_2D, id);
+	}
+
+	void SetPixels(const glm::ivec2& position, void* pixels, const glm::ivec2& size) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, position.x, position.y, size.x, size.y, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+	}
+
+	void GetPixels(const glm::ivec2& position, void* pixels, const glm::ivec2& size) {
+		glReadPixels(position.x, position.y, size.x, size.y, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 	}
 }
 
