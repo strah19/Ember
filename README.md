@@ -64,3 +64,6 @@ Simply call this class in `main` with it's initialize and run function and thats
 
 # Build
 To build this project, run the `Window-Gen.bat` file in Windows (wrapper for the premake5 command) or run premake yourself if you are on a different OS.
+
+# Trello
+https://trello.com/b/Bnc3nLAD/ember
