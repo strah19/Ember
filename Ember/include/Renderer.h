@@ -66,6 +66,7 @@ namespace Ember {
 		static void InitRendererShader(Shader* shader);
 		static void SetShader(Shader* shader);
 		static void SetMaterialId(uint32_t material_id);
+		static void SetLineThickness(uint32_t thickness);
 
 		static uint32_t GetShaderId();
 
@@ -92,6 +93,9 @@ namespace Ember {
 
 		static void DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
 		static void DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+		static void DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
+	
+		static void DrawLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color, float width = 1.0f);
 
 		static void RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color);
 

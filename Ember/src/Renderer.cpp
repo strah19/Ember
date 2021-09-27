@@ -130,10 +130,14 @@ namespace Ember {
 		renderer_data.index_ptr = renderer_data.index_base;
 	}
 
+	void Renderer::SetLineThickness(uint32_t thickness) {
+		if (thickness > 0)
+			glLineWidth(thickness);
+	}
+
 	void Renderer::Render() {
 		if ((renderer_data.flags & RenderFlags::PolygonMode))
 			RendererCommand::PolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glLineWidth(3);
 
 		renderer_data.vertex_array->Bind();
 		renderer_data.index_buffer->Bind();
@@ -256,6 +260,45 @@ namespace Ember {
 		renderer_data.current_draw_command_vertex_size += 3;
 	}
 
+	void Renderer::DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 translation = GetModelMatrix(position, size);
+		translation = glm::rotate(translation, glm::radians(rotation), rotation_orientation);
+		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
+			NewBatch();
+
+		CalculateTriangleIndices();
+		glm::vec3 norm = CalculateVertexNormals(translation * TRIANGLE_POSITIONS[0], translation * TRIANGLE_POSITIONS[1], translation * TRIANGLE_POSITIONS[2]);
+
+		for (size_t i = 0; i < TRIANGLE_VERTEX_COUNT; i++) {
+			Vertex vertex;
+			vertex.position = translation * TRIANGLE_POSITIONS[i];
+			vertex.color = color;
+			vertex.texture_coordinates = { 0, 0 };
+			vertex.texture_id = -1.0f;
+			vertex.material_id = (float)renderer_data.current_material_id;
+			vertex.normals = norm;
+
+			*renderer_data.vertices_ptr = vertex;
+			renderer_data.vertices_ptr++;
+
+			renderer_data.num_of_vertices_in_batch++;
+		}
+
+		renderer_data.current_draw_command_vertex_size += 3;
+	}
+
+	void Renderer::DrawLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color, float width) {
+		float x = p2.x - p1.x;
+		float y = p2.y - p1.y;
+		glm::mat4 trans = glm::translate(glm::mat4(1.0f), { p1.x + (x / 2), p1.y + (y / 2), 0 });
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { sqrtf((x * x) + (y * y)), width, 1.0f });
+		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), atan2f(y, x), { 0, 0, 1 });
+
+		glm::mat4 model = trans * rotate * scale;
+
+		DrawQuad(model, color, -1, TEX_COORDS);
+	}
+
 	void Renderer::GoToNextDrawCommand() {
 		renderer_data.draw_count++;
 		renderer_data.base_vert += renderer_data.num_of_vertices_in_batch;
@@ -315,8 +358,12 @@ namespace Ember {
 	}
 
 	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
+		glm::mat4 trans = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0 });
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotation_orientation);
+
+		glm::mat4 model = trans * rotate * scale;
+
 		DrawQuad(model, color, -1.0f, TEX_COORDS);
 	}
 
