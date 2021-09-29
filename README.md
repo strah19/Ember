@@ -1,8 +1,8 @@
 # Ember
 
-Ember is an open source graphics wrapper using SDL2!
+Ember is an open source graphics framework for C++.
 
-Solely created by strah19, Ember holds a wide ranges of tools including event handlers, buttons, event stacks, file handlers, asset loader, and more.
+Ember holds a wide ranges of tools including event handlers, event stacks, file handlers, asset loader, 3d rendering tools and more.
 
 Sample code:
 ```c++
