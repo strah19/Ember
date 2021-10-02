@@ -33,7 +33,7 @@ public:
 		Ember::RendererCommand::Clear();
 		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
-		cam.Update();
+		camera.Update();
 		Ember::Renderer::BeginScene(camera.GetCamera());
 
 		Ember::Renderer::EndScene();
@@ -43,7 +43,7 @@ public:
 
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
-		cam.OnEvent(event);
+		camera.OnEvent(event);
 	}
 private:
 	Ember::PerspectiveCameraController camera;
