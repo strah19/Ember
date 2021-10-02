@@ -62,8 +62,8 @@ int main(int argc, char** argv) {
 
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
-# Build
-To build this project, run the `Window-Gen.bat` file in Windows (wrapper for the premake5 command) or run premake yourself if you are on a different OS.
+# Prerequisites
+Having a C++ Compiler and Premake5. You can run Premake5 and build whatever build files you need. If you are building for Visual Studio 2019, there is a bat file for easy use.
 
 # Trello
 https://trello.com/b/Bnc3nLAD/ember
