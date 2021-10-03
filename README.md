@@ -34,6 +34,7 @@ public:
 
 		camera.Update();
 		Ember::Renderer::BeginScene(camera.GetCamera());
+		Ember::Renderer::SetShaderToDefualt();
 
 		Ember::Renderer::EndScene();
 
