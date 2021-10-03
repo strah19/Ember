@@ -1,3 +1,20 @@
+/**
+ * @file Texture.cpp
+ * @author strah19
+ * @date October 3 2021
+ * @version 1.0
+ *
+ * @section LICENSE
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the MIT License as
+ * published by the Free Software Foundation.
+ *
+ * @section DESCRIPTION
+ *
+ * This file represents a Texture object that can be rendered in Ember.
+ */
+
 #include "Texture.h"
 #include "TextureLoader.h"
 #include "Logger.h"
@@ -5,11 +22,11 @@
 #include <iostream>
 #include <glad/glad.h>
 
-#define RED 0
-#define GREEN 1
-#define BLUE 2
-
 namespace Ember {
+	/**
+	* 
+	* 
+	*/
 	Texture::Texture(const char* file_path, bool flip) {
 		Init(file_path, flip);
 	}

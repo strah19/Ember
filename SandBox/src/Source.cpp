@@ -15,9 +15,6 @@ public:
 		Ember::RendererCommand::SetViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		camera = Ember::PerspectiveCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
-
-		font.Init("font.ttf", 32);
-		font_shader.Init("shaders/text_shader.glsl");
 	}
 
 	virtual ~Sandbox() {
@@ -43,19 +40,9 @@ public:
 			}
 		}
 
-	//	Ember::Renderer::DrawTriangle({ -1, -1, 0 }, { 1, 1 }, { 0, 1, 1, 1 });
-	//	Ember::Renderer::DrawLine({ 0, 0, 0 }, { 20, 20, 0 }, { 1, 0, 1, 1 }, 1);
-
 		Ember::Triangle::DrawTriangle({ -1, -1, 0 }, { 1, 1 }, { 0, 1, 1, 1 });
 
 		Ember::Cube::DrawCube({ -2, -2, 0 }, { 1, 1, 1 }, { 1, 0, 1, 1 });
-
-		Ember::Renderer::EndScene();
-
-		Ember::Renderer::BeginScene(camera.GetCamera());
-		Ember::Renderer::SetShader(&font_shader);
-
-		Ember::Renderer::RenderText(&font, "Hello world!", { 0, 0 }, { 1, 1 }, { 1, 0, 0, 1 });
 
 		Ember::Renderer::EndScene();
 
@@ -68,8 +55,6 @@ public:
 	}
 private:
 	Ember::PerspectiveCameraController camera;
-	Ember::Shader font_shader;
-	Ember::Font font;
 };
 
 int main(int argc, char** argv) {
