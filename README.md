@@ -28,7 +28,7 @@ public:
 		Ember::Renderer::Destroy();
 	}
 
-	void OnUserUpdate() {
+	void OnUserUpdate(float delta) {
 		Ember::RendererCommand::Clear();
 		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
