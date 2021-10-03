@@ -162,7 +162,6 @@
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\Mesh.h" />
-    <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\MouseEvents.h" />
     <ClInclude Include="include\OSDepStructures.h" />
     <ClInclude Include="include\OpenGLWindow.h" />

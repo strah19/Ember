@@ -75,9 +75,6 @@
     <ClInclude Include="include\Mesh.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\MouseEvents.h">
       <Filter>include</Filter>
     </ClInclude>
