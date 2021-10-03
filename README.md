@@ -6,7 +6,6 @@ Ember holds a wide ranges of tools including event handlers, event stacks, file 
 
 Sample code:
 ```c++
-
 #include "Application.h"
 #include "Renderer.h"
 #include "RendererCommands.h"
