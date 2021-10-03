@@ -1,12 +1,11 @@
 # Ember
 
-Ember is an open source graphics wrapper using SDL2!
+Ember is an open source graphics framework for C++.
 
-Solely created by strah19, Ember holds a wide ranges of tools including event handlers, buttons, event stacks, file handlers, asset loader, and more.
+Ember holds a wide ranges of tools including event handlers, event stacks, file handlers, asset loader, 3d rendering tools and more.
 
 Sample code:
 ```c++
-
 #include "Application.h"
 #include "Renderer.h"
 #include "RendererCommands.h"
@@ -29,12 +28,13 @@ public:
 		Ember::Renderer::Destroy();
 	}
 
-	void OnUserUpdate() {
+	void OnUserUpdate(float delta) {
 		Ember::RendererCommand::Clear();
 		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
-		cam.Update();
+		camera.Update();
 		Ember::Renderer::BeginScene(camera.GetCamera());
+		Ember::Renderer::SetShaderToDefualt();
 
 		Ember::Renderer::EndScene();
 
@@ -43,7 +43,7 @@ public:
 
 	void UserDefEvent(Ember::Event& event) {
 		Ember::EventDispatcher dispatch(&event);
-		cam.OnEvent(event);
+		camera.OnEvent(event);
 	}
 private:
 	Ember::PerspectiveCameraController camera;
@@ -62,5 +62,8 @@ int main(int argc, char** argv) {
 
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
-# Build
-To build this project, run the `Window-Gen.bat` file in Windows (wrapper for the premake5 command) or run premake yourself if you are on a different OS.
+# Prerequisites
+Having a C++ Compiler and Premake5. You can run Premake5 and build whatever build files you need. If you are building for Visual Studio 2019, there is a bat file for easy use.
+
+# Trello
+https://trello.com/b/Bnc3nLAD/ember
