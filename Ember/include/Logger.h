@@ -5,6 +5,7 @@
 #include <map>
 #include <iostream>
 #include <vector>
+#include <cstdarg>
 
 namespace Ember {
 	class LogCommand {

@@ -9,12 +9,15 @@
 #include "Font.h"
 
 namespace Ember {
+	glm::mat4 GetTranslationMatrix(const glm::vec3& position, const glm::vec2& size);
+	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size);
+	glm::mat4 GetRotatedModelMatrix(const glm::vec3& position, const glm::vec2& size, const glm::vec3& rotation_orientation, float degree);
+
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec4 color;
 		glm::vec2 texture_coordinates;
 		float texture_id;
-		glm::vec3 normals = glm::vec3(0, 0, 0);
 		float material_id;
 	};
 
@@ -36,21 +39,14 @@ namespace Ember {
 		{ -0.5f,  0.5f, 0.0f, 1.0f }
 	};
 
-	constexpr size_t TRIANGLE_VERTEX_COUNT = 3;
-	constexpr glm::vec4 TRIANGLE_POSITIONS[TRIANGLE_VERTEX_COUNT] = {
-		{ -0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.0f,  0.5f, 0.0f, 1.0f }
-	};
-
 	constexpr size_t CUBE_VERTEX_COUNT = 24;
-	constexpr glm::vec3 CUBE_POSITIONS[CUBE_VERTEX_COUNT] = {
-		{ -0.5f, -0.5f, 0.0f }, { 0.5f, -0.5f, 0.0f },{ 0.5f,  0.5f, 0.0f }, { -0.5f,  0.5f, 0.0f },
-		{ -0.5f, -0.5f, -1.0f }, { 0.5f, -0.5f, -1.0f }, { 0.5f,  0.5f, -1.0f }, { -0.5f,  0.5f, -1.0f },
-		{ -0.5f, -0.5f, -1.0f }, { -0.5f, -0.5f, 0.0f }, { -0.5f,  0.5f, 0.0f }, { -0.5f,  0.5f, -1.0f },
-		{ 0.5f, -0.5f, -1.0f }, { 0.5f, -0.5f, 0.0f }, { 0.5f,  0.5f, 0.0f }, { 0.5f,  0.5f, -1.0f },
-		{ -0.5f, 0.5f, -1.0f }, { 0.5f, 0.5f, -1.0f }, { 0.5f,  0.5f, 0.0f }, { -0.5f,  0.5f, 0.0f },
-		{ -0.5f, -0.5f, -1.0f }, { 0.5f, -0.5f, -1.0f }, { 0.5f,  -0.5f, 0.0f }, { -0.5f,  -0.5f, 0.0f }
+	constexpr glm::vec4 CUBE_POSITIONS[CUBE_VERTEX_COUNT] = {
+		{ -0.5f, -0.5f, 0.0f, 1.0f }, { 0.5f, -0.5f, 0.0f, 1.0f },{ 0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f },
+		{ -0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f,  0.5f, -1.0f, 1.0f }, { -0.5f,  0.5f, -1.0f, 1.0f },
+		{ -0.5f, -0.5f, -1.0f, 1.0f }, { -0.5f, -0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, -1.0f, 1.0f },
+		{ 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, 0.0f, 1.0f }, { 0.5f,  0.5f, 0.0f, 1.0f }, { 0.5f,  0.5f, -1.0f, 1.0f },
+		{ -0.5f, 0.5f, -1.0f, 1.0f }, { 0.5f, 0.5f, -1.0f, 1.0f }, { 0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f },
+		{ -0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f,  -0.5f, 0.0f, 1.0f }, { -0.5f,  -0.5f, 0.0f, 1.0f }
 	};
 
 	enum RenderFlags {
@@ -66,52 +62,61 @@ namespace Ember {
 		static void InitRendererShader(Shader* shader);
 		static void SetShader(Shader* shader);
 		static void SetMaterialId(uint32_t material_id);
-		static void SetLineThickness(uint32_t thickness);
+		static void SetPolygonLineThickness(float thickness);
 
 		static uint32_t GetShaderId();
 
 		static void BeginScene(Camera& camera, int flags = RenderFlags::None);
 		static void EndScene();
 		static void NewBatch();
-
+		 
 		static void Submit(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader);
 
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
 
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
+		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
 
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, Texture* texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
-
-		static void DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]);
-		static void DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
-	
-		static void DrawLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color, float width = 1.0f);
-
+		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color, float width = 1.0f);
 		static void RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color);
+		static void DrawShape(const glm::mat4& matrix, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[], uint32_t vertex_count, const glm::vec4 positions[]);
+		static void AddIndice(uint32_t offset);
+		static void UpdateIndexOffset(uint32_t count);
 
 		static void GoToNextDrawCommand();
 		static void MakeCommand();
-	private:
+
 		static void StartBatch();
 		static void Render();
 
-		static float CalculateTextureIndex(Texture* texture);
 		static float CalculateTextureIndex(uint32_t id);
 		static void CalculateSquareIndices();
-		static void CalculateTriangleIndices();
 	};
 
-	glm::vec3 CalculateVertexNormals(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);
+	class Triangle {
+	public:
+		static void DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+		static void DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
+		static const uint32_t VERTEX_COUNT = 3;
+
+	private:	
+		static void CalculateTriangleIndices();
+	};
+	constexpr glm::vec4 TRIANGLE_POSITIONS[Triangle::VERTEX_COUNT] = {
+		{ -0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.5f, -0.5f, 0.0f, 1.0f },
+		{ 0.0f,  0.5f, 0.0f, 1.0f }
+	};
+
+	class Cube {
+	public:
+		static void DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawCube(const glm::vec3& position, const glm::vec3& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
+		static void DrawCube(const glm::vec3& position, const glm::vec3& size, float texture_id, const glm::vec4& color = { -1, -1, -1, -1 });
+	};
 }
 
 #endif

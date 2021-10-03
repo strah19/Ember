@@ -6,13 +6,6 @@
 #include <glad/glad.h>
 
 namespace Ember {
-	glm::vec3 CalculateVertexNormals(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
-		glm::vec3 norm = glm::cross((b - a), (c - a));
-		return glm::normalize(norm);
-	}
-
-	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size);
-
 	struct RendererData {
 		VertexArray* vertex_array;
 		VertexBuffer* vertex_buffer;
@@ -58,7 +51,6 @@ namespace Ember {
 		layout.AddToBuffer(VertexBufferElement(4, false, VertexShaderType::Float));
 		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
 		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
-		layout.AddToBuffer(VertexBufferElement(3, false, VertexShaderType::Float));
 
 		renderer_data.vertex_buffer->SetLayout(layout);
 
@@ -130,7 +122,7 @@ namespace Ember {
 		renderer_data.index_ptr = renderer_data.index_base;
 	}
 
-	void Renderer::SetLineThickness(uint32_t thickness) {
+	void Renderer::SetPolygonLineThickness(float thickness) {
 		if (thickness > 0)
 			glLineWidth(thickness);
 	}
@@ -179,124 +171,55 @@ namespace Ember {
 		RendererCommand::DrawVertexArray(vertex_array);
 	}
 
-	void Renderer::DrawQuad(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
-		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
+	void Renderer::DrawShape(const glm::mat4& matrix, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[], uint32_t vertex_count, const glm::vec4 positions[]) {
+		if (renderer_data.num_of_vertices_in_batch + vertex_count > MAX_VERTEX_COUNT)
 			NewBatch();
 
-		CalculateSquareIndices();
-
-		glm::vec3 norm = CalculateVertexNormals(translation * QUAD_POSITIONS[0], translation * QUAD_POSITIONS[1], translation * QUAD_POSITIONS[2]);
-
-		for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {    
+		for (size_t i = 0; i < vertex_count; i++) {
 			Vertex vertex;
-			vertex.position = translation * QUAD_POSITIONS[i];
+			vertex.position = matrix * positions[i];
 			vertex.color = color;
 			vertex.texture_coordinates = tex_coords[i];
 			vertex.texture_id = texture_id;
 			vertex.material_id = (float)renderer_data.current_material_id;
-			vertex.normals = norm;
 
 			*renderer_data.vertices_ptr = vertex;
 			renderer_data.vertices_ptr++;
 
 			renderer_data.num_of_vertices_in_batch++;
 		}
-
-		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
 	void Renderer::CalculateSquareIndices() {
-		*renderer_data.index_ptr = renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 1 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 3 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = renderer_data.index_offset;
-		renderer_data.index_ptr++;
+		AddIndice(0);
+		AddIndice(1);
+		AddIndice(2);
+		AddIndice(2);
+		AddIndice(3);
+		AddIndice(0);
 
-		renderer_data.index_offset += 4;
+		UpdateIndexOffset(4);
 	}
 
-	void Renderer::CalculateTriangleIndices() {
-		*renderer_data.index_ptr = renderer_data.index_offset;
+	void Renderer::AddIndice(uint32_t offset) {
+		*renderer_data.index_ptr = offset + renderer_data.index_offset;
 		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 1 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-		*renderer_data.index_ptr = 2 + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-
-		renderer_data.index_offset += 3;
 	}
 
-	void Renderer::DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
-			NewBatch();
-
-		CalculateTriangleIndices();
-		glm::mat4 translation = GetModelMatrix(position, size);
-
-		glm::vec3 norm = CalculateVertexNormals(translation * TRIANGLE_POSITIONS[0], translation * TRIANGLE_POSITIONS[1], translation * TRIANGLE_POSITIONS[2]);
-
-		for (size_t i = 0; i < TRIANGLE_VERTEX_COUNT; i++) {
-			Vertex vertex;
-			vertex.position = translation * TRIANGLE_POSITIONS[i];
-			vertex.color = color;
-			vertex.texture_coordinates = { 0, 0 };
-			vertex.texture_id = -1.0f;
-			vertex.material_id = (float)renderer_data.current_material_id;
-			vertex.normals = norm;
-
-			*renderer_data.vertices_ptr = vertex;
-			renderer_data.vertices_ptr++;
-
-			renderer_data.num_of_vertices_in_batch++;
-		}
-
-		renderer_data.current_draw_command_vertex_size += 3;
+	void Renderer::UpdateIndexOffset(uint32_t count) {
+		renderer_data.index_offset += count;
 	}
 
-	void Renderer::DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 translation = GetModelMatrix(position, size);
-		translation = glm::rotate(translation, glm::radians(rotation), rotation_orientation);
-		if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
-			NewBatch();
-
-		CalculateTriangleIndices();
-		glm::vec3 norm = CalculateVertexNormals(translation * TRIANGLE_POSITIONS[0], translation * TRIANGLE_POSITIONS[1], translation * TRIANGLE_POSITIONS[2]);
-
-		for (size_t i = 0; i < TRIANGLE_VERTEX_COUNT; i++) {
-			Vertex vertex;
-			vertex.position = translation * TRIANGLE_POSITIONS[i];
-			vertex.color = color;
-			vertex.texture_coordinates = { 0, 0 };
-			vertex.texture_id = -1.0f;
-			vertex.material_id = (float)renderer_data.current_material_id;
-			vertex.normals = norm;
-
-			*renderer_data.vertices_ptr = vertex;
-			renderer_data.vertices_ptr++;
-
-			renderer_data.num_of_vertices_in_batch++;
-		}
-
-		renderer_data.current_draw_command_vertex_size += 3;
-	}
-
-	void Renderer::DrawLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color, float width) {
+	void Renderer::DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color, float width) {
 		float x = p2.x - p1.x;
 		float y = p2.y - p1.y;
-		glm::mat4 trans = glm::translate(glm::mat4(1.0f), { p1.x + (x / 2), p1.y + (y / 2), 0 });
+		glm::mat4 trans = GetTranslationMatrix(p1, { x, y });
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { sqrtf((x * x) + (y * y)), width, 1.0f });
 		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), atan2f(y, x), { 0, 0, 1 });
 
 		glm::mat4 model = trans * rotate * scale;
 
-		DrawQuad(model, color, -1, TEX_COORDS);
+		DrawShape(model, color, -1, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 	}
 
 	void Renderer::GoToNextDrawCommand() {
@@ -325,112 +248,72 @@ namespace Ember {
 		renderer_data.current_material_id = material_id;
 	}
 
+	glm::mat4 GetTranslationMatrix(const glm::vec3& position, const glm::vec2& size) {
+		return (renderer_data.flags & RenderFlags::TopLeftCornerPos) ? glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) :
+		glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z });
+	}
+
 	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size) {
 		return (renderer_data.flags & RenderFlags::TopLeftCornerPos) ?
 			glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }) :
 			glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 	}
 
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
+	glm::mat4 GetRotatedModelMatrix(const glm::vec3& position, const glm::vec2& size, const glm::vec3& rotation_orientation, float degree) {
+		glm::mat4 trans = (renderer_data.flags & RenderFlags::TopLeftCornerPos) ? 
+			glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) : glm::translate(glm::mat4(1.0f), { position.x, position.y, 0 });
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(degree), rotation_orientation);
 
-		DrawQuad(model, color, -1.0f, TEX_COORDS);
+		return (trans * rotate * scale);
 	}
 
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
-		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+		DrawShape(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
 	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
-		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
+		DrawShape(model, color, CalculateTextureIndex(texture), TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
+	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, size);
-		DrawQuad(model, color, -1.0f, tex_coords);
+		DrawShape(model, color, CalculateTextureIndex(texture), tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture* texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
+		DrawShape(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 trans = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0 });
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotation_orientation);
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, uint32_t texture, const glm::vec4& color) {
+		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
+		DrawShape(model, color, CalculateTextureIndex(texture), TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
-		glm::mat4 model = trans * rotate * scale;
-
-		DrawQuad(model, color, -1.0f, TEX_COORDS);
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, Texture* texture, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
-		DrawQuad(model, color, CalculateTextureIndex(texture), TEX_COORDS);
-	}
+	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], uint32_t texture, const glm::vec4& color) {
+		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
+		DrawShape(model, color, CalculateTextureIndex(texture), tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
-		DrawQuad(model, color, -1.0f, tex_coords);
-	}
-
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], Texture* texture, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		model = glm::rotate(model, glm::radians(rotation), rotation_orientation);
-		DrawQuad(model, color, CalculateTextureIndex(texture), tex_coords);
-	}
-
-	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
-		DrawCube(model, color, -1.0f, TEX_COORDS);
-	}
-
-	void Renderer::DrawCube(const glm::vec3& position, const glm::vec3& size, Texture* texture, const glm::vec4& color) {
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
-		DrawCube(model, color, CalculateTextureIndex(texture), TEX_COORDS);
-	}
-
-	void Renderer::DrawCube(const glm::mat4& translation, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[]) {
-		if (renderer_data.num_of_vertices_in_batch + CUBE_VERTEX_COUNT > MAX_VERTEX_COUNT)
-			NewBatch();
-
-		for (uint32_t i = 0; i < CUBE_FACES; i++)
-			CalculateSquareIndices();
-
-		Vertex* start_base = renderer_data.vertices_ptr;
-		uint32_t face = -4;
-		for (size_t i = 0; i < CUBE_VERTEX_COUNT; i++) {
-			if (i % 4 == 0) {
-				face += 4;
-				Vertex* face_base_ptr = &start_base[face];
-
-				glm::vec3 norm = CalculateVertexNormals(face_base_ptr[0].position, face_base_ptr[1].position, face_base_ptr[2].position);
-				face_base_ptr[0].normals = norm;
-				face_base_ptr[1].normals = norm;
-				face_base_ptr[2].normals = norm;
-				face_base_ptr[3].normals = norm;
-
-			}
-
-			Vertex vertex;
-			vertex.position = translation * glm::vec4(CUBE_POSITIONS[i].x, CUBE_POSITIONS[i].y, CUBE_POSITIONS[i].z, 1.0f);
-			vertex.color = color;
-			vertex.texture_coordinates = tex_coords[i % 4];
-			vertex.texture_id = texture_id;
-			vertex.material_id = (float)renderer_data.current_material_id;
-
-			*renderer_data.vertices_ptr = vertex;
-			renderer_data.vertices_ptr++;
-
-			renderer_data.num_of_vertices_in_batch++;
-		}
-
-		renderer_data.current_draw_command_vertex_size += 36;
+		CalculateSquareIndices();
+		renderer_data.current_draw_command_vertex_size += 6;
 	}
 
 	void Renderer::RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color) {
@@ -477,7 +360,6 @@ namespace Ember {
 				vertex.texture_coordinates = coords[i];
 				vertex.texture_id = tex_id;
 				vertex.material_id = (float)renderer_data.current_material_id;
-				vertex.normals = { 0, 0, 0 };
 
 				*renderer_data.vertices_ptr = vertex;
 				renderer_data.vertices_ptr++;
@@ -490,10 +372,6 @@ namespace Ember {
 
 			x += (character.advance.x >> 6) * scale.x;
 		}
-	}
-
-	float Renderer::CalculateTextureIndex(Texture* texture) {
-		return CalculateTextureIndex(texture->GetTextureId());
 	}
 
 	float Renderer::CalculateTextureIndex(uint32_t id) {
@@ -513,5 +391,50 @@ namespace Ember {
 		}
 
 		return texture_id;
+	}
+
+	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
+		DrawCube(position, size, -1.0f, color);
+
+	}
+
+	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, uint32_t texture, const glm::vec4& color) {
+		DrawCube(position, size, Renderer::CalculateTextureIndex(texture), color);
+	}
+
+	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, float texture_id, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, size);
+
+		uint32_t off = 0;
+		for (int i = 0; i < 6; i++) {
+			Renderer::DrawShape(model, color, texture_id, TEX_COORDS, QUAD_VERTEX_COUNT, &CUBE_POSITIONS[off]);
+			Renderer::CalculateSquareIndices();
+			renderer_data.current_draw_command_vertex_size += 6;
+			off += 4;
+		}
+	}
+
+	void Triangle::DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 translation = GetModelMatrix(position, size);
+		Renderer::DrawShape(translation, color, -1.0f, TEX_COORDS, VERTEX_COUNT, TRIANGLE_POSITIONS);
+
+		CalculateTriangleIndices();
+		renderer_data.current_draw_command_vertex_size += VERTEX_COUNT;
+	}
+
+	void Triangle::DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
+		glm::mat4 translation = GetModelMatrix(position, size);
+		translation = glm::rotate(translation, glm::radians(rotation), rotation_orientation);
+		Renderer::DrawShape(translation, color, -1.0f, 0, VERTEX_COUNT, TRIANGLE_POSITIONS);
+
+		CalculateTriangleIndices();
+		renderer_data.current_draw_command_vertex_size += VERTEX_COUNT;
+	}
+
+	void Triangle::CalculateTriangleIndices() {
+		Renderer::AddIndice(0);
+		Renderer::AddIndice(1);
+		Renderer::AddIndice(2);
+		Renderer::UpdateIndexOffset(VERTEX_COUNT);
 	}
 }

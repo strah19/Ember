@@ -6,7 +6,6 @@ layout (location = 1) in vec4 color;
 layout(location = 2) in vec2 tex_coord;
 layout(location = 3, component = 0) in float tex_index;
 layout(location = 3, component = 1) in float material_id;
-layout(location = 4) in vec3 normal;
 
 layout(binding = 0) buffer GlobalMatrices 
 {
