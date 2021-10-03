@@ -63,9 +63,10 @@ int main(int argc, char** argv) {
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
 # Dependencies 
+All these can actually be found in libs folder but here they are anyways:
 <ul>
-	<li>A compiler that supports C++17.</li>
-	<li><a href = "https://premake.github.io">Premake5</a> for building the project:</li>
+	<li>A compiler that supports C++17</li>
+	<li><a href = "https://premake.github.io">Premake5</a> for building the project</li>
 	<li><a href = "https://www.libsdl.org/download-2.0.php">SDL2</a></li>
 	<li><a href = "https://www.libsdl.org/projects/SDL_mixer">SDL Mixer</a></li>
 	<li><a href = "https://www.libsdl.org/projects/SDL_image">SDL Image</a></li>
