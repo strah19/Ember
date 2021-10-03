@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
 # Dependencies 
-All these can actually be found in libs folder but here they are anyways:
+All these can actually be found in libs folder (besides the compiler) but here they are anyways:
 <ul>
 	<li>A compiler that supports C++17</li>
 	<li><a href = "https://premake.github.io">Premake5</a> for building the project</li>
@@ -74,6 +74,3 @@ All these can actually be found in libs folder but here they are anyways:
 	<li><a href = "https://github.com/g-truc/glm">GLM</a></li>
 	<li><a href = "https://www.freetype.org">Freetype</a></li>
 </ul>
-
-# Trello
-https://trello.com/b/Bnc3nLAD/ember
