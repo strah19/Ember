@@ -21,14 +21,14 @@ namespace Ember {
 		glDeleteVertexArrays(1, &vertex_array_buffer_id);
 	}
 
-	void VertexArray::Bind(){
+	void VertexArray::Bind() {
 		if (current_vertex_array_id != vertex_array_buffer_id) {
 			glBindVertexArray(vertex_array_buffer_id);
 			current_vertex_array_id = vertex_array_buffer_id;
 		}
 	}
 
-	void VertexArray::UnBind(){
+	void VertexArray::UnBind() {
 		glBindVertexArray(0);
 		current_vertex_array_id = 0;
 	}

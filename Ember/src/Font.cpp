@@ -1,3 +1,20 @@
+/**
+ * @file Font.cpp
+ * @author strah19
+ * @date October 3 2021
+ * @version 1.0
+ *
+ * @section LICENSE
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the MIT License as
+ * published by the Free Software Foundation.
+ *
+ * @section DESCRIPTION
+ *
+ * This file load a .ttf file and builds it into an OpenGL texture.
+ */
+
 #include "Font.h"
 #include "Assets.h"
 #include "Logger.h"
@@ -8,6 +25,12 @@
 #define ASCII_SIZE 128
 
 namespace Ember {
+    /**
+    * Creates a texture that stores all the font glypths.
+    * 
+    * @param const char* file of the font.
+    * @param uint32_t size of the font (height).
+    */
     void Font::Init(const char* filepath, uint32_t size) {
         FT_Library* ft = GetFreeType();
         FT_Face face;
@@ -82,10 +105,18 @@ namespace Ember {
         FT_Done_Face(face);
 	}
 
+    /**
+    * Font Deconstructor.
+    */
     Font::~Font() {
         glDeleteTextures(1, &texture);
     }
 
+    /**
+    * Calculate the size of string.
+    * 
+    * @param const std::string& text to figure out length.
+    */
     uint32_t Font::GetSizeOfText(const std::string& text) {
         uint32_t w = 0;
         for (auto& c : text) {

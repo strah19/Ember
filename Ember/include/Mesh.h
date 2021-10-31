@@ -7,22 +7,24 @@
 #include <string>
 
 namespace Ember {
-	struct MeshVertex {
-		glm::vec3 position = glm::vec3(0, 0, 0);
-		glm::vec2 texture_coordinates = glm::vec2(0, 0);
-		glm::vec3 normals = glm::vec3(0, 0, 0);
-	};
-
-	struct MeshTexture {
-		Texture* texture;
-		std::string path;
+	struct Vertex {
+		glm::vec3 position;
+		glm::vec4 color;
+		glm::vec2 texture_coordinates;
+		float texture_id;
+		float material_id;
 	};
 
 	struct Mesh {
-		std::vector<MeshVertex> vertices;
+		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
 
-		Mesh(std::vector<MeshVertex>& vertices, std::vector<uint32_t>& indices);
+		Mesh() = default;
+		Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
+	};
+
+	struct ModelVertex : public Vertex {
+		glm::vec3 normals = glm::vec3(0, 0, 0);
 	};
 }
 

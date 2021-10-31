@@ -18,7 +18,13 @@
 #include "Mesh.h"
 
 namespace Ember {
-    Mesh::Mesh(std::vector<MeshVertex>& vertices, std::vector<uint32_t>& indices) {
+    /**
+    * Constructor for the Mesh object.
+    * 
+    * @param std::vector<MeshVertex>& list of vertices.
+    * @param std::vector<uint32_t>& list of indices.
+    */
+    Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices) {
         this->vertices = vertices;
         this->indices = indices;
     }

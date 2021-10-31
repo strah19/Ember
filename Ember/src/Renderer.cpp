@@ -6,435 +6,177 @@
 #include <glad/glad.h>
 
 namespace Ember {
-	struct RendererData {
-		VertexArray* vertex_array;
-		VertexBuffer* vertex_buffer;
-		IndexBuffer* index_buffer;
-		IndirectDrawBuffer* indirect_draw_buffer;
+	void DeviceStatistics::Reset() {
+		num_of_indices = 0;
+		num_of_vertices = 0;
+		draw_count = 0;
+	}
 
-		Shader* current_shader;
-		Shader default_shader;
-		ShaderStorageBuffer* ssbo;
+	template <typename V>
+	GraphicsDevice<V>::GraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count) {
+		vbo = new VertexBuffer(sizeof(V) * max_vertex_count);
+		vao = new VertexArray();
+		ds.max_vertex_count = max_vertex_count;
 
-		uint32_t index_offset = 0;
+		vert_base = new V[max_vertex_count];
+		indx_base = new uint32_t[max_vertex_count];
 
-		uint32_t texture_slot_index = 0;
-		uint32_t textures[MAX_TEXTURE_SLOTS];
-		glm::mat4 proj_view = glm::mat4(1.0f);
-		Camera* camera;
+		ibo = new IndexBuffer(sizeof(uint32_t) * max_index_count);
+		ds.max_index_count = max_index_count;
 
-		uint32_t num_of_vertices_in_batch = 0;
+		vao->SetIndexBufferSize(ibo->GetCount());
+	}
 
-		DrawElementsCommand draw_commands[MAX_DRAW_COMMANDS];
-		uint32_t base_vert = 0;
-		uint32_t draw_count = 0;
-		uint32_t current_draw_command_vertex_size = 0;
+	template <typename V>
+	GraphicsDevice<V>::~GraphicsDevice() {
+		delete vao;
+		delete vbo;
+		delete ibo;
 
-		Vertex* vertices_base = nullptr;
-		Vertex* vertices_ptr = nullptr;
+		delete[] vert_base;
+		delete[] indx_base;
 
-		uint32_t* index_base = nullptr;
-		uint32_t* index_ptr = nullptr;
-		uint32_t current_material_id = -1;
+		shader = nullptr;
+	}
 
-		int flags;
-	};
+	EmberVertexGraphicsDevice::EmberVertexGraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count) : GraphicsDevice(max_vertex_count, max_index_count) { }
 
-	static RendererData renderer_data;
-
-	void Renderer::Init() {
-		renderer_data.vertex_buffer = new VertexBuffer(sizeof(Vertex) * MAX_VERTEX_COUNT);
-		renderer_data.vertex_array = new VertexArray();
-
+	BatchGraphicsDevice::BatchGraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count) : EmberVertexGraphicsDevice(max_vertex_count, max_index_count) {
 		VertexBufferLayout layout;
 		layout.AddToBuffer(VertexBufferElement(3, false, VertexShaderType::Float));
 		layout.AddToBuffer(VertexBufferElement(4, false, VertexShaderType::Float));
 		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
 		layout.AddToBuffer(VertexBufferElement(2, false, VertexShaderType::Float));
 
-		renderer_data.vertex_buffer->SetLayout(layout);
-
-		renderer_data.vertices_base = new Vertex[MAX_VERTEX_COUNT];
-		renderer_data.index_base = new uint32_t[MAX_INDEX_COUNT];
-
-		renderer_data.index_buffer = new IndexBuffer(MAX_INDEX_COUNT * sizeof(uint32_t));
-		renderer_data.vertex_array->SetIndexBufferSize(renderer_data.index_buffer->GetCount());
-		renderer_data.vertex_array->AddVertexBuffer(renderer_data.vertex_buffer, VertexBufferFormat::VNCVNCVNC);
-
-		renderer_data.indirect_draw_buffer = new IndirectDrawBuffer(sizeof(renderer_data.draw_commands));
-
-		renderer_data.default_shader.Init("shaders/default_shader.glsl");
-		InitRendererShader(&renderer_data.default_shader);
-
-		renderer_data.ssbo = new ShaderStorageBuffer(sizeof(glm::mat4), 0);
+		vbo->SetLayout(layout);
+		vao->AddVertexBuffer(vbo, VertexBufferFormat::VNCVNCVNC);
 	}
 
-	void Renderer::Destroy() {
-		delete renderer_data.vertex_array;
-		delete renderer_data.vertex_buffer;
-		delete renderer_data.index_buffer;
-		delete renderer_data.indirect_draw_buffer;
+	void BatchGraphicsDevice::Init() {
+		idb = new IndirectDrawBuffer(sizeof(commands));
+	}
 
-		delete[] renderer_data.vertices_base;
-		delete[] renderer_data.index_base;
+	BatchGraphicsDevice::~BatchGraphicsDevice() {
+		delete idb;
+	}
+
+	void BatchGraphicsDevice::Setup() {
+		memset(textures, NULL, sizeof(uint32_t) * MAX_TEXTURE_SLOTS);
+		texture_slot_index = 0;
+		ds.Reset();
+
+		index_offset = 0;
+		cmd_vertex_base = 0;
+		current_draw_command_vertex_size = 0;
+
+		vert_ptr = vert_base;
+		indx_ptr = indx_base;
+	}
+
+	bool BatchGraphicsDevice::Submit(Mesh& mesh) {
+		if (ds.num_of_vertices + mesh.vertices.size() > ds.max_vertex_count)
+			return false;
+
+		for (auto& vertex : mesh.vertices) {
+			*vert_ptr = vertex;
+			vert_ptr++;
+			ds.num_of_vertices++;
+		}
+
+		for (auto& index : mesh.indices) {
+			*indx_ptr = index;
+			indx_ptr++;
+			ds.num_of_indices++;
+		}
+
+		index_offset += mesh.vertices.size();
+		current_draw_command_vertex_size += mesh.indices.size();
+
+		return true;
+	}
+
+	void BatchGraphicsDevice::Render() {
+		vao->Bind();
+		ibo->Bind();
+		vbo->Bind();
+		(*shader)->Bind();
+
+		idb->Bind();
+		idb->SetData(commands, sizeof(commands), 0);
+
+		for (uint32_t i = 0; i < texture_slot_index; i++)
+			if (textures[i])
+				glBindTextureUnit(i, textures[i]);
+		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)vert_ptr - (uint8_t*)vert_base);
+		uint32_t index_buf_size = (uint32_t)((uint8_t*)indx_ptr - (uint8_t*)indx_base);
+
+		vbo->SetData(vert_base, vertex_buf_size);
+		ibo->SetData(indx_base, index_buf_size);
+
+		vao->SetIndexBufferSize(ibo->GetCount());
+
+		RendererCommand::DrawMultiIndirect(nullptr, ds.draw_count + 1, 0);
+	}
+
+	void BatchGraphicsDevice::NextCommand() {
+		ds.draw_count++;
+		cmd_vertex_base += ds.num_of_vertices;
+		current_draw_command_vertex_size = 0;
+	}
+
+	void BatchGraphicsDevice::MakeCommand() {
+		commands[ds.draw_count].vertex_count = current_draw_command_vertex_size;
+		commands[ds.draw_count].instance_count = 1;
+		commands[ds.draw_count].first_index = 0;
+		commands[ds.draw_count].base_vertex = cmd_vertex_base;
+		commands[ds.draw_count].base_instance = ds.draw_count;
+	}
+
+	RendererFrame::~RendererFrame() {
+		camera = nullptr;
+	}
+
+	Renderer::Renderer() {
+		default_shader.Init("shaders/default_shader.glsl");
+		InitRendererShader(&default_shader);
+
+		gd = new BatchGraphicsDevice(MAX_VERTEX_COUNT, MAX_INDEX_COUNT);
+		gd->Init();
+		ssbo = new ShaderStorageBuffer(sizeof(glm::mat4), 0);
 	}
 
 	void Renderer::InitRendererShader(Shader* shader) {
 		shader->Bind();
 		int sampler[MAX_TEXTURE_SLOTS];
-		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++) {
+		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++)
 			sampler[i] = i;
-		}
 		shader->SetIntArray("textures", sampler, MAX_TEXTURE_SLOTS);
 	}
 
-	void Renderer::BeginScene(Camera& camera, int flags) {
-		renderer_data.flags = flags;
-		renderer_data.proj_view = camera.GetProjection() * camera.GetView();
-
-		renderer_data.camera = &camera;
-		renderer_data.current_shader = &renderer_data.default_shader;
-		renderer_data.current_material_id = -1;
-		StartBatch();
+	void Renderer::BeginScene(Camera* camera) {
+		this->camera = camera;
+		proj_view = camera->GetProjection() * camera->GetView();
+		current_shader = &default_shader;
+		gd->Setup();
 	}
 
 	void Renderer::EndScene() {
-		MakeCommand();
-		GoToNextDrawCommand();
-		Render();
+		gd->SetShader(current_shader);
+		gd->MakeCommand();
+		gd->NextCommand();
+		ssbo->Bind();
+		ssbo->SetData((void*)&proj_view, sizeof(glm::mat4), 0);
+		ssbo->BindToBindPoint();
+		gd->Render();
 	}
 
-	uint32_t Renderer::GetShaderId() {
-		return renderer_data.current_shader->GetId();
-	}
-
-	void Renderer::StartBatch() {
-		memset(renderer_data.textures, NULL, renderer_data.texture_slot_index * sizeof(Texture));
-		renderer_data.texture_slot_index = 0;
-		renderer_data.num_of_vertices_in_batch = 0;
-		renderer_data.index_offset = 0;
-
-		renderer_data.base_vert = 0;
-		renderer_data.draw_count = 0;
-		renderer_data.current_draw_command_vertex_size = 0;
-
-		renderer_data.vertices_ptr = renderer_data.vertices_base;
-		renderer_data.index_ptr = renderer_data.index_base;
-	}
-
-	void Renderer::SetPolygonLineThickness(float thickness) {
-		if (thickness > 0)
-			glLineWidth(thickness);
-	}
-
-	void Renderer::Render() {
-		if ((renderer_data.flags & RenderFlags::PolygonMode))
-			RendererCommand::PolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-		renderer_data.vertex_array->Bind();
-		renderer_data.index_buffer->Bind();
-		renderer_data.vertex_buffer->Bind();
-
-		renderer_data.indirect_draw_buffer->Bind();
-		renderer_data.indirect_draw_buffer->SetData(renderer_data.draw_commands, sizeof(renderer_data.draw_commands), 0);
-
-		renderer_data.current_shader->Bind();
-
-		renderer_data.ssbo->Bind();
-		renderer_data.ssbo->SetData((void*)&renderer_data.proj_view, sizeof(glm::mat4), 0);
-		renderer_data.ssbo->BindToBindPoint();
-
-		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			if (renderer_data.textures[i]) 
-				glBindTextureUnit(i, renderer_data.textures[i]);
-		uint32_t vertex_buf_size = (uint32_t)((uint8_t*)renderer_data.vertices_ptr - (uint8_t*)renderer_data.vertices_base);
-		uint32_t index_buf_size = (uint32_t)((uint8_t*)renderer_data.index_ptr - (uint8_t*)renderer_data.index_base);
-
-		renderer_data.vertex_buffer->SetData(renderer_data.vertices_base, vertex_buf_size);
-		renderer_data.index_buffer->SetData(renderer_data.index_base, index_buf_size);
-
-		renderer_data.vertex_array->SetIndexBufferSize(renderer_data.index_buffer->GetCount());
-
-		RendererCommand::DrawMultiIndirect(nullptr, renderer_data.draw_count + 1, 0);
-	}
-
-	void Renderer::NewBatch() {
-		Render();
-		StartBatch();
-	}
-
-	void Renderer::Submit(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) {
-		shader->Bind();
-		vertex_array->Bind();
-		index_buffer->Bind();
-
-		RendererCommand::DrawVertexArray(vertex_array);
-	}
-
-	void Renderer::DrawShape(const glm::mat4& matrix, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[], uint32_t vertex_count, const glm::vec4 positions[]) {
-		if (renderer_data.num_of_vertices_in_batch + vertex_count > MAX_VERTEX_COUNT)
-			NewBatch();
-
-		for (size_t i = 0; i < vertex_count; i++) {
-			Vertex vertex;
-			vertex.position = matrix * positions[i];
-			vertex.color = color;
-			vertex.texture_coordinates = tex_coords[i];
-			vertex.texture_id = texture_id;
-			vertex.material_id = (float)renderer_data.current_material_id;
-
-			*renderer_data.vertices_ptr = vertex;
-			renderer_data.vertices_ptr++;
-
-			renderer_data.num_of_vertices_in_batch++;
+	void Renderer::Submit(Mesh& mesh) { 
+		if (!gd->Submit(mesh)) {
+			EMBER_LOG_WARNING("Batch Full!");
+			gd->Render();  
+			gd->Setup();
+			if (!gd->Submit(mesh))
+				EMBER_LOG_ERROR("Mesh submitted to renderer is too large!");
 		}
-	}
-
-	void Renderer::CalculateSquareIndices() {
-		AddIndice(0);
-		AddIndice(1);
-		AddIndice(2);
-		AddIndice(2);
-		AddIndice(3);
-		AddIndice(0);
-
-		UpdateIndexOffset(4);
-	}
-
-	void Renderer::AddIndice(uint32_t offset) {
-		*renderer_data.index_ptr = offset + renderer_data.index_offset;
-		renderer_data.index_ptr++;
-	}
-
-	void Renderer::UpdateIndexOffset(uint32_t count) {
-		renderer_data.index_offset += count;
-	}
-
-	void Renderer::DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color, float width) {
-		float x = p2.x - p1.x;
-		float y = p2.y - p1.y;
-		glm::mat4 trans = GetTranslationMatrix(p1, { x, y });
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { sqrtf((x * x) + (y * y)), width, 1.0f });
-		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), atan2f(y, x), { 0, 0, 1 });
-
-		glm::mat4 model = trans * rotate * scale;
-
-		DrawShape(model, color, -1, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-	}
-
-	void Renderer::GoToNextDrawCommand() {
-		renderer_data.draw_count++;
-		renderer_data.base_vert += renderer_data.num_of_vertices_in_batch;
-		renderer_data.current_draw_command_vertex_size = 0;
-	}
-
-	void Renderer::MakeCommand() {
-		renderer_data.draw_commands[renderer_data.draw_count].vertex_count = renderer_data.current_draw_command_vertex_size;
-		renderer_data.draw_commands[renderer_data.draw_count].instance_count = 1;
-		renderer_data.draw_commands[renderer_data.draw_count].first_index = 0;
-		renderer_data.draw_commands[renderer_data.draw_count].base_vertex = renderer_data.base_vert;
-		renderer_data.draw_commands[renderer_data.draw_count].base_instance = renderer_data.draw_count;
-	}
-
-	void Renderer::SetShader(Shader* shader) {
-		renderer_data.current_shader = shader;
-	}
-
-	void Renderer::SetShaderToDefualt() {
-		renderer_data.current_shader = &renderer_data.default_shader;
-	}
-
-	void Renderer::SetMaterialId(uint32_t material_id) {
-		renderer_data.current_material_id = material_id;
-	}
-
-	glm::mat4 GetTranslationMatrix(const glm::vec3& position, const glm::vec2& size) {
-		return (renderer_data.flags & RenderFlags::TopLeftCornerPos) ? glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) :
-		glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z });
-	}
-
-	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size) {
-		return (renderer_data.flags & RenderFlags::TopLeftCornerPos) ?
-			glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }) :
-			glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-	}
-
-	glm::mat4 GetRotatedModelMatrix(const glm::vec3& position, const glm::vec2& size, const glm::vec3& rotation_orientation, float degree) {
-		glm::mat4 trans = (renderer_data.flags & RenderFlags::TopLeftCornerPos) ? 
-			glm::translate(glm::mat4(1.0f), { position.x + (size.x / 2), position.y + (size.y / 2), position.z }) : glm::translate(glm::mat4(1.0f), { position.x, position.y, 0 });
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(degree), rotation_orientation);
-
-		return (trans * rotate * scale);
-	}
-
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		DrawShape(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		DrawShape(model, color, CalculateTextureIndex(texture), TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec2 tex_coords[], const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-		DrawShape(model, color, CalculateTextureIndex(texture), tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
-		DrawShape(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, uint32_t texture, const glm::vec4& color) {
-		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
-		DrawShape(model, color, CalculateTextureIndex(texture), TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], uint32_t texture, const glm::vec4& color) {
-		glm::mat4 model = GetRotatedModelMatrix(position, size, rotation_orientation, degree);
-		DrawShape(model, color, CalculateTextureIndex(texture), tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
-
-		CalculateSquareIndices();
-		renderer_data.current_draw_command_vertex_size += 6;
-	}
-
-	void Renderer::RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color) {
-		float x = pos.x;
-		float y= pos.y;
-
-		for (auto& c : text) {
-			Glyph character = font->glyphs[c];
-			float normalized_width = TextureAtlas::CalculateSpriteCoordinate({ character.size.x, 0 }, font->width, font->height).x - 0.00002f * font->size;
-
-			float xpos = x + character.bearing.x * scale.x;
-			float ypos = y - (character.size.y - character.bearing.y) * scale.y;
-
-			float w = character.size.x * scale.x;
-			float h = character.size.y * scale.y;
-
-			float clean = 0.00001f * font->size;
-
-			glm::vec2 coords[] = {
-				{ character.offset + clean, 1.0f },
-				{ character.offset + normalized_width + clean, 1.0f },
-				{ character.offset + normalized_width + clean, 0.0f },
-				{ character.offset + clean, 0.0f }
-			};
-
-			if (renderer_data.num_of_vertices_in_batch + QUAD_VERTEX_COUNT > MAX_VERTEX_COUNT)
-				NewBatch();
-
-			CalculateSquareIndices();
-			float tex_id = CalculateTextureIndex(font->texture);
-
-			glm::vec4 pos[] = {
-				{ xpos, ypos, 0.0f, 1.0f },
-				{ xpos + w,  ypos, 0.0f, 1.0f },
-				{ xpos + w,  ypos + h, 0.0f, 1.0f },
-				{ xpos, ypos + h, 0.0f, 1.0f },
-
-			};
-
-			for (size_t i = 0; i < QUAD_VERTEX_COUNT; i++) {
-				Vertex vertex;
-				vertex.position = pos[i];
-				vertex.color = color;
-				vertex.texture_coordinates = coords[i];
-				vertex.texture_id = tex_id;
-				vertex.material_id = (float)renderer_data.current_material_id;
-
-				*renderer_data.vertices_ptr = vertex;
-				renderer_data.vertices_ptr++;
-				 
-				renderer_data.num_of_vertices_in_batch++;
-			}
-
-			renderer_data.current_draw_command_vertex_size += 6;
-
-
-			x += (character.advance.x >> 6) * scale.x;
-		}
-	}
-
-	float Renderer::CalculateTextureIndex(uint32_t id) {
-		float texture_id = -1.0f;
-
-		for (uint32_t i = 0; i < renderer_data.texture_slot_index; i++)
-			if (renderer_data.textures[i] == id)
-				texture_id = (float)i;
-
-		if (texture_id == -1.0f) {
-			renderer_data.textures[renderer_data.texture_slot_index] = id;
-			texture_id = (float)renderer_data.texture_slot_index;
-			renderer_data.texture_slot_index++;
-
-			if (renderer_data.texture_slot_index == MAX_TEXTURE_SLOTS)
-				NewBatch();
-		}
-
-		return texture_id;
-	}
-
-	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color) {
-		DrawCube(position, size, -1.0f, color);
-
-	}
-
-	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, uint32_t texture, const glm::vec4& color) {
-		DrawCube(position, size, Renderer::CalculateTextureIndex(texture), color);
-	}
-
-	void Cube::DrawCube(const glm::vec3& position, const glm::vec3& size, float texture_id, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, size);
-
-		uint32_t off = 0;
-		for (int i = 0; i < 6; i++) {
-			Renderer::DrawShape(model, color, texture_id, TEX_COORDS, QUAD_VERTEX_COUNT, &CUBE_POSITIONS[off]);
-			Renderer::CalculateSquareIndices();
-			renderer_data.current_draw_command_vertex_size += 6;
-			off += 4;
-		}
-	}
-
-	void Triangle::DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 translation = GetModelMatrix(position, size);
-		Renderer::DrawShape(translation, color, -1.0f, TEX_COORDS, VERTEX_COUNT, TRIANGLE_POSITIONS);
-
-		CalculateTriangleIndices();
-		renderer_data.current_draw_command_vertex_size += VERTEX_COUNT;
-	}
-
-	void Triangle::DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color) {
-		glm::mat4 translation = GetModelMatrix(position, size);
-		translation = glm::rotate(translation, glm::radians(rotation), rotation_orientation);
-		Renderer::DrawShape(translation, color, -1.0f, 0, VERTEX_COUNT, TRIANGLE_POSITIONS);
-
-		CalculateTriangleIndices();
-		renderer_data.current_draw_command_vertex_size += VERTEX_COUNT;
-	}
-
-	void Triangle::CalculateTriangleIndices() {
-		Renderer::AddIndice(0);
-		Renderer::AddIndice(1);
-		Renderer::AddIndice(2);
-		Renderer::UpdateIndexOffset(VERTEX_COUNT);
 	}
 }

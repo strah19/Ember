@@ -6,31 +6,13 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "Material.h"
-#include "Font.h"
+#include "Mesh.h"
 
 namespace Ember {
-	glm::mat4 GetTranslationMatrix(const glm::vec3& position, const glm::vec2& size);
-	glm::mat4 GetModelMatrix(const glm::vec3& position, const glm::vec2& size);
-	glm::mat4 GetRotatedModelMatrix(const glm::vec3& position, const glm::vec2& size, const glm::vec3& rotation_orientation, float degree);
-
-	struct Vertex {
-		glm::vec3 position;
-		glm::vec4 color;
-		glm::vec2 texture_coordinates;
-		float texture_id;
-		float material_id;
-	};
-
-	constexpr size_t MAX_QUAD_COUNT = 100000;
-	constexpr size_t QUAD_VERTEX_COUNT = 4;
-	constexpr size_t MAX_VERTEX_COUNT = MAX_QUAD_COUNT * QUAD_VERTEX_COUNT;
-	constexpr size_t MAX_INDEX_COUNT = MAX_QUAD_COUNT * 6;
-	constexpr size_t CUBE_FACES = 6;
-	constexpr size_t MAX_TEXTURE_SLOTS = 32;
+	constexpr uint32_t MAX_TEXTURE_SLOTS = 32;
 	constexpr size_t MAX_DRAW_COMMANDS = 1000;
-	constexpr size_t MAX_INSTANCE_COUNT = 10000;
-	constexpr size_t MAX_MATERIAL_COUNT = 64;
-	constexpr size_t MAX_LIGHT_COUNT = 64;
+
+	constexpr size_t QUAD_VERTEX_COUNT = 4;
 	constexpr glm::vec2 TEX_COORDS[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 	constexpr glm::vec4 QUAD_POSITIONS[QUAD_VERTEX_COUNT] = {
 		{ -0.5f, -0.5f, 0.0f, 1.0f },
@@ -39,83 +21,126 @@ namespace Ember {
 		{ -0.5f,  0.5f, 0.0f, 1.0f }
 	};
 
-	constexpr size_t CUBE_VERTEX_COUNT = 24;
-	constexpr glm::vec4 CUBE_POSITIONS[CUBE_VERTEX_COUNT] = {
-		{ -0.5f, -0.5f, 0.0f, 1.0f }, { 0.5f, -0.5f, 0.0f, 1.0f },{ 0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f },
-		{ -0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f,  0.5f, -1.0f, 1.0f }, { -0.5f,  0.5f, -1.0f, 1.0f },
-		{ -0.5f, -0.5f, -1.0f, 1.0f }, { -0.5f, -0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, -1.0f, 1.0f },
-		{ 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, 0.0f, 1.0f }, { 0.5f,  0.5f, 0.0f, 1.0f }, { 0.5f,  0.5f, -1.0f, 1.0f },
-		{ -0.5f, 0.5f, -1.0f, 1.0f }, { 0.5f, 0.5f, -1.0f, 1.0f }, { 0.5f,  0.5f, 0.0f, 1.0f }, { -0.5f,  0.5f, 0.0f, 1.0f },
-		{ -0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f, -0.5f, -1.0f, 1.0f }, { 0.5f,  -0.5f, 0.0f, 1.0f }, { -0.5f,  -0.5f, 0.0f, 1.0f }
+	struct DeviceStatistics {
+		uint32_t num_of_vertices = 0;
+		uint32_t num_of_indices = 0;
+		uint32_t draw_count = 0;
+		uint32_t max_vertex_count = 0;
+		uint32_t max_index_count = 0;
+
+		void Reset();
+	};
+
+	struct DrawElementsCommand {
+		uint32_t vertex_count = 0;
+		uint32_t instance_count = 0;
+		uint32_t first_index = 0;
+		uint32_t base_vertex = 0;
+		uint32_t base_instance = 0;
+	};
+
+	template <typename V>
+	class GraphicsDevice {
+	public:
+		GraphicsDevice() = default;
+		GraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count);
+		virtual ~GraphicsDevice();
+
+		virtual void Init() = 0;
+		virtual void Setup() = 0;
+		virtual bool Submit(Mesh& mesh) = 0;
+		virtual void Render() = 0;
+
+		inline void SetShader(Shader* shader) { this->shader = &shader; }
+	protected:
+		//Pointer to another shader that is also a pointer :)
+		Shader** shader = nullptr;
+
+		VertexArray* vao = nullptr;
+		VertexBuffer* vbo = nullptr;
+		IndexBuffer* ibo = nullptr;
+
+		V* vert_base = nullptr;
+		V* vert_ptr = nullptr;
+
+		uint32_t* indx_base = nullptr;
+		uint32_t* indx_ptr = nullptr;
+
+		DeviceStatistics ds;
+	};
+
+	class EmberVertexGraphicsDevice : public GraphicsDevice<Vertex> {
+	public:
+		EmberVertexGraphicsDevice() = default;
+		EmberVertexGraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count);
+	};
+
+	class BatchGraphicsDevice : public EmberVertexGraphicsDevice {
+	public:
+		BatchGraphicsDevice() = default;
+		BatchGraphicsDevice(uint32_t max_vertex_count, uint32_t max_index_count);
+		virtual ~BatchGraphicsDevice();
+
+		virtual void Init() override;
+		virtual void Setup() override;
+		virtual bool Submit(Mesh& mesh) override;
+		virtual void Render() override;
+
+		virtual void NextCommand();
+		virtual void MakeCommand();
+
+		inline uint32_t IndexOffset() const { return index_offset; }
+	private:
+		IndirectDrawBuffer* idb = nullptr;
+
+		uint32_t texture_slot_index = 0;
+		uint32_t textures[MAX_TEXTURE_SLOTS] = { 0 };
+
+		uint32_t index_offset = 0;
+		uint32_t cmd_vertex_base = 0;
+		uint32_t draw_command_size = 0;
+		uint32_t current_draw_command_vertex_size = 0;
+		DrawElementsCommand commands[MAX_DRAW_COMMANDS];
 	};
 
 	enum RenderFlags {
-		None = 0x01, TopLeftCornerPos = 0x02, PolygonMode = 0x04
+		None = 0x01
 	};
 
-	class Renderer {
+	class RendererFrame {
 	public:
-		static void Init();
-		static void Destroy();
+		RendererFrame() = default;
+		virtual ~RendererFrame();
 
-		static void SetShaderToDefualt();
-		static void InitRendererShader(Shader* shader);
-		static void SetShader(Shader* shader);
-		static void SetMaterialId(uint32_t material_id);
-		static void SetPolygonLineThickness(float thickness);
-
-		static uint32_t GetShaderId();
-
-		static void BeginScene(Camera& camera, int flags = RenderFlags::None);
-		static void EndScene();
-		static void NewBatch();
-		 
-		static void Submit(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader);
-
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, uint32_t texture, const glm::vec2 tex_coords[], const glm::vec4& color = { -1, -1, -1, -1 });
-
-		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawRotatedQuad(const glm::vec3& position, float degree, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec2 tex_coords[], uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
-
-		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color, float width = 1.0f);
-		static void RenderText(Font* font, const std::string& text, const glm::vec2& pos, const glm::vec2& scale, const glm::vec4& color);
-		static void DrawShape(const glm::mat4& matrix, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[], uint32_t vertex_count, const glm::vec4 positions[]);
-		static void AddIndice(uint32_t offset);
-		static void UpdateIndexOffset(uint32_t count);
-
-		static void GoToNextDrawCommand();
-		static void MakeCommand();
-
-		static void StartBatch();
-		static void Render();
-
-		static float CalculateTextureIndex(uint32_t id);
-		static void CalculateSquareIndices();
+		virtual void BeginScene(Camera* camera) = 0;
+		virtual void EndScene() = 0;
+		virtual void Submit(Mesh& mesh) = 0;
+	protected:
+		Camera* camera = nullptr;
+		glm::mat4 proj_view = glm::mat4(1.0f);
+		Shader default_shader;
+		Shader* current_shader = nullptr;
+		int flags = RenderFlags::None;
 	};
 
-	class Triangle {
+	constexpr size_t MAX_VERTEX_COUNT = 100;
+	constexpr size_t MAX_INDEX_COUNT = 100;
+	class Renderer : public RendererFrame {
 	public:
-		static void DrawTriangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawTriangle(const glm::vec3& position, float rotation, const glm::vec3& rotation_orientation, const glm::vec2& size, const glm::vec4& color);
-		static const uint32_t VERTEX_COUNT = 3;
+		Renderer();
 
-	private:	
-		static void CalculateTriangleIndices();
-	};
-	constexpr glm::vec4 TRIANGLE_POSITIONS[Triangle::VERTEX_COUNT] = {
-		{ -0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.5f, -0.5f, 0.0f, 1.0f },
-		{ 0.0f,  0.5f, 0.0f, 1.0f }
-	};
+		virtual void BeginScene(Camera* camera) override;
+		virtual void EndScene() override;
+		virtual void Submit(Mesh& mesh) override;
 
-	class Cube {
-	public:
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
-		static void DrawCube(const glm::vec3& position, const glm::vec3& size, float texture_id, const glm::vec4& color = { -1, -1, -1, -1 });
+		void InitRendererShader(Shader* shader);
+		inline int32_t MaterialId() const { return material; }
+		inline BatchGraphicsDevice* GetGraphicsDevice() { return gd; }
+	private:
+		int32_t material = -1;
+
+		ShaderStorageBuffer* ssbo;
+		BatchGraphicsDevice* gd;
 	};
 }
 

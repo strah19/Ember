@@ -1,3 +1,20 @@
+/**
+ * @file PerspectiveCameraController.cpp
+ * @author strah19
+ * @date October 3 2021
+ * @version 1.0
+ *
+ * @section LICENSE
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the MIT License as
+ * published by the Free Software Foundation.
+ *
+ * @section DESCRIPTION
+ *
+ * This file contains the controller of a perspective camera.
+ */
+
 #include "PerspectiveCameraController.h"
 #include "EventHandler.h"
 #include "KeyboardCodes.h"
@@ -6,7 +23,12 @@ namespace Ember {
 	constexpr float SMALLEST_ZOOM = 1.0f;
 	constexpr float HIGHEST_ZOOM = 60.0f;
 
-	PerspectiveCameraController::PerspectiveCameraController(glm::vec2& window_size) {
+	/**
+	* Perspective Camera Controller constructor.
+	* 
+	* @param const glm::vec2& window_size to calcualte the aspect ratio.
+	*/
+	PerspectiveCameraController::PerspectiveCameraController(const glm::vec2& window_size) {
 		aspect_ratio = (float)window_size.x / (float)window_size.y;
 		camera = PerspectiveCamera(glm::radians(fov), aspect_ratio);
 		camera_pos = camera.GetPosition();
@@ -14,6 +36,9 @@ namespace Ember {
 		latest_camera_position = camera_pos;
 	}
 
+	/**
+	* Updates the controllers position and pitch of the camera.
+	*/
 	void PerspectiveCameraController::Update() {
 		if (!freeze) {
 			if (latest_camera_position != camera_pos)
@@ -57,6 +82,11 @@ namespace Ember {
 		cursor_handler.Update();
 	}
 
+	/**
+	* Takes the current Ember event and updates keyboard and mouse events.
+	* 
+	* @param Event& the current Ember event.
+	*/
 	void PerspectiveCameraController::OnEvent(Event& event) {
 		EventDispatcher dispatcher(&event);
 		if (!freeze) {
@@ -66,6 +96,11 @@ namespace Ember {
 		dispatcher.Dispatch<ResizeEvent>(EMBER_BIND_FUNC(WindowResizeHandler));
 	}
 
+	/**
+	* The mousewheel event handler of the controller.
+	* 
+	* @param MouseWheelEvent& the event mousewheel.
+	*/
 	void PerspectiveCameraController::MouseWheelHandler(MouseWheelEvents& mousewheel) {
 		fov -= mousewheel.direction;
 		if (fov < SMALLEST_ZOOM)
@@ -75,11 +110,21 @@ namespace Ember {
 		camera.SetProjection(glm::radians(fov), aspect_ratio);
 	}
 
+	/**
+	* The Resize event handler.
+	* 
+	* @param ResizEvent& the resize event.
+	*/
 	void PerspectiveCameraController::WindowResizeHandler(ResizeEvent& resize) {
 		aspect_ratio = (float)resize.w / (float)resize.h;
 		camera.SetProjection(glm::radians(fov), aspect_ratio);
 	}
 
+	/**
+	* Will freeze the movement of the camera.
+	* 
+	* @param bool state of the freeze.
+	*/
 	void PerspectiveCameraController::SetFreeze(bool freeze) {
 		this->freeze = freeze;
 
@@ -87,6 +132,11 @@ namespace Ember {
 			cursor_handler.Display();
 	}
 
+	/**
+	* The keyboard event handler.
+	* 
+	* @param KeyboardEvents& keybaord events.
+	*/
 	void PerspectiveCameraController::KeyboardHandler(KeyboardEvents& keyboard) {
 		if (keyboard.scancode == EmberKeyCode::M && keyboard.pressed) {
 			in_camera_mode = !in_camera_mode;

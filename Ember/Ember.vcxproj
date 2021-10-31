@@ -154,6 +154,7 @@
     <ClInclude Include="include\File.h" />
     <ClInclude Include="include\Font.h" />
     <ClInclude Include="include\FrameBuffer.h" />
+    <ClInclude Include="include\Geometry.h" />
     <ClInclude Include="include\JoystickEvents.h" />
     <ClInclude Include="include\KeyboardCodes.h" />
     <ClInclude Include="include\KeyboardEvents.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="src\File.cpp" />
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\Geometry.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Mesh.cpp" />

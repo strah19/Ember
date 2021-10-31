@@ -70,7 +70,7 @@ namespace Ember {
 		uint32_t stride = 0;
 	};
 
-	class VertexBuffer  {
+	class VertexBuffer {
 	public:
 		VertexBuffer(uint32_t size);
 		VertexBuffer(float* vertices, uint32_t size);

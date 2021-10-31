@@ -10,7 +10,10 @@ namespace Ember {
 
 		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
-
+		if (!(flags & AppFlags::CUSTOM_RENDERER))
+			renderer = new Renderer;
+		else
+			EMBER_LOG_WARNING("You are not using Embers defined renderer...");
 		OnCreate();
 	}
 
@@ -18,6 +21,7 @@ namespace Ember {
 		delete properties;
 		delete window;
 		delete event_handler;
+		delete renderer;
 	}
 
 	void Application::Run() {

@@ -7,12 +7,14 @@
 #include "EventHandler.h"
 #include "Window.h"
 #include "Logger.h"
+#include "Renderer.h"
 
 namespace Ember {
 	enum AppFlags {
 		NONE = 0x01,
 		FULL_SCREEN = 0x02,
-		OPENGL_CUSTOM_VERSION = 0x04
+		OPENGL_CUSTOM_VERSION = 0x04,
+		CUSTOM_RENDERER = 0x08
 	};
 
 	class Application {
@@ -32,6 +34,7 @@ namespace Ember {
 		Window* window = nullptr;
 		EventHandler* event_handler = nullptr;
 		WindowProperties* properties = nullptr;
+		Renderer* renderer = nullptr;
 
 		uint32_t opengl_minor_version = 0;
 		uint32_t opengl_major_version = 0;

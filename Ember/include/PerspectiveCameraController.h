@@ -12,7 +12,7 @@ namespace Ember {
 	class PerspectiveCameraController {
 	public:
 		PerspectiveCameraController() = default;
-		PerspectiveCameraController(glm::vec2& window_size);
+		PerspectiveCameraController(const glm::vec2& window_size);
 		void OnEvent(Event& event);
 		void Update();
 		void SetFreeze(bool freeze);
