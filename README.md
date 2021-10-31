@@ -10,22 +10,23 @@ Sample code:
 #include "Renderer.h"
 #include "RendererCommands.h"
 #include "PerspectiveCameraController.h"
+#include "Geometry.h"
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
 class Sandbox : public Ember::Application {
 public:
-	void OnCreate() { 	
+	void OnCreate() {
 		Ember::RendererCommand::Init();
-		Ember::Renderer::Init();
 		Ember::RendererCommand::SetViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		camera = Ember::PerspectiveCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
+
+		q = Ember::Quad::GetQuad();
 	}
 
 	virtual ~Sandbox() {
-		Ember::Renderer::Destroy();
 	}
 
 	void OnUserUpdate(float delta) {
@@ -33,10 +34,11 @@ public:
 		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
 
 		camera.Update();
-		Ember::Renderer::BeginScene(camera.GetCamera());
-		Ember::Renderer::SetShaderToDefualt();
+		renderer->BeginScene(&camera.GetCamera());
 
-		Ember::Renderer::EndScene();
+		q->Update(renderer->GetGraphicsDevice());
+
+		renderer->EndScene();
 
 		window->Update();
 	}
@@ -47,6 +49,7 @@ public:
 	}
 private:
 	Ember::PerspectiveCameraController camera;
+	Ember::Quad* q;
 };
 
 int main(int argc, char** argv) {
