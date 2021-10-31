@@ -17,8 +17,16 @@ namespace Ember {
 		return mesh;
 	}
 
-	glm::mat4 Geometry::GetModelMatrix(const glm::vec3& position, const glm::vec2& scalar) {
-		return glm::translate(glm::mat4(1.0f), { position.x + (scalar.x / 2), position.y + (scalar.y / 2), position.z }) * glm::scale(glm::mat4(1.0f), { scalar.x, scalar.y, 1.0f });
+	glm::mat4 Geometry::GetModelMatrix(const glm::vec3& position, const glm::vec3& scalar) {
+		return glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z }) * glm::scale(glm::mat4(1.0f), { scalar.x, scalar.y, 1.0f });
+	}
+
+	glm::mat4 Geometry::GetRotatedModelMatrix(const glm::vec3& position, const glm::vec3& scalar, const glm::vec3& rotation_orientation, float degree) {
+		glm::mat4 trans = glm::translate(glm::mat4(1.0f), { position.x, position.y, position.z });
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), { scalar.x, scalar.y, scalar.z });
+		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(degree), rotation_orientation);
+
+		return (trans * rotate * scale);
 	}
 
 	uint32_t Geometry::AddIndice(uint32_t offset) {
@@ -51,17 +59,45 @@ namespace Ember {
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, scalar);
+		glm::mat4 model = GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
 		Mesh m = CreateGeometry(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
-		m.indices.push_back(AddIndice(0));
-		m.indices.push_back(AddIndice(1));
-		m.indices.push_back(AddIndice(2));
-		m.indices.push_back(AddIndice(2));
-		m.indices.push_back(AddIndice(3));
-		m.indices.push_back(AddIndice(0));
+		AddIndices(m);
+		gd->Submit(m);
+	}
+
+	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, uint32_t texture, const glm::vec4& color) {
+		glm::mat4 model = GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
+		Mesh m = CreateGeometry(model, color, (float) texture, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		AddIndices(m);
+		gd->Submit(m);
+	}
+
+	void Quad::DrawQuad(const glm::vec3& position, float degree, const glm::vec3& orientation, const glm::vec2& scalar, const glm::vec4& color) {
+		glm::mat4 mat = GetRotatedModelMatrix(position, { scalar.x, scalar.y, 1.0f }, orientation, degree);
+		Mesh m = CreateGeometry(mat, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		AddIndices(m);
+		gd->Submit(m);
+	}
+
+	void Quad::DrawQuad(const QuadModel& model) {
+		glm::mat4 mat = GetRotatedModelMatrix(model.position, model.scalar, model.orientation, model.degree);
+		Mesh m = CreateGeometry(mat, model.color, model.texture_id, model.tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+
+		AddIndices(m);
+		gd->Submit(m);
+	}
+
+	void Quad::AddIndices(Mesh& mesh) {
+		mesh.indices.push_back(AddIndice(0));
+		mesh.indices.push_back(AddIndice(1));
+		mesh.indices.push_back(AddIndice(2));
+		mesh.indices.push_back(AddIndice(2));
+		mesh.indices.push_back(AddIndice(3));
+		mesh.indices.push_back(AddIndice(0));
 
 		UpdateIndexOffset(4);
-		gd->Submit(m);
 	}
 }

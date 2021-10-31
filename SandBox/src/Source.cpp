@@ -29,7 +29,8 @@ public:
 		renderer->BeginScene(&camera.GetCamera());
 
 		q->Update(renderer->GetGraphicsDevice());
-		q->DrawQuad({ 0, 0, 0 }, { 1, 1 }, { 1, 0, 0, 1 });
+		q->DrawQuad({ 0, 0, 0 }, 45.0f, { 0, 0, 1 }, { 1, 1 }, { 1, 0, 0, 1 });
+		q->DrawQuad({ 1, 0, 0 }, 25.0f, { 0, 0, 1 }, { 1, 1 }, { 1, 0, 0, 1 });
 
 		renderer->EndScene();
 
