@@ -62,6 +62,9 @@ int main(int argc, char** argv) {
 
 Simply call this class in `main` with it's initialize and run function and thats it! To use the API, add the desired headers like `Texture.h` and enjoy.
 
+![image not found](https://github.com/strah19/Ember/blob/master/docs/example.png?raw=true)
+
+
 # Dependencies 
 All these can actually be found in libs folder (besides the compiler) but here they are anyways:
 <ul>
