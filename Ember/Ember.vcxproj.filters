@@ -51,6 +51,9 @@
     <ClInclude Include="include\FrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Geometry.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\JoystickEvents.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -132,7 +135,6 @@
     <ClInclude Include="include\WindowEvents.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -172,6 +174,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\FrameBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Geometry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGuiBuild.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">
@@ -234,6 +242,5 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Geometry.cpp" />
   </ItemGroup>
 </Project>

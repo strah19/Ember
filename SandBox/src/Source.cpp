@@ -34,7 +34,6 @@ public:
 
 		renderer->EndScene();
 
-		window->Update();
 	}
 
 	void UserDefEvent(Ember::Event& event) {

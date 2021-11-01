@@ -15,8 +15,10 @@ IncludeDir["SDL2"] = "libs/SDL2/include"
 IncludeDir["GLAD"] = "libs/GLAD/include"
 IncludeDir["glm"] = "libs/glm"
 IncludeDir["freetype"] = "libs/freetype-2.10.0/include"
+IncludeDir["imgui"] = "libs/imgui"
 
 include "libs/GLAD"
+include "libs/imgui"
 
 project "Sandbox"
 	location "Sandbox"
@@ -38,6 +40,7 @@ project "Sandbox"
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.imgui}",
 		"%{IncludeDir.freetype}"
 	}
 
@@ -84,7 +87,8 @@ project "Ember"
 		"%{IncludeDir.SDL2}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.freetype}"
+		"%{IncludeDir.freetype}",
+		"%{IncludeDir.imgui}"
 	}
 
 	defines {
@@ -99,6 +103,7 @@ project "Ember"
 	}
 
 	links {
+		"ImGui",
 		"SDL2.lib",
 		"SDL2main.lib",
 		"SDL2_image.lib",
