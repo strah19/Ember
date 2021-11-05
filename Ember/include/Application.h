@@ -8,13 +8,15 @@
 #include "Window.h"
 #include "Logger.h"
 #include "Renderer.h"
+#include "ImGuiLayer.h"
 
 namespace Ember {
 	enum AppFlags {
 		NONE = 0x01,
 		FULL_SCREEN = 0x02,
 		OPENGL_CUSTOM_VERSION = 0x04,
-		CUSTOM_RENDERER = 0x08
+		CUSTOM_RENDERER = 0x08,
+		IMGUI = 0x10
 	};
 
 	class Application {
@@ -29,6 +31,9 @@ namespace Ember {
 		virtual void OnUserUpdate(float delta) { }
 		virtual void OnCreate() { }
 
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+
 		Window* GetWindow() { return window; }
 	protected:
 		Window* window = nullptr;
@@ -38,6 +43,8 @@ namespace Ember {
 
 		uint32_t opengl_minor_version = 0;
 		uint32_t opengl_major_version = 0;
+		ImGuiLayer* imgui;
+		LayerStack layers; 
 	private:
 		void OnClose(const QuitEvent& event);
 		void OnResize(const ResizeEvent& event);

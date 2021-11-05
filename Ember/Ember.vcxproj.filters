@@ -135,6 +135,7 @@
     <ClInclude Include="include\WindowEvents.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\ImGuiLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -242,5 +243,6 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ImGuiLayer.cpp" />
   </ItemGroup>
 </Project>

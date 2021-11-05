@@ -1,9 +1,8 @@
 #include "Application.h"
-
 #include "OpenGLWindow.h"
-#include <examples/imgui_impl_opengl3.cpp>
-#include <examples/imgui_impl_sdl.cpp>
-
+#include "ImGuiLayer.h"
+#include <examples/imgui_impl_opengl3.h>
+#include <examples/imgui_impl_sdl.h>
 namespace Ember {
 	void Application::Initialize(const std::string& name, uint32_t width, uint32_t height, AppFlags flags) {
 		Ember::LogImpl::Init();
@@ -19,16 +18,20 @@ namespace Ember {
 		else
 			EMBER_LOG_WARNING("You are not using Embers defined renderer...");
 
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		ImGui::StyleColorsDark();
-
-		OpenGLWindow* w = static_cast<OpenGLWindow*>(window);
-		ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(w->GetNativeWindow()), w->Context());
-		ImGui_ImplOpenGL3_Init("#version 450");
-
 		OnCreate();
+
+		imgui = new ImGuiLayer(window, event_handler);
+		PushLayer(imgui);
+	}
+
+	void Application::PushLayer(Layer* layer) {
+		layers.PushLayer(layer);
+		layer->OnAttach();
+	}
+
+	void Application::PushOverlay(Layer* layer) {
+		layers.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	Application::~Application() {
@@ -36,46 +39,28 @@ namespace Ember {
 		delete window;
 		delete event_handler;
 		delete renderer;
-
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplSDL2_Shutdown();
-		ImGui::DestroyContext();
 	}
 
 	void Application::Run() {
-		uint64_t now = SDL_GetPerformanceCounter();
-		uint64_t last = 0;
 		float delta = 0;
 
 		while (window->IsRunning()) {
+			uint64_t now = SDL_GetTicks();
+			if (delta != 0) {
+				event_handler->Update();
 
-			ImGui_ImplSDL2_ProcessEvent(event_handler->NativeEvent());
-			event_handler->Update();
+				for (Layer* layer : layers)
+					layer->OnUpdate(delta);
 
-			last = now;
-			now = SDL_GetPerformanceCounter();
+				imgui->Begin();
+				for (Layer* layer : layers)
+					layer->UpdateGui();
+				imgui->End();
+				window->Update();
 
-			delta = (float)((now - last) * 1000 / (float)SDL_GetPerformanceFrequency());
-
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(window->GetNativeWindow()));
-			ImGui::NewFrame();
-
-			{
-				ImGui::Begin("Controls", NULL);
-
-				ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Platform");
-				ImGui::Text("%s", SDL_GetPlatform());
-				ImGui::Text("CPU cores: %d", SDL_GetCPUCount());
-				ImGui::Text("RAM: %.2f GB", SDL_GetSystemRAM() / 1024.0f);
-
-				ImGui::End();
+				OnUserUpdate(delta);
 			}
-
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-			window->Update();
-			OnUserUpdate(delta);
+			delta = (float) (SDL_GetTicks() - now) / 1000.0f;
 		}
 	}
 
@@ -83,6 +68,9 @@ namespace Ember {
 		EventDispatcher dispatcher(&event);
 
 		UserDefEvent(event);
+		for (auto it = layers.rbegin(); it != layers.rend(); ++it)
+			(*it)->UserDefEvent(event);
+
 		dispatcher.Dispatch<QuitEvent>(EMBER_BIND_FUNC(OnClose));
 		dispatcher.Dispatch<ResizeEvent>(EMBER_BIND_FUNC(OnResize));
 	}

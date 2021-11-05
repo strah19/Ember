@@ -4,6 +4,9 @@
 #include "PerspectiveCameraController.h"
 #include "Geometry.h"
 
+#include <examples/imgui_impl_opengl3.h>
+#include <examples/imgui_impl_sdl.h>
+
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
@@ -18,8 +21,7 @@ public:
 		q = Ember::Quad::GetQuad();
 	}
 
-	virtual ~Sandbox() {
-	}
+	virtual ~Sandbox() { }
 
 	void OnUserUpdate(float delta) {
 		Ember::RendererCommand::Clear();
@@ -33,7 +35,6 @@ public:
 		q->DrawQuad({ 1, 0, 0 }, 25.0f, { 0, 0, 1 }, { 1, 1 }, { 1, 0, 0, 1 });
 
 		renderer->EndScene();
-
 	}
 
 	void UserDefEvent(Ember::Event& event) {
