@@ -3,7 +3,7 @@
 
 namespace Ember {
 	static int prim;
-	
+
 	void RendererCommand::Init() {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -14,14 +14,14 @@ namespace Ember {
 		prim = TRIANGLE;
 	}
 
-	void RendererCommand::SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) { 
+	void RendererCommand::SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
 		glViewport(x, y, w, h);
 	}
-	void RendererCommand::Clear() { 
+	void RendererCommand::Clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void RendererCommand::SetClearColor(float r, float g, float b, float a) { 
+	void RendererCommand::SetClearColor(float r, float g, float b, float a) {
 		glClearColor(r, g, b, a);
 	}
 
@@ -52,5 +52,9 @@ namespace Ember {
 		case POINT: return GL_POINTS;
 		default: return GL_TRIANGLES;
 		}
+	}
+
+	void RendererCommand::LineWidth(float width) {
+		glLineWidth(width);
 	}
 }

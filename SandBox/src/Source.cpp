@@ -1,8 +1,9 @@
 #include "Application.h"
 #include "Renderer.h"
 #include "RendererCommands.h"
-#include "PerspectiveCameraController.h"
+#include "OrthoCameraController.h"
 #include "Geometry.h"
+#include "FrameBuffer.h"
 
 #include <examples/imgui_impl_opengl3.h>
 #include <examples/imgui_impl_sdl.h>
@@ -16,23 +17,23 @@ public:
 		Ember::RendererCommand::Init();
 		Ember::RendererCommand::SetViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		camera = Ember::PerspectiveCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
+		camera = Ember::OrthoCameraController(glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-		q = Ember::Quad::GetQuad();
+		imgui = new Ember::ImGuiLayer(window, event_handler);
+		PushLayer(imgui);
 	}
 
 	virtual ~Sandbox() { }
 
 	void OnUserUpdate(float delta) {
 		Ember::RendererCommand::Clear();
-		Ember::RendererCommand::SetClearColor(0.129f, 0.309f, 0.431f, 1.0f);
-
+		Ember::RendererCommand::SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		camera.Update();
 		renderer->BeginScene(&camera.GetCamera());
 
-		q->Update(renderer->GetGraphicsDevice());
-		q->DrawQuad({ 0, 0, 0 }, 45.0f, { 0, 0, 1 }, { 1, 1 }, { 1, 0, 0, 1 });
-		q->DrawQuad({ 1, 0, 0 }, 25.0f, { 0, 0, 1 }, { 1, 1 }, { 1, 0, 0, 1 });
+		Ember::Quad::Renderer(renderer);
+		Ember::Quad::DrawQuad({ 0, 0, 0 }, { 1, 1 }, { 1, 0, 0, 1 });
+		Ember::Quad::DrawQuad({ 1, 0, 0 }, { 1, 1 }, { 1, 1, 0, 1 });
 
 		renderer->EndScene();
 	}
@@ -41,9 +42,10 @@ public:
 		Ember::EventDispatcher dispatch(&event);
 		camera.OnEvent(event);
 	}
+
+	void OnGuiUpdate() { }
 private:
-	Ember::PerspectiveCameraController camera;
-	Ember::Quad* q;
+	Ember::OrthoCameraController camera;
 };
 
 int main(int argc, char** argv) {

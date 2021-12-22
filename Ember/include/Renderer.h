@@ -5,13 +5,13 @@
 #include "VertexArray.h"
 #include "Texture.h"
 #include "Camera.h"
-#include "Material.h"
 #include "Mesh.h"
 
 namespace Ember {
 	constexpr uint32_t MAX_TEXTURE_SLOTS = 32;
 	constexpr size_t MAX_DRAW_COMMANDS = 1000;
-
+	constexpr size_t MAX_VERTEX_COUNT = 10000;
+	constexpr size_t MAX_INDEX_COUNT = 10000;
 	constexpr size_t QUAD_VERTEX_COUNT = 4;
 	constexpr glm::vec2 TEX_COORDS[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 	constexpr glm::vec4 QUAD_POSITIONS[QUAD_VERTEX_COUNT] = {
@@ -52,6 +52,9 @@ namespace Ember {
 		virtual void Render() = 0;
 
 		inline void SetShader(Shader* shader) { this->shader = &shader; }
+		inline bool Empty() const { return (vert_base == vert_ptr); }
+
+		inline uint32_t* IndexPtr() { return indx_ptr; }
 	protected:
 		//Pointer to another shader that is also a pointer :)
 		Shader** shader = nullptr;
@@ -101,6 +104,9 @@ namespace Ember {
 		uint32_t draw_command_size = 0;
 		uint32_t current_draw_command_vertex_size = 0;
 		DrawElementsCommand commands[MAX_DRAW_COMMANDS];
+
+		void AddVertex(Vertex* v);
+		void AddIndex(uint32_t index);
 	};
 
 	enum RenderFlags {
@@ -115,16 +121,17 @@ namespace Ember {
 		virtual void BeginScene(Camera* camera) = 0;
 		virtual void EndScene() = 0;
 		virtual void Submit(Mesh& mesh) = 0;
+
+		inline BatchGraphicsDevice* GetGraphicsDevice() { return gd; }
 	protected:
 		Camera* camera = nullptr;
 		glm::mat4 proj_view = glm::mat4(1.0f);
 		Shader default_shader;
 		Shader* current_shader = nullptr;
 		int flags = RenderFlags::None;
+		BatchGraphicsDevice* gd;
 	};
 
-	constexpr size_t MAX_VERTEX_COUNT = 100;
-	constexpr size_t MAX_INDEX_COUNT = 100;
 	class Renderer : public RendererFrame {
 	public:
 		Renderer();
@@ -134,13 +141,8 @@ namespace Ember {
 		virtual void Submit(Mesh& mesh) override;
 
 		void InitRendererShader(Shader* shader);
-		inline int32_t MaterialId() const { return material; }
-		inline BatchGraphicsDevice* GetGraphicsDevice() { return gd; }
 	private:
-		int32_t material = -1;
-
 		ShaderStorageBuffer* ssbo;
-		BatchGraphicsDevice* gd;
 	};
 }
 

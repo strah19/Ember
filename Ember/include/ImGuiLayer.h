@@ -8,9 +8,14 @@
 #include "EventHandler.h"
 
 namespace Ember {
+	enum GuiFlags {
+		GUI_NONE = 0x00,
+		GUI_DOCKER = 0x01
+	};
+
 	class ImGuiLayer : public Layer {
 	public:
-		ImGuiLayer(Window* window, EventHandler* event_handler);
+		ImGuiLayer(Window* window, EventHandler* event_handler, int flags = GuiFlags::GUI_NONE);
 
 		virtual void OnAttach();
 		void OnDetach();
@@ -24,6 +29,7 @@ namespace Ember {
 	private:
 		OpenGLWindow* window = nullptr;
 		EventHandler* event_handler = nullptr;
+		int flags = GuiFlags::GUI_NONE;
 	};
 }
 

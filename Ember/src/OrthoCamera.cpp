@@ -20,7 +20,7 @@
 namespace Ember {
 	/**
 	* OrthoCamera Contructor that defines the coordinate system of the camera..
-	* 
+	*
 	* @param float the left side of the screen.
 	* @param float the right side of the screen.
 	* @param float the bottom side of the screen.
@@ -32,7 +32,7 @@ namespace Ember {
 
 	/**
 	* Set the matrix of the camera.
-	* 
+	*
 	* @param float the left side of the screen.
 	* @param float the right side of the screen.
 	* @param float the bottom side of the screen.
@@ -40,6 +40,10 @@ namespace Ember {
 	*/
 	void OrthoCamera::SetProjection(float left, float right, float bottom, float top) {
 		projection_matrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+		this->left = left;
+		this->right = right;
+		this->bottom = bottom;
+		this->top = top;
 		CalculateView();
 	}
 }

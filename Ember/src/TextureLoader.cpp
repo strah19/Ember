@@ -22,16 +22,14 @@ namespace Ember {
 	void TextureLoader::FlipVertically(SDL_Surface* surface) {
 		SDL_LockSurface(surface);
 
-		int pitch = surface->pitch; // row size
-		char* temp = new char[pitch]; // intermediate buffer
+		int pitch = surface->pitch;
+		char* temp = new char[pitch]; 
 		char* pixels = (char*)surface->pixels;
 
 		for (int i = 0; i < surface->h / 2; ++i) {
-			// get pointers to the two rows to swap
 			char* row1 = pixels + i * pitch;
 			char* row2 = pixels + (surface->h - i - 1) * pitch;
 
-			// swap rows
 			memcpy(temp, row1, pitch);
 			memcpy(row1, row2, pitch);
 			memcpy(row2, temp, pitch);

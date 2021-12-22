@@ -73,24 +73,35 @@ namespace Ember {
 		indx_ptr = indx_base;
 	}
 
+	void BatchGraphicsDevice::AddVertex(Vertex* v) {
+		*vert_ptr = *v;
+		vert_ptr++;
+		ds.num_of_vertices++;
+	}
+
+	void BatchGraphicsDevice::AddIndex(uint32_t index) {
+		*indx_ptr = index;
+		indx_ptr++;
+		ds.num_of_indices++;
+	}
+
 	bool BatchGraphicsDevice::Submit(Mesh& mesh) {
-		if (ds.num_of_vertices + mesh.vertices.size() > ds.max_vertex_count)
+		if (ds.num_of_vertices + mesh.vertices.size() > ds.max_vertex_count || ds.num_of_indices + mesh.indices.size() > ds.max_index_count)
 			return false;
 
 		for (auto& vertex : mesh.vertices) {
-			*vert_ptr = vertex;
-			vert_ptr++;
-			ds.num_of_vertices++;
+			if (ds.num_of_vertices >= ds.max_vertex_count)
+				break;
+			AddVertex(&vertex);
+			index_offset++;
 		}
 
 		for (auto& index : mesh.indices) {
-			*indx_ptr = index;
-			indx_ptr++;
-			ds.num_of_indices++;
+			if (ds.num_of_indices >= ds.max_index_count)
+				break;
+			AddIndex(index);
+			current_draw_command_vertex_size++;
 		}
-
-		index_offset += mesh.vertices.size();
-		current_draw_command_vertex_size += mesh.indices.size();
 
 		return true;
 	}
@@ -157,6 +168,7 @@ namespace Ember {
 		this->camera = camera;
 		proj_view = camera->GetProjection() * camera->GetView();
 		current_shader = &default_shader;
+		gd->SetShader(current_shader);
 		gd->Setup();
 	}
 
@@ -170,13 +182,12 @@ namespace Ember {
 		gd->Render();
 	}
 
-	void Renderer::Submit(Mesh& mesh) { 
+	void Renderer::Submit(Mesh& mesh) {
 		if (!gd->Submit(mesh)) {
-			EMBER_LOG_WARNING("Batch Full!");
-			gd->Render();  
+			EndScene();
 			gd->Setup();
 			if (!gd->Submit(mesh))
-				EMBER_LOG_ERROR("Mesh submitted to renderer is too large!");
+				EMBER_LOG_ERROR("Singular mesh is too big. Split it up!");
 		}
 	}
 }

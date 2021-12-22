@@ -15,9 +15,16 @@ namespace Ember {
 	void ImGuiLayer::End() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable && (flags & GuiFlags::GUI_DOCKER))
+		{
+			auto gl = SDL_GL_GetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			SDL_GL_MakeCurrent(static_cast<SDL_Window*>(window->GetNativeWindow()), gl);
+		}
 	}
 
-	ImGuiLayer::ImGuiLayer(Window* window, EventHandler* event_handler) : window(static_cast<OpenGLWindow*>(window)), event_handler(event_handler), Layer("ImGui Layer") {
+	ImGuiLayer::ImGuiLayer(Window* window, EventHandler* event_handler, int flags) : window(static_cast<OpenGLWindow*>(window)), event_handler(event_handler), flags(flags), Layer("ImGui Layer") {
 
 	}
 
@@ -25,6 +32,13 @@ namespace Ember {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+		if (flags & GuiFlags::GUI_DOCKER) {
+			io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		}
+
 		ImGui::StyleColorsDark();
 
 		ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(window->GetNativeWindow()), window->Context());

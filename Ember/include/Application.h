@@ -15,8 +15,6 @@ namespace Ember {
 		NONE = 0x01,
 		FULL_SCREEN = 0x02,
 		OPENGL_CUSTOM_VERSION = 0x04,
-		CUSTOM_RENDERER = 0x08,
-		IMGUI = 0x10
 	};
 
 	class Application {
@@ -30,6 +28,7 @@ namespace Ember {
 		virtual void UserDefEvent(Event& event) { }
 		virtual void OnUserUpdate(float delta) { }
 		virtual void OnCreate() { }
+		virtual void OnGuiUpdate() { }
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);

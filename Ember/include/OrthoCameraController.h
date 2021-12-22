@@ -17,7 +17,8 @@ namespace Ember {
 		OrthoCamera& GetCamera() { return camera; }
 		void OnEvent(Event& event);
 		void Update();
-		inline void SetFreeze(bool freeze) { this->freeze = freeze; }
+		inline void Freeze(bool freeze) { this->freeze = freeze; }
+		inline float Zoom() const { return zoom; }
 	private:
 		void MouseWheelHandler(const MouseWheelEvents& mousewheel);
 		void ResizeHandler(const ResizeEvent& resize);

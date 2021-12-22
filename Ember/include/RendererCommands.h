@@ -22,6 +22,7 @@ namespace Ember {
 		static void DrawVertexArrayInstanced(VertexArray* vertex_array, uint32_t instance_count);
 		static void DrawMultiIndirect(const void* indirect, uint32_t count, uint32_t stride);
 		static void PolygonMode(uint32_t face, uint32_t mode);
+		static void LineWidth(float width);
 	private:
 		static int DecodeType();
 	};

@@ -13,15 +13,9 @@ namespace Ember {
 
 		event_handler = new EventHandler(window);
 		event_handler->SetEventCallback(EMBER_BIND_FUNC(OnEvent));
-		if (!(flags & AppFlags::CUSTOM_RENDERER))
-			renderer = new Renderer;
-		else
-			EMBER_LOG_WARNING("You are not using Embers defined renderer...");
+		renderer = new Renderer;
 
 		OnCreate();
-
-		imgui = new ImGuiLayer(window, event_handler);
-		PushLayer(imgui);
 	}
 
 	void Application::PushLayer(Layer* layer) {
@@ -52,10 +46,13 @@ namespace Ember {
 				for (Layer* layer : layers)
 					layer->OnUpdate(delta);
 
-				imgui->Begin();
+				if (imgui)
+					imgui->Begin();
+				OnGuiUpdate();
 				for (Layer* layer : layers)
 					layer->UpdateGui();
-				imgui->End();
+				if (imgui)
+					imgui->End();
 				window->Update();
 
 				OnUserUpdate(delta);

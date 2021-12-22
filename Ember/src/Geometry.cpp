@@ -1,6 +1,8 @@
 #include "Geometry.h"
+#include "Logger.h"
 
 namespace Ember {
+	using namespace Geometry;
 	Mesh Geometry::CreateGeometry(const glm::mat4& matrix, const glm::vec4& color, float texture_id, const glm::vec2 tex_coords[], uint32_t vertex_count, const glm::vec4 positions[]) {
 		Mesh mesh;
 		for (size_t i = 0; i < vertex_count; i++) {
@@ -29,33 +31,19 @@ namespace Ember {
 		return (trans * rotate * scale);
 	}
 
-	uint32_t Geometry::AddIndice(uint32_t offset) {
-		return offset + index_offset;
+	RendererFrame* Quad::renderer = nullptr;
+	uint32_t Quad::index_offset = 0;
+
+	uint32_t Geometry::AddIndice(uint32_t indices, uint32_t offset) {
+		return offset + indices;
 	}
 
-	void Geometry::UpdateIndexOffset(uint32_t count) {
-		index_offset += count;
+	void Geometry::UpdateIndexOffset(uint32_t* indices, uint32_t count) {
+		*indices += count;
 	}
 
-	Quad* Quad::GetQuad() {
-		if (!quad) 
-			quad = new Quad;	
-		return quad;
-	}
-
-	void Quad::Update(EmberVertexGraphicsDevice* gd) {
-		if (gd)
-			this->gd = gd;
-
-		index_offset = 0;
-	}
-
-	Quad::Quad() {
-		quad = nullptr;
-	}
-
-	Quad::~Quad() {
-		delete quad;
+	void Quad::Renderer(RendererFrame* ren) {
+		renderer = ren;
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, const glm::vec4& color) {
@@ -63,15 +51,15 @@ namespace Ember {
 		Mesh m = CreateGeometry(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
-		gd->Submit(m);
+		renderer->Submit(m);
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, uint32_t texture, const glm::vec4& color) {
 		glm::mat4 model = GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
-		Mesh m = CreateGeometry(model, color, (float) texture, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+		Mesh m = CreateGeometry(model, color, (float)texture, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
-		gd->Submit(m);
+		renderer->Submit(m);
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, float degree, const glm::vec3& orientation, const glm::vec2& scalar, const glm::vec4& color) {
@@ -79,7 +67,7 @@ namespace Ember {
 		Mesh m = CreateGeometry(mat, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
-		gd->Submit(m);
+		renderer->Submit(m);
 	}
 
 	void Quad::DrawQuad(const QuadModel& model) {
@@ -87,17 +75,20 @@ namespace Ember {
 		Mesh m = CreateGeometry(mat, model.color, model.texture_id, model.tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
-		gd->Submit(m);
+		renderer->Submit(m);
 	}
 
 	void Quad::AddIndices(Mesh& mesh) {
-		mesh.indices.push_back(AddIndice(0));
-		mesh.indices.push_back(AddIndice(1));
-		mesh.indices.push_back(AddIndice(2));
-		mesh.indices.push_back(AddIndice(2));
-		mesh.indices.push_back(AddIndice(3));
-		mesh.indices.push_back(AddIndice(0));
+		if (renderer->GetGraphicsDevice()->Empty())
+			index_offset = 0;
 
-		UpdateIndexOffset(4);
+		mesh.indices.push_back(AddIndice(index_offset, 0));
+		mesh.indices.push_back(AddIndice(index_offset, 1));
+		mesh.indices.push_back(AddIndice(index_offset, 2));
+		mesh.indices.push_back(AddIndice(index_offset, 2));
+		mesh.indices.push_back(AddIndice(index_offset, 3));
+		mesh.indices.push_back(AddIndice(index_offset, 0));
+
+		UpdateIndexOffset(&index_offset, 4);
 	}
 }
