@@ -1,6 +1,6 @@
 #include "SDLWindow.h"
 #include "Assets.h"
-#include "TextureLoader.h"
+#include "Logger.h"
 
 namespace Ember {
 	SDLWindow::SDLWindow(WindowProperties* properties)
@@ -58,9 +58,15 @@ namespace Ember {
 	}
 
 	void SDLWindow::SetWindowIcon(const char* file_path) {
-		SDL_Surface* icon = TextureLoader::Load(file_path);
-		SDL_SetWindowIcon(native_window, icon);
-		TextureLoader::Free(icon);
+		SDL_Surface* surface = IMG_Load(file_path);
+		if (surface == nullptr) {
+			EMBER_LOG_ERROR("Failed to load '%s'.", file_path);
+			return;
+		}
+		else
+			EMBER_LOG_GOOD("Loaded '%s'.", file_path);
+		SDL_SetWindowIcon(native_window, surface);
+		SDL_FreeSurface(surface);
 	}
 
 	bool SDLWindow::AssertProperties() {

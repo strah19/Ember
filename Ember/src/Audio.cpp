@@ -1,4 +1,5 @@
 #include "Audio.h"
+#include "Logger.h"
 
 namespace Ember {
 	AudioChunk::AudioChunk(const std::string& file_path) {
@@ -7,6 +8,11 @@ namespace Ember {
 
 	void AudioChunk::Initialize(const std::string& file_path) {
 		chunk = Mix_LoadWAV(file_path.c_str());
+		if (chunk) {
+			EMBER_LOG_GOOD("Loaded audio chunk %s.", file_path.c_str());
+		}
+		else 
+			EMBER_LOG_ERROR("Failed to load audio chunk '%s'.", file_path.c_str());
 		volume = 0;
 	}
 
@@ -41,6 +47,11 @@ namespace Ember {
 
 	void AudioMusic::Initialize(const std::string& file_path) {
 		music = Mix_LoadMUS(file_path.c_str());
+		if (music) {
+			EMBER_LOG_GOOD("Loaded audio music %s.", file_path.c_str());
+		}
+		else
+			EMBER_LOG_ERROR("Failed to load audio music '%s'.", file_path.c_str());
 		volume = 0;
 	}
 

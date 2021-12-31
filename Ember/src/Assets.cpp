@@ -15,8 +15,10 @@ namespace Ember {
 	}
 
 	bool InitializeSoundLoader() {
-		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+			EMBER_LOG_ERROR("Failed to init SDL_Mixer with error code '%s'.", Mix_GetError());
+			return false;
+		}
 		return true;
 	}
 
@@ -33,6 +35,7 @@ namespace Ember {
 	}
 
 	bool InitializeAssets() {
+		EMBER_LOG_GOOD("Asset loaders initialized.");
 		return (InitializeImageLoader() && InitializeSoundLoader() && InitializeFontLoader());
 	}
 

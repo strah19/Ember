@@ -47,7 +47,8 @@ namespace Ember {
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
+		glm::mat4 model = (renderer->GetFlags() & RenderFlags::TopLeft) ? GetModelMatrix({ position.x + (scalar.x / 2), position.y + (scalar.y / 2), position.z },
+			{ scalar.x, scalar.y, 1.0f }) : GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
 		Mesh m = CreateGeometry(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
@@ -55,23 +56,27 @@ namespace Ember {
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, const glm::vec2& scalar, uint32_t texture, const glm::vec4& color) {
-		glm::mat4 model = GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
-		Mesh m = CreateGeometry(model, color, (float)texture, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+		glm::mat4 model = (renderer->GetFlags() & RenderFlags::TopLeft) ? GetModelMatrix({ position.x + (scalar.x / 2), position.y + (scalar.y / 2), position.z },
+			{ scalar.x, scalar.y, 1.0f }) : GetModelMatrix(position, { scalar.x, scalar.y, 1.0f });
+		Mesh m = CreateGeometry(model, color, renderer->GetGraphicsDevice()->CalculateTextureIndex(texture), TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
 		renderer->Submit(m);
 	}
 
 	void Quad::DrawQuad(const glm::vec3& position, float degree, const glm::vec3& orientation, const glm::vec2& scalar, const glm::vec4& color) {
-		glm::mat4 mat = GetRotatedModelMatrix(position, { scalar.x, scalar.y, 1.0f }, orientation, degree);
-		Mesh m = CreateGeometry(mat, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
+		glm::mat4 model = (renderer->GetFlags() & RenderFlags::TopLeft) ? GetRotatedModelMatrix({ position.x + (scalar.x / 2), position.y + (scalar.y / 2), position.z },
+			{ scalar.x, scalar.y, 1.0f }, orientation, degree) : GetRotatedModelMatrix(position, { scalar.x, scalar.y, 1.0f }, orientation, degree);
+		Mesh m = CreateGeometry(model, color, -1.0f, TEX_COORDS, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);
 		renderer->Submit(m);
 	}
 
 	void Quad::DrawQuad(const QuadModel& model) {
-		glm::mat4 mat = GetRotatedModelMatrix(model.position, model.scalar, model.orientation, model.degree);
+		glm::mat4 mat = (renderer->GetFlags() & RenderFlags::TopLeft) ? GetRotatedModelMatrix({ model.position.x + (model.scalar.x / 2), model.position.y + (model.scalar.y / 2), model.position.z },
+			model.scalar, model.orientation, model.degree) :
+			GetRotatedModelMatrix(model.position, model.scalar, model.orientation, model.degree);
 		Mesh m = CreateGeometry(mat, model.color, model.texture_id, model.tex_coords, QUAD_VERTEX_COUNT, QUAD_POSITIONS);
 
 		AddIndices(m);

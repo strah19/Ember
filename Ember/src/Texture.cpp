@@ -16,42 +16,38 @@
  */
 
 #include "Texture.h"
-#include "TextureLoader.h"
 #include "Logger.h"
 
 #include <iostream>
 #include <glad/glad.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 namespace Ember {
 	/**
 	* 
 	* 
 	*/
-	Texture::Texture(const char* file_path, bool flip) {
-		Init(file_path, flip);
-	}
-
-	Texture::Texture(uint32_t width, uint32_t height) {
-		Init(width, height);
-	}
-
-	void Texture::Init(const char* file_path, bool flip) {
+	void Texture::Init(const char* file_path) {
 		path = file_path;
-		SDL_Surface* s = Ember::TextureLoader::Load(file_path);
-		if (flip)
-			Ember::TextureLoader::FlipVertically(s);
-		width = s->w;
-		height = s->h;
-		if (s->format->BytesPerPixel == 4) {
+
+		int w, h, channels;
+		stbi_set_flip_vertically_on_load(1);
+		stbi_uc* data = stbi_load(file_path, &w, &h, &channels, 0);
+
+		width = w;
+		height = h;
+		if (channels == 4) {
 			internal_format = GL_RGBA8;
 			data_format = GL_RGBA;
 		}
-		else if (s->format->BytesPerPixel == 3) {
+		else if (channels == 3) {
 			internal_format = GL_RGB8;
 			data_format = GL_RGB;
 		}
 
-		if (s->pixels) {
+		if (data) {
 			glCreateTextures(GL_TEXTURE_2D, 1, &texture_id);
 			glTextureStorage2D(texture_id, 1, internal_format, width, height);
 
@@ -61,10 +57,9 @@ namespace Ember {
 			glTextureParameteri(texture_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTextureParameteri(texture_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			glTextureSubImage2D(texture_id, 0, 0, 0, width, height, data_format, GL_UNSIGNED_BYTE, s->pixels);
+			glTextureSubImage2D(texture_id, 0, 0, 0, width, height, data_format, GL_UNSIGNED_BYTE, data);
 		}
-
-		Ember::TextureLoader::Free(s);
+		stbi_image_free(data);
 	}
 
 	void Texture::Init(uint32_t width, uint32_t height) {

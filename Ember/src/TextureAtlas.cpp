@@ -3,7 +3,8 @@
 
 namespace Ember {
 	void TextureAtlas::Init(const char* texture_path, uint32_t cols, uint32_t rows) {
-		texture = new Texture(texture_path);
+		texture = new Texture();
+		texture->Init(texture_path);
 		this->rows = rows;
 		this->cols = cols;
 		sprite_size = { texture->GetWidth() / this->cols, texture->GetHeight() / this->rows };
@@ -121,7 +122,8 @@ namespace Ember {
 	}
 
 	void RandomAccessTextureAtlas::Init(const char* texture_path, const char* data_path) {
-		texture = new Texture(texture_path);
+		texture = new Texture();
+		texture->Init(texture_path);
 		parser.Init(data_path);
 		tiles = parser.DeSerialize();
 	}

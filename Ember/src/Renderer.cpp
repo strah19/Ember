@@ -143,6 +143,27 @@ namespace Ember {
 		commands[ds.draw_count].base_instance = ds.draw_count;
 	}
 
+	float BatchGraphicsDevice::CalculateTextureIndex(uint32_t id) {
+		float texture_id = -1.0f;
+
+		for (uint32_t i = 0; i < texture_slot_index; i++)
+			if (textures[i] == id)
+				texture_id = (float)i;
+
+		if (texture_id == -1.0f) {
+			textures[texture_slot_index] = id;
+			texture_id = (float)texture_slot_index;
+			texture_slot_index++;
+
+			if (texture_slot_index == MAX_TEXTURE_SLOTS) {
+				EMBER_LOG_ERROR("Too many textures in one batch. Create a new draw call!");
+				return -1.0f;
+			}
+		}
+
+		return texture_id;
+	}
+
 	RendererFrame::~RendererFrame() {
 		camera = nullptr;
 	}

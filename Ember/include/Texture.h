@@ -8,11 +8,9 @@
 namespace Ember {
 	class Texture {
 	public:
-		Texture(const char* file_path, bool flip = true);
-		Texture(uint32_t width, uint32_t height);
 		Texture() = default;
 
-		void Init(const char* file_path, bool flip = true);
+		void Init(const char* file_path);
 		void Init(uint32_t width, uint32_t height);
 
 		virtual ~Texture();
@@ -26,7 +24,7 @@ namespace Ember {
 		uint32_t GetHeight() const { return height; }
 		uint32_t GetTextureId() const { return texture_id; }
 	private:
-		uint32_t texture_id;
+		uint32_t texture_id = 0;
 
 		uint32_t width = 0;
 		uint32_t height = 0;

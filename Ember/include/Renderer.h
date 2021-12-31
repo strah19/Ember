@@ -93,6 +93,7 @@ namespace Ember {
 		virtual void MakeCommand();
 
 		inline uint32_t IndexOffset() const { return index_offset; }
+		float CalculateTextureIndex(uint32_t id);
 	private:
 		IndirectDrawBuffer* idb = nullptr;
 
@@ -110,7 +111,8 @@ namespace Ember {
 	};
 
 	enum RenderFlags {
-		None = 0x01
+		None = 0x01,
+		TopLeft = 0x02
 	};
 
 	class RendererFrame {
@@ -122,6 +124,8 @@ namespace Ember {
 		virtual void EndScene() = 0;
 		virtual void Submit(Mesh& mesh) = 0;
 
+		inline int GetFlags() const { return flags; }
+		inline void SetFlag(int flag, bool v) { if (v) flags |= flag; else flags &= ~flag; }
 		inline BatchGraphicsDevice* GetGraphicsDevice() { return gd; }
 	protected:
 		Camera* camera = nullptr;

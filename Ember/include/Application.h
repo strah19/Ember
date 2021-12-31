@@ -42,7 +42,7 @@ namespace Ember {
 
 		uint32_t opengl_minor_version = 0;
 		uint32_t opengl_major_version = 0;
-		ImGuiLayer* imgui;
+		ImGuiLayer* imgui = nullptr;
 		LayerStack layers; 
 	private:
 		void OnClose(const QuitEvent& event);
