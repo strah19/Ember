@@ -32,6 +32,7 @@ namespace Ember {
 
 	void Shader::Init(const std::string& file_path) {
 		shader_id = CreateShader(ParseShader(file_path));
+		EMBER_LOG_GOOD("Asset shader '%s' loaded as shader #%d.", file_path.c_str(), shader_id);
 	}
 
 	uint32_t Shader::CompileShader(const std::string& source, uint32_t type) {
@@ -71,8 +72,6 @@ namespace Ember {
 			EMBER_LOG_ERROR("Failed to load asset shader '%s'.", file_path.c_str());
 			return ShaderSources();
 		}
-		else
-			EMBER_LOG_GOOD("Asset shader '%s' loaded.", file_path.c_str());
 
 		ShaderSources ss;
 		while (getline(stream, line)) {

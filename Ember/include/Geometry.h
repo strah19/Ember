@@ -2,6 +2,7 @@
 #define GEOMETRY_H
 
 #include "Renderer.h"
+#include "Font.h"
 
 namespace Ember {
 	namespace Geometry {
@@ -22,19 +23,28 @@ namespace Ember {
 		float degree = 0;
 	};
 
-	class Quad {
+	class RendererObject {
 	public:
 		static void Renderer(RendererFrame* renderer);
+	protected:
+		static RendererFrame* renderer;
+	};
 
+	class Quad : public RendererObject {
+	public:
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& scalar, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& scalar, uint32_t texture, const glm::vec4& color = { -1, -1, -1, -1 });
 		static void DrawQuad(const glm::vec3& position, float degree, const glm::vec3& orientation, const glm::vec2& scalar, const glm::vec4& color);
 		static void DrawQuad(const QuadModel& model);
-	private:
-		static void AddIndices(Mesh& mesh);
 
-		static RendererFrame* renderer;
+		static void AddIndices(Mesh& mesh);
+	private:
 		static uint32_t index_offset;
+	};
+
+	class Text : public RendererObject {
+	public:
+		static void RenderText(Font* font, const std::string& text, const glm::vec2& position, const glm::vec2& scalar, const glm::vec4& color);
 	};
 }
 

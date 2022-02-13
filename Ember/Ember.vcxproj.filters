@@ -54,6 +54,9 @@
     <ClInclude Include="include\Geometry.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\ImGuiLayer.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\JoystickEvents.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -120,9 +123,6 @@
     <ClInclude Include="include\TextureAtlas.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\TextureLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Timer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -135,7 +135,6 @@
     <ClInclude Include="include\WindowEvents.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ImGuiLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -181,6 +180,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ImGuiBuild.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGuiLayer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">
@@ -231,9 +233,6 @@
     <ClCompile Include="src\TextureAtlas.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextureLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Timer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -243,6 +242,5 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGuiLayer.cpp" />
   </ItemGroup>
 </Project>

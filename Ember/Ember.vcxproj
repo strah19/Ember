@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;..\libs\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;..\libs\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -120,7 +120,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;EMBER_OPENGL_ACTIVATED;EMBER_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\libs\SDL2\include;..\libs\GLAD\include;..\libs\glm;..\libs\freetype-2.10.0\include;..\libs\imgui;..\libs\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -178,7 +178,6 @@
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureAtlas.h" />
-    <ClInclude Include="include\TextureLoader.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\VertexArray.h" />
     <ClInclude Include="include\Window.h" />
@@ -217,7 +216,6 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />
-    <ClCompile Include="src\TextureLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\Window.cpp" />

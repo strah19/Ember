@@ -1,8 +1,10 @@
 #include "Application.h"
 #include "OpenGLWindow.h"
 #include "ImGuiLayer.h"
+#include "RendererCommands.h"
 #include <examples/imgui_impl_opengl3.h>
 #include <examples/imgui_impl_sdl.h>
+
 namespace Ember {
 	void Application::Initialize(const std::string& name, uint32_t width, uint32_t height, AppFlags flags) {
 		Ember::LogImpl::Init();
@@ -79,5 +81,6 @@ namespace Ember {
 	void Application::OnResize(const ResizeEvent& event) {
 		window->Properties()->width = event.w;
 		window->Properties()->height = event.h;
+		Ember::RendererCommand::SetViewport(0, 0, window->Properties()->width, window->Properties()->height);
 	}
 }

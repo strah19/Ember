@@ -16,6 +16,7 @@ IncludeDir["GLAD"] = "libs/GLAD/include"
 IncludeDir["glm"] = "libs/glm"
 IncludeDir["freetype"] = "libs/freetype-2.10.0/include"
 IncludeDir["imgui"] = "libs/imgui"
+IncludeDir["stb_image"] = "libs/stb_image"
 
 include "libs/GLAD"
 include "libs/imgui"
@@ -41,7 +42,8 @@ project "Sandbox"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.freetype}"
+		"%{IncludeDir.freetype}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links
@@ -88,7 +90,8 @@ project "Ember"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.freetype}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	defines {

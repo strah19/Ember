@@ -171,6 +171,7 @@ namespace Ember {
 	Renderer::Renderer() {
 		default_shader.Init("shaders/default_shader.glsl");
 		InitRendererShader(&default_shader);
+		current_shader = &default_shader;
 
 		gd = new BatchGraphicsDevice(MAX_VERTEX_COUNT, MAX_INDEX_COUNT);
 		gd->Init();
@@ -183,18 +184,19 @@ namespace Ember {
 		for (int i = 0; i < MAX_TEXTURE_SLOTS; i++)
 			sampler[i] = i;
 		shader->SetIntArray("textures", sampler, MAX_TEXTURE_SLOTS);
+		shader->UnBind();
 	}
 
 	void Renderer::BeginScene(Camera* camera) {
 		this->camera = camera;
 		proj_view = camera->GetProjection() * camera->GetView();
 		current_shader = &default_shader;
-		gd->SetShader(current_shader);
 		gd->Setup();
 	}
 
 	void Renderer::EndScene() {
-		gd->SetShader(current_shader);
+		gd->SetShader(&current_shader);
+
 		gd->MakeCommand();
 		gd->NextCommand();
 		ssbo->Bind();

@@ -40,6 +40,6 @@ uniform sampler2D textures[32];
 
 void main()
 {
-    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(textures[int(out_tex_coord)], out_tex_coord).r);
+    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(textures[int(out_tex_index)], out_tex_coord).r);
     frag_color = out_color * sampled;
 }

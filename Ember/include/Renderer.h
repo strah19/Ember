@@ -39,6 +39,8 @@ namespace Ember {
 		uint32_t base_instance = 0;
 	};
 
+	class RendererFrame;
+
 	template <typename V>
 	class GraphicsDevice {
 	public:
@@ -51,7 +53,7 @@ namespace Ember {
 		virtual bool Submit(Mesh& mesh) = 0;
 		virtual void Render() = 0;
 
-		inline void SetShader(Shader* shader) { this->shader = &shader; }
+		inline void SetShader(Shader** shader) { this->shader = shader; }
 		inline bool Empty() const { return (vert_base == vert_ptr); }
 
 		inline uint32_t* IndexPtr() { return indx_ptr; }
@@ -126,6 +128,8 @@ namespace Ember {
 
 		inline int GetFlags() const { return flags; }
 		inline void SetFlag(int flag, bool v) { if (v) flags |= flag; else flags &= ~flag; }
+		inline void SetShader(Shader* shader) { current_shader = shader; }
+
 		inline BatchGraphicsDevice* GetGraphicsDevice() { return gd; }
 	protected:
 		Camera* camera = nullptr;
