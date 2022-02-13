@@ -76,7 +76,6 @@ All these can actually be found in libs folder (besides the compiler) but here t
 	<li><a href = "https://premake.github.io">Premake5</a> for building the project</li>
 	<li><a href = "https://www.libsdl.org/download-2.0.php">SDL2</a></li>
 	<li><a href = "https://www.libsdl.org/projects/SDL_mixer">SDL Mixer</a></li>
-	<li><a href = "https://www.libsdl.org/projects/SDL_image">SDL Image</a></li>
 	<li><a href = "https://glad.dav1d.de">GLAD</a></li>
 	<li><a href = "https://github.com/g-truc/glm">GLM</a></li>
 	<li><a href = "https://www.freetype.org">Freetype</a></li>
